@@ -372,6 +372,7 @@ document.getElementById("landingSearch").addEventListener("keydown",(e)=>{
 document.getElementById("googleLogin").addEventListener("click",()=>{
   localStorage.setItem("groww_demo_logged_in","1");
   localStorage.setItem("groww_demo_provider","google");
+  localStorage.setItem("groww_demo_auth_time",String(Date.now()));
   showToast("Login successful");
   setTimeout(()=>location.replace("./dashboard.html"),450);
 });
