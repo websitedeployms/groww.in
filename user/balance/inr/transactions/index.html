@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>All Transactions | Groww</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/user/balance/inr/transactions/styles.css">
+</head>
+<body>
+<script>if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("/index.html")}</script>
+
+<header class="tx-header">
+  <div class="tx-header-inner">
+    <a class="tx-brand" href="/dashboard.html" aria-label="Groww"><span class="brand-symbol"><i></i><i></i><i></i></span></a>
+    <nav class="tx-nav"><a class="active" href="/dashboard.html">Stocks</a><a href="#">F&amp;O</a><a href="#">Mutual Funds</a></nav>
+    <div class="tx-spacer"></div>
+    <div class="tx-search"><span>⌕</span><input id="search" placeholder="Search Groww...."><small>Ctrl+K</small></div>
+    <button class="tx-bell" id="bell">♧</button>
+    <button class="tx-avatar" id="profile">MS</button>
+  </div>
+</header>
+
+<main class="tx-page">
+  <div class="tx-title-row">
+    <h1>All Transactions</h1>
+    <button class="statement-btn" id="statementBtn"><span>⇩</span> Download statement</button>
+  </div>
+
+  <div class="tx-layout">
+    <aside class="filters-card">
+      <div class="filters-head">
+        <h2>FILTERS</h2>
+        <button id="clearFilters">CLEAR ALL</button>
+      </div>
+
+      <div class="filter-group">
+        <h3>Transactions status</h3>
+        <label class="check-row"><input type="checkbox" class="filter-check"> <span>Only failed</span></label>
+      </div>
+
+      <div class="filter-group">
+        <h3>Transaction Type</h3>
+        <label class="check-row"><input type="checkbox" class="filter-check"> <span>Deposit</span></label>
+        <label class="check-row"><input type="checkbox" class="filter-check"> <span>Withdraw</span></label>
+        <label class="check-row"><input type="checkbox" class="filter-check"> <span>Stocks</span></label>
+        <label class="check-row"><input type="checkbox" class="filter-check"> <span>FnO</span></label>
+        <label class="check-row"><input type="checkbox" class="filter-check"> <span>Others</span></label>
+      </div>
+
+      <div class="filter-group date-group">
+        <h3>Date range</h3>
+        <label class="date-input"><span>From</span><input id="fromDate" type="date"><b>▣</b></label>
+        <label class="date-input"><span>To</span><input id="toDate" type="date"><b>▣</b></label>
+      </div>
+    </aside>
+
+    <section class="empty-state">
+      <div class="wallet-illus" aria-hidden="true">
+        <svg viewBox="0 0 260 230" role="img">
+          <defs>
+            <linearGradient id="walletFill" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#f8f9fa"/>
+              <stop offset="1" stop-color="#eef0f2"/>
+            </linearGradient>
+          </defs>
+          <path d="M95 75c-2-14 5-23 18-26l95-18c13-2 23 6 25 18l3 15" fill="none" stroke="#eceff1" stroke-width="8" stroke-linecap="round"/>
+          <path d="M75 79l125-23c12-2 23 6 25 18l7 71c2 14-8 25-21 27l-120 18c-14 2-25-8-27-21L66 98c-2-10 2-16 9-19z" fill="url(#walletFill)" stroke="#e6e9ec" stroke-width="6"/>
+          <path d="M205 88h21c18 0 28 11 28 26s-10 26-28 26h-24c-11 0-20-9-20-20v-10c0-12 9-22 23-22z" fill="#f6f7f8" stroke="#e6e9ec" stroke-width="6"/>
+          <circle cx="225" cy="114" r="7" fill="#d5d9de"/>
+          <path d="M137 57l3-17" stroke="#12c89d" stroke-width="6" stroke-linecap="round"/>
+          <path d="M171 48l4-11" stroke="#12c89d" stroke-width="5" stroke-linecap="round"/>
+          <path d="M108 33c4-5 9-7 14-6" stroke="#b8f0e3" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M154 23c4-5 9-7 14-6" stroke="#b8f0e3" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>No transactions found</h2>
+      <p>Try changing or clearing the filters</p>
+    </section>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+<script>
+const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__txToast);window.__txToast=setTimeout(()=>t.classList.remove("show"),1800)};
+document.getElementById("profile").addEventListener("click",()=>location.href="/dashboard.html");
+document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
+document.getElementById("statementBtn").addEventListener("click",()=>toast("No transactions to include in the statement"));
+document.querySelectorAll(".filter-check").forEach(c=>c.addEventListener("change",()=>toast("Filter updated")));
+document.getElementById("clearFilters").addEventListener("click",()=>{
+  document.querySelectorAll(".filter-check").forEach(c=>c.checked=false);
+  document.getElementById("fromDate").value="";
+  document.getElementById("toDate").value="";
+  toast("Filters cleared");
+});
+document.querySelectorAll(".date-input input").forEach(i=>i.addEventListener("change",()=>toast("Date range updated")));
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
+</script>
+</body>
+</html>
