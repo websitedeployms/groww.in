@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#00b386">
-<title>Login / Sign up · Groww Replica</title>
+<title>Groww · Replica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,81 +12,153 @@
 </head>
 <body>
 <script>
-  if (localStorage.getItem("groww_demo_logged_in") === "1") location.replace("./dashboard.html");
+if(localStorage.getItem("groww_demo_logged_in")==="1") location.replace("./dashboard.html");
 </script>
 
-<div class="login-page">
-  <header class="login-header">
-    <a href="./index.html" class="brand" aria-label="Groww">
+<div class="site-page">
+<header class="landing-header">
+  <div class="landing-inner">
+    <a class="brand" href="#">
       <span class="groww-mark"><i></i><i></i><i></i></span>
       <span class="brand-name">Groww</span>
     </a>
-  </header>
+    <nav class="landing-nav">
+      <a href="#">Stocks</a>
+      <a href="#">F&amp;O</a>
+      <a href="#">Mutual Funds</a>
+    </nav>
+    <span class="landing-divider"></span>
+    <a class="more-link" href="#">More</a>
+    <div class="landing-spacer"></div>
+    <div class="landing-search">
+      <span class="search-symbol">⌕</span>
+      <input id="landingSearch" placeholder="Search Groww...." aria-label="Search Groww">
+      <span>Ctrl+K</span>
+    </div>
+    <button class="login-button" id="openLogin">Login/Sign up</button>
+  </div>
+</header>
 
-  <main class="login-main">
-    <div class="login-intro">
-      <span class="intro-kicker">WELCOME TO GROWW</span>
-      <h1>Grow your wealth.</h1>
-      <p>Login or sign up to start investing in stocks, mutual funds and more.</p>
-      <div class="signin-art">
-        <img src="./image.png" alt="Groww investment illustration">
+<main>
+  <div class="market-strip">
+    <div class="market-track">
+      <div class="market-item faded">17%</div>
+      <div class="market-item"><b>NIFTYSMALL</b><span>19,351.10</span><em>↓ 1.85%</em></div>
+      <div class="market-item"><b>NIFTYMIDCAP</b><span>59,914.20</span><em>↓ 1.63%</em></div>
+      <div class="market-item"><b>NIFTYJR</b><span>70,309.50</span><em>↓ 2.00%</em></div>
+      <div class="market-item"><b>NIFTYMIDSELECT</b><span>13,776.35</span><em>↓ 1.79%</em></div>
+      <div class="market-item"><b>NIFTYPHARMA</b><span>26,761.65</span><em>↓ 0.89%</em></div>
+    </div>
+  </div>
+
+  <section class="landing-hero">
+    <h1>Groww your wealth</h1>
+    <button class="hero-start" id="heroStart">Get started</button>
+    <div class="hero-image">
+      <img src="./image.png" alt="Groww investment illustration">
+    </div>
+  </section>
+</main>
+</div>
+
+<div class="modal-backdrop" id="loginModal" aria-hidden="true">
+  <section class="login-dialog" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+    <button class="dialog-close" id="closeLogin" aria-label="Close">×</button>
+
+    <div class="dialog-left">
+      <div class="contour"></div>
+      <div class="dialog-left-content">
+        <h2>Simple, Free<br>Investing.</h2>
+        <div class="dash"></div>
+        <div class="left-label">Stocks</div>
       </div>
     </div>
 
-    <section class="login-card" aria-labelledby="loginTitle">
-      <div class="login-icon"><span class="groww-mark small"><i></i><i></i><i></i></span></div>
-      <h2 id="loginTitle">Login / Sign up</h2>
-      <p class="subtitle">Enter your mobile number to continue</p>
-
-      <form id="loginForm" novalidate>
-        <label for="mobile">Mobile number</label>
-        <div class="phone-field">
-          <span>+91</span>
-          <input id="mobile" type="tel" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="Enter mobile number">
-        </div>
-        <div class="field-error" id="fieldError"></div>
-        <button class="continue-btn" type="submit">Continue</button>
-      </form>
-
-      <div class="or"><span>or</span></div>
-
-      <button class="google-btn" id="googleBtn" type="button">
-        <span class="google-g">G</span>
+    <div class="dialog-right">
+      <h2 id="welcomeTitle">Welcome to Groww</h2>
+      <button class="google-login" id="googleLogin">
+        <span class="google-icon">G</span>
         Continue with Google
       </button>
 
-      <p class="terms">By continuing, you agree to Groww's <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
-    </section>
+      <div class="dialog-or"><span>Or</span></div>
 
-    <div class="secure-note"><span class="shield">✓</span> Your information is encrypted and secure</div>
-  </main>
+      <form id="loginForm" novalidate>
+        <div class="email-field">
+          <input id="email" type="email" autocomplete="email" placeholder="Your Email Address">
+        </div>
+        <div class="email-error" id="emailError"></div>
+        <button class="dialog-continue" type="submit">Continue</button>
+      </form>
+
+      <p class="dialog-terms">
+        By proceeding, I agree to <a href="#">T&amp;C</a> , <a href="#">Privacy Policy</a> &amp; <a href="#">Tariff Rates</a>
+      </p>
+    </div>
+  </section>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const form=document.getElementById("loginForm");
-const mobile=document.getElementById("mobile");
-const error=document.getElementById("fieldError");
+const modal=document.getElementById("loginModal");
+const email=document.getElementById("email");
+const emailError=document.getElementById("emailError");
 const toast=document.getElementById("toast");
-const showToast=(m)=>{toast.textContent=m;toast.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>toast.classList.remove("show"),2100)};
-mobile.addEventListener("input",()=>{mobile.value=mobile.value.replace(/\D/g,"").slice(0,10);error.textContent=""});
-form.addEventListener("submit",(e)=>{
-  e.preventDefault();
-  const value=mobile.value.replace(/\D/g,"");
-  if(value.length!==10){error.textContent="Enter a valid 10-digit mobile number";mobile.focus();return}
-  error.textContent="";
+
+function openLogin(){
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden","false");
+  setTimeout(()=>email.focus(),80);
+}
+function closeLogin(){
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden","true");
+  emailError.textContent="";
+}
+function showToast(msg){
+  toast.textContent=msg;
+  toast.classList.add("show");
+  clearTimeout(window.__toast);
+  window.__toast=setTimeout(()=>toast.classList.remove("show"),2100);
+}
+
+document.getElementById("openLogin").addEventListener("click",openLogin);
+document.getElementById("heroStart").addEventListener("click",openLogin);
+document.getElementById("closeLogin").addEventListener("click",closeLogin);
+modal.addEventListener("click",(e)=>{if(e.target===modal)closeLogin()});
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="Escape")closeLogin();
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){
+    e.preventDefault();document.getElementById("landingSearch").focus();
+  }
+});
+document.getElementById("landingSearch").addEventListener("keydown",(e)=>{
+  if(e.key==="Enter"&&e.currentTarget.value.trim())showToast("Searching for "+e.currentTarget.value.trim());
+});
+
+document.getElementById("googleLogin").addEventListener("click",()=>{
   localStorage.setItem("groww_demo_logged_in","1");
-  localStorage.setItem("groww_demo_mobile",value);
+  localStorage.setItem("groww_demo_provider","google");
   showToast("Login successful");
   setTimeout(()=>location.replace("./dashboard.html"),450);
 });
-document.getElementById("googleBtn").addEventListener("click",()=>{
+
+document.getElementById("loginForm").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const value=email.value.trim();
+  if(!/^\S+@\S+\.\S+$/.test(value)){
+    emailError.textContent="Enter a valid email address";
+    email.focus();
+    return;
+  }
+  emailError.textContent="";
   localStorage.setItem("groww_demo_logged_in","1");
-  localStorage.setItem("groww_demo_provider","google");
-  showToast("Google demo login successful");
+  localStorage.setItem("groww_demo_email",value);
+  showToast("Login successful");
   setTimeout(()=>location.replace("./dashboard.html"),450);
 });
+email.addEventListener("input",()=>emailError.textContent="");
 </script>
 </body>
 </html>
