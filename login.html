@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#00b386">
+  <title>Login / Sign up · Groww Replica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./login.css">
+</head>
+<body>
+  <div class="login-page">
+    <header class="login-header">
+      <a href="./index.html" class="brand" aria-label="Back to Groww home">
+        <span class="groww-mark"><i></i><i></i><i></i></span>
+        <span class="brand-name">Groww</span>
+      </a>
+      <a class="back-link" href="./index.html">← Back to home</a>
+    </header>
+
+    <main class="login-main">
+      <section class="login-card" aria-labelledby="loginTitle">
+        <div class="login-icon"><span class="groww-mark small"><i></i><i></i><i></i></span></div>
+        <h1 id="loginTitle">Login / Sign up</h1>
+        <p class="subtitle">Enter your mobile number to continue</p>
+
+        <form id="loginForm" novalidate>
+          <label for="mobile">Mobile number</label>
+          <div class="phone-field">
+            <span>+91</span>
+            <input id="mobile" name="mobile" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel" placeholder="Enter 10-digit mobile number">
+          </div>
+          <p class="field-error" id="fieldError" aria-live="polite"></p>
+
+          <button class="continue-btn" type="submit">Continue</button>
+        </form>
+
+        <div class="or"><span>or</span></div>
+
+        <button class="google-btn" id="googleBtn" type="button">
+          <span class="google-g">G</span>
+          Continue with Google
+        </button>
+
+        <p class="terms">
+          By continuing, you agree to Groww's
+          <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.
+        </p>
+      </section>
+
+      <div class="secure-note">
+        <span class="shield">✓</span>
+        <span>Your information is encrypted and secure</span>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script>
+    const form = document.getElementById("loginForm");
+    const mobile = document.getElementById("mobile");
+    const error = document.getElementById("fieldError");
+    const toast = document.getElementById("toast");
+
+    const showToast = (message) => {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(window.__toast);
+      window.__toast = setTimeout(() => toast.classList.remove("show"), 2200);
+    };
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const value = mobile.value.replace(/\D/g, "");
+      if (value.length !== 10) {
+        error.textContent = "Enter a valid 10-digit mobile number";
+        mobile.focus();
+        return;
+      }
+      error.textContent = "";
+      showToast("Demo OTP flow started");
+    });
+
+    mobile.addEventListener("input", () => {
+      mobile.value = mobile.value.replace(/\D/g, "").slice(0, 10);
+      error.textContent = "";
+    });
+
+    document.getElementById("googleBtn").addEventListener("click", () => {
+      showToast("Google login is available in demo mode");
+    });
+  </script>
+</body>
+</html>
