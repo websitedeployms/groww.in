@@ -21,7 +21,51 @@
     <div class="header-grow"></div>
     <div class="search-box"><span class="search-icon">⌕</span><input id="searchInput" placeholder="Search Groww...."><span>Ctrl+K</span><div class="search-results" id="searchResults"></div></div>
     <button class="header-bell" id="bell" aria-label="Notifications">♧</button>
-    <button class="profile-avatar" id="accountBtn" aria-label="Sign out">MS</button>
+    <div class="profile-wrap">
+  <button class="profile-avatar" id="accountBtn" aria-label="Account menu">MS</button>
+  <div class="account-menu" id="accountMenu">
+    <div class="account-head">
+      <div>
+        <strong>Manav Singh</strong>
+        <small>Logged in account</small>
+      </div>
+      <button class="settings-btn" id="settingsBtn" aria-label="Settings">⚙</button>
+    </div>
+
+    <div class="account-items">
+      <button class="account-item" id="balanceBtn">
+        <span class="account-icon">▣</span>
+        <span class="account-item-copy"><b>₹0.00</b><small>Stocks, F&amp;O balance</small></span>
+        <span class="chevron">›</span>
+      </button>
+      <button class="account-item">
+        <span class="account-icon">▤</span>
+        <span class="account-item-copy"><b>All Orders</b></span>
+        <span class="chevron">›</span>
+      </button>
+      <button class="account-item">
+        <span class="account-icon">♜</span>
+        <span class="account-item-copy"><b>Bank Details</b></span>
+        <span class="chevron">›</span>
+      </button>
+      <button class="account-item">
+        <span class="account-icon">◉</span>
+        <span class="account-item-copy"><b>24 × 7 Customer Support</b></span>
+        <span class="chevron">›</span>
+      </button>
+      <button class="account-item">
+        <span class="account-icon">▤</span>
+        <span class="account-item-copy"><b>Reports</b></span>
+        <span class="chevron">›</span>
+      </button>
+    </div>
+
+    <div class="account-foot">
+      <button class="theme-btn" id="themeBtn" aria-label="Theme">☼</button>
+      <button class="logout-btn" id="logoutBtn">Log out</button>
+    </div>
+  </div>
+</div>
   </div>
 
   <div class="subnav-row">
@@ -232,7 +276,32 @@ document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLower
 const search=document.getElementById("searchInput"),results=document.getElementById("searchResults");
 const names=["TATAGOLD","SS Retail","NSE","Hero Motors","Dr. Reddy's Labs.","Zydus","Infosys","LTM","HDFC Life Insurance","DAM Capital Advisors","Optiemus infracom","Apollo Micro Systems","Raymond"];
 search.addEventListener("input",()=>{const q=search.value.trim().toLowerCase();if(!q){results.classList.remove("show");return}const hits=names.filter(n=>n.toLowerCase().includes(q)).slice(0,6);results.innerHTML=hits.length?hits.map(n=>'<div>'+n+'</div>').join(""):'<div>No result</div>';results.classList.add("show");results.querySelectorAll("div").forEach(r=>r.addEventListener("click",()=>{search.value=r.textContent;results.classList.remove("show");toast(r.textContent+" selected")}))});
-document.getElementById("accountBtn").addEventListener("click",()=>{if(confirm("Sign out of the demo account?")){["groww_demo_logged_in","groww_demo_provider","groww_demo_auth_time","groww_demo_email","groww_demo_mobile"].forEach(k=>localStorage.removeItem(k));location.replace("./index.html")}});
+const profileWrap=document.querySelector(".profile-wrap");
+const accountMenu=document.getElementById("accountMenu");
+const accountBtn=document.getElementById("accountBtn");
+
+accountBtn.addEventListener("click",(e)=>{
+  e.stopPropagation();
+  accountMenu.classList.toggle("show");
+});
+document.addEventListener("click",(e)=>{
+  if(!e.target.closest(".profile-wrap")) accountMenu.classList.remove("show");
+});
+document.getElementById("settingsBtn").addEventListener("click",(e)=>{
+  e.stopPropagation();
+  toast("Settings");
+});
+document.getElementById("balanceBtn").addEventListener("click",()=>toast("Available balance: ₹0.00"));
+document.getElementById("themeBtn").addEventListener("click",()=>toast("Theme settings"));
+document.querySelectorAll(".account-item").forEach(item=>{
+  if(item.id!=="balanceBtn") item.addEventListener("click",()=>toast(item.querySelector("b")?.textContent+" opened"));
+});
+document.getElementById("logoutBtn").addEventListener("click",()=>{
+  if(confirm("Sign out of the demo account?")){
+    ["groww_demo_logged_in","groww_demo_provider","groww_demo_auth_time","groww_demo_email","groww_demo_mobile"].forEach(k=>localStorage.removeItem(k));
+    location.replace("./index.html");
+  }
+});
 </script>
 </body>
 </html>
