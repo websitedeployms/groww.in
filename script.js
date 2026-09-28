@@ -1,104 +1,94 @@
-const $ = (sel) => document.querySelector(sel);
-const $$ = (sel) => [...document.querySelectorAll(sel)];
-
 const toast = (message) => {
-  const el = $("#toast");
+  const el = document.getElementById("toast");
   el.textContent = message;
   el.classList.add("show");
-  clearTimeout(window.__toast);
-  window.__toast = setTimeout(() => el.classList.remove("show"), 2200);
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
 };
 
+const modal = document.getElementById("demoModal");
 const openModal = () => {
-  $("#loginModal").classList.add("open");
-  $("#loginModal").setAttribute("aria-hidden","false");
-  setTimeout(() => $("#mobileInput").focus(), 60);
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden","false");
+  setTimeout(() => document.getElementById("mobileNumber")?.focus(), 60);
 };
-
 const closeModal = () => {
-  $("#loginModal").classList.remove("open");
-  $("#loginModal").setAttribute("aria-hidden","true");
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden","true");
 };
 
-$("#loginBtn")?.addEventListener("click", openModal);
-$("#startBtn")?.addEventListener("click", openModal);
-$("#ctaBtn")?.addEventListener("click", openModal);
-$("#investBtn")?.addEventListener("click", () => toast("Mutual Funds section opened — demo UI"));
-$("#stockBtn")?.addEventListener("click", () => toast("Stocks explorer — demo UI"));
-$("#watchDemo")?.addEventListener("click", () => toast("Interactive product tour coming next"));
-$("#calculatorBtn")?.addEventListener("click", () => toast("SIP calculator opened — demo mode"));
-
-$$("[data-close]").forEach(btn => btn.addEventListener("click", closeModal));
-$("#loginModal")?.addEventListener("click", e => {
-  if (e.target.id === "loginModal") closeModal();
-});
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") closeModal();
-  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-    e.preventDefault();
-    $("#searchInput")?.focus();
+document.getElementById("setupBtn")?.addEventListener("click", openModal);
+document.getElementById("startInvestBtn")?.addEventListener("click", () => toast("Investment flow opened"));
+document.getElementById("terminalBtn")?.addEventListener("click", () => toast("Terminal opened in demo mode"));
+document.getElementById("notificationBtn")?.addEventListener("click", () => toast("You are all caught up"));
+document.getElementById("profileBtn")?.addEventListener("click", () => toast("Profile menu opened"));
+document.getElementById("seeMoreStocks")?.addEventListener("click", () => toast("Showing more stocks in demo mode"));
+document.querySelectorAll("[data-close]").forEach((btn) => btn.addEventListener("click", closeModal));
+modal?.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeModal();
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+    event.preventDefault();
+    const input = document.getElementById("globalSearch");
+    if (input) input.focus();
   }
 });
 
-$("#continueBtn")?.addEventListener("click", () => {
-  const value = $("#mobileInput").value.replace(/\D/g,"");
+document.getElementById("modalSubmit")?.addEventListener("click", () => {
+  const value = document.getElementById("mobileNumber").value.replace(/\D/g, "");
   if (value.length !== 10) {
     toast("Enter a valid 10-digit mobile number");
     return;
   }
   closeModal();
-  toast("Demo login submitted");
+  toast("Demo setup submitted");
+});
+
+document.querySelectorAll(".filter-pill").forEach((pill) => {
+  pill.addEventListener("click", () => {
+    document.querySelectorAll(".filter-pill").forEach((item) => item.classList.remove("active"));
+    pill.classList.add("active");
+    toast(pill.textContent.trim() + " selected");
+  });
+});
+
+document.querySelectorAll("[data-stock]").forEach((card) => {
+  card.addEventListener("click", () => toast(card.dataset.stock + " selected"));
 });
 
 const searchData = [
-  ["Reliance Industries","RELIANCE • NSE","₹1,953.00"],
-  ["Tata Motors","TATAMOTORS • NSE","₹1,076.20"],
-  ["HDFC Bank","HDFCBANK • NSE","₹1,012.70"],
-  ["Nifty 50","INDEX • NSE","25,301.90"],
-  ["SBI Small Cap Fund","MUTUAL FUND","₹178.42"]
+  ["TATAGOLD","TATAGOLD • NSE","₹14.26"],
+  ["SS Retail","SS RETAIL • NSE","₹716.95"],
+  ["NSE","NSE • NSE","₹1,762.70"],
+  ["Hero Motors","HERO MOTORS • NSE","₹135.06"],
+  ["Dr. Reddy's Labs.","DRREDDY • NSE","₹1,221.00"],
+  ["Infosys","INFY • NSE","₹1,495.40"],
+  ["ITC","ITC • NSE","₹443.80"]
 ];
 
-$("#searchInput")?.addEventListener("input", e => {
-  const q = e.target.value.trim().toLowerCase();
-  const box = $("#searchResults");
-  if (!q) { box.classList.remove("show"); box.innerHTML = ""; return; }
-  const matches = searchData.filter(([name,meta]) => (name+" "+meta).toLowerCase().includes(q)).slice(0,4);
-  box.innerHTML = matches.length
-    ? matches.map(([name,meta,price]) => `<div class="result-item" data-result="${name}"><div><strong>${name}</strong><small>${meta}</small></div><b>${price}</b></div>`).join("")
-    : '<div class="result-item"><div><strong>No matches</strong><small>Try stocks, funds or indices</small></div></div>';
-  box.classList.add("show");
-  $$(".result-item[data-result]").forEach(item => item.addEventListener("click", () => {
-    $("#searchInput").value = item.dataset.result;
-    box.classList.remove("show");
-    toast(item.dataset.result + " selected");
-  }));
-});
+const searchInput = document.getElementById("globalSearch");
+const searchDropdown = document.getElementById("searchDropdown");
 
-document.addEventListener("click", e => {
-  if (!e.target.closest(".nav-search")) $("#searchResults")?.classList.remove("show");
+searchInput?.addEventListener("input", () => {
+  const query = searchInput.value.trim().toLowerCase();
+  if (!query) {
+    searchDropdown.classList.remove("show");
+    searchDropdown.innerHTML = "";
+    return;
+  }
+  const matches = searchData.filter(([name, meta]) => (name + " " + meta).toLowerCase().includes(query)).slice(0,5);
+  searchDropdown.innerHTML = matches.length
+    ? matches.map(([name, meta, price]) => `<div class="search-result" data-name="${name}"><div><strong>${name}</strong><small>${meta}</small></div><b>${price}</b></div>`).join("")
+    : '<div class="search-result"><div><strong>No result</strong><small>Try a stock or index name</small></div></div>';
+  searchDropdown.classList.add("show");
+  searchDropdown.querySelectorAll("[data-name]").forEach((item) => {
+    item.addEventListener("click", () => {
+      searchInput.value = item.dataset.name;
+      searchDropdown.classList.remove("show");
+      toast(item.dataset.name + " selected");
+    });
+  });
 });
-
-$$("[data-product]").forEach(card => {
-  card.addEventListener("click", () => toast(card.dataset.product + " selected"));
-});
-
-$$("[data-scroll]").forEach(btn => {
-  btn.addEventListener("click", () => document.querySelector(btn.dataset.scroll)?.scrollIntoView({behavior:"smooth"}));
-});
-
-$("#mobileMenu")?.addEventListener("click", () => {
-  const nav = $(".desktop-nav");
-  if (!nav) return;
-  const open = nav.style.display === "flex";
-  nav.style.display = open ? "" : "flex";
-  nav.style.position = open ? "" : "absolute";
-  nav.style.top = "64px";
-  nav.style.left = "10px";
-  nav.style.right = "10px";
-  nav.style.background = "#fff";
-  nav.style.padding = "14px";
-  nav.style.border = "1px solid #e9edef";
-  nav.style.borderRadius = "14px";
-  nav.style.boxShadow = "0 12px 30px rgba(0,0,0,.08)";
-  nav.style.flexDirection = "column";
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".search-box")) searchDropdown?.classList.remove("show");
 });
