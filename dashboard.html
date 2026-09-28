@@ -28,7 +28,7 @@
       <input id="searchInput" placeholder="Search Groww...." aria-label="Search Groww">
       <span>Ctrl+K</span>
     </div>
-    <button class="account" id="accountBtn">MS</button>
+    <button class="account" id="accountBtn" title="Sign out">MS</button>
   </div>
 </header>
 
@@ -63,7 +63,14 @@ document.addEventListener("keydown",(e)=>{
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("searchInput")?.focus()}
 });
 document.getElementById("accountBtn")?.addEventListener("click",()=>{
-  if(confirm("Log out of the demo account?")){localStorage.removeItem("groww_demo_logged_in");location.replace("./index.html")}
+  if(confirm("Sign out of the demo account?")){
+    localStorage.removeItem("groww_demo_logged_in");
+    localStorage.removeItem("groww_demo_provider");
+    localStorage.removeItem("groww_demo_auth_time");
+    localStorage.removeItem("groww_demo_email");
+    localStorage.removeItem("groww_demo_mobile");
+    location.replace("./index.html");
+  }
 });
 </script>
 </body>
