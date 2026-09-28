@@ -48,7 +48,7 @@
         <span class="account-item-copy"><b>Bank Details</b></span>
         <span class="chevron">›</span>
       </button>
-      <button class="account-item">
+      <button class="account-item" id="supportBtn">
         <span class="account-icon">◉</span>
         <span class="account-item-copy"><b>24 × 7 Customer Support</b></span>
         <span class="chevron">›</span>
@@ -294,6 +294,7 @@ document.getElementById("settingsBtn").addEventListener("click",(e)=>{
 document.getElementById("balanceBtn").addEventListener("click",()=>toast("Available balance: ₹0.00"));
 document.getElementById("allOrdersBtn").addEventListener("click",()=>{location.href="./orders.html"});
 document.getElementById("bankDetailsBtn").addEventListener("click",()=>{location.href="./bank-details.html"});
+document.getElementById("supportBtn").addEventListener("click",()=>{location.href="/help"});
 document.getElementById("reportsBtn").addEventListener("click",()=>{location.href="/user/profile/report/"});
 document.getElementById("themeBtn").addEventListener("click",()=>toast("Theme settings"));
 document.querySelectorAll(".account-item").forEach(item=>{
