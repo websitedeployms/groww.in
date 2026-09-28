@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bank &amp; AutoPay · Groww Replica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./bank-details.css">
+</head>
+<body>
+<script>if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("./index.html")}</script>
+
+<header class="bank-header">
+  <div class="bank-header-inner">
+    <a href="./dashboard.html" class="bank-brand">
+      <span class="brand-symbol"><i></i><i></i><i></i></span>
+    </a>
+    <nav class="bank-nav">
+      <a class="active" href="./dashboard.html">Stocks</a>
+      <a href="#">F&amp;O</a>
+      <a href="#">Mutual Funds</a>
+    </nav>
+    <div class="bank-spacer"></div>
+    <div class="bank-search">
+      <span>⌕</span><input id="bankSearch" placeholder="Search Groww...."><small>Ctrl+K</small>
+    </div>
+    <button class="bank-bell">♧</button>
+    <button class="bank-avatar" id="profileBtn">MS</button>
+  </div>
+</header>
+
+<main class="bank-page">
+  <h1>Bank Account Details</h1>
+
+  <div class="bank-layout">
+    <section class="bank-left">
+      <div class="bank-list-card">
+        <div class="bank-list-row">
+          <div class="sbi-logo"><span></span></div>
+          <strong>STATE BANK OF INDIA</strong>
+          <span class="masked-short">XXXX4181</span>
+          <button class="more-btn" aria-label="More options">⋮</button>
+        </div>
+        <button class="add-bank"><span>+</span> Add another bank</button>
+      </div>
+    </section>
+
+    <section class="bank-details-card">
+      <div class="bank-details-head">
+        <div class="sbi-logo large"><span></span></div>
+        <div>
+          <h2>STATE BANK OF INDIA</h2>
+          <p>Primary bank <span class="help-circle">?</span></p>
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <span>Status</span><strong>Verified</strong>
+        <span>Account</span><strong>XXXXXXXXXXXX4181</strong>
+        <span>IFSC Code</span><strong>SBIIN0017739 <span class="edit-mark">◆</span></strong>
+        <span>Branch Name</span><strong>PRATAP VIHAR GHAZIABAD</strong>
+      </div>
+
+      <div class="autopay-row">
+        <button id="autopayBtn">Setup autopay</button>
+      </div>
+
+      <div class="help-card">
+        <span>Have questions about Bank &amp; Autopay?</span>
+        <button id="helpBtn"><span class="help-icon">?</span> Get help</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+<script>
+const toast=(m)=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove("show"),1800)};
+document.getElementById("autopayBtn").addEventListener("click",()=>toast("Autopay setup started"));
+document.getElementById("helpBtn").addEventListener("click",()=>toast("Customer support opened"));
+document.getElementById("profileBtn").addEventListener("click",()=>location.href="./dashboard.html");
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("bankSearch").focus()}});
+</script>
+</body>
+</html>
