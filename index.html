@@ -1,217 +1,175 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stocks · Groww Replica</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Groww Stocks · Replica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div class="app-shell">
-    <header class="top-header">
-      <div class="top-inner">
-        <a class="groww-logo" href="#" aria-label="Groww home">
-          <span class="logo-mark"><span></span><span></span><span></span></span>
-        </a>
-
-        <nav class="product-nav">
-          <a class="product-link active" href="#">Stocks</a>
-          <a class="product-link" href="#">F&amp;O</a>
-          <a class="product-link" href="#">Mutual Funds</a>
-        </nav>
-
-        <div class="top-spacer"></div>
-
-        <div class="search-box">
-          <span class="search-symbol">⌕</span>
-          <input id="globalSearch" type="search" placeholder="Search Groww...." aria-label="Search Groww" />
-          <span class="shortcut">Ctrl+K</span>
-          <div class="search-dropdown" id="searchDropdown"></div>
-        </div>
-
-        <button class="icon-button" id="notificationBtn" aria-label="Notifications">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Zm-8.5 11h5"></path></svg>
-        </button>
-
-        <button class="profile-button" id="profileBtn" aria-label="Profile">
-          <span>MS</span>
-        </button>
+<div class="page">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#"><span class="groww-mark"><i></i><i></i><i></i></span></a>
+      <nav class="products">
+        <a class="active" href="#">Stocks</a>
+        <a href="#">F&amp;O</a>
+        <a href="#">Mutual Funds</a>
+      </nav>
+      <div class="top-fill"></div>
+      <div class="search">
+        <span class="search-icon">⌕</span>
+        <input id="search" placeholder="Search Groww...." aria-label="Search Groww">
+        <span class="search-shortcut">Ctrl+K</span>
+        <div class="search-results" id="searchResults"></div>
       </div>
-    </header>
+      <button class="bell" id="bell" aria-label="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+      </button>
+      <button class="avatar" id="avatar" aria-label="Profile">MS</button>
+    </div>
+  </header>
 
-    <div class="subnav-wrap">
-      <nav class="subnav">
-        <div class="subnav-left">
-          <a class="subnav-link selected" href="#explore">Explore</a>
-          <a class="subnav-link" href="#holdings">Holdings</a>
-          <a class="subnav-link" href="#positions">Positions</a>
-          <a class="subnav-link" href="#orders">Orders</a>
-          <a class="subnav-link" href="#watchlist">Watchlist</a>
-        </div>
-        <button class="terminal-button" id="terminalBtn">
-          <svg viewBox="0 0 24 24"><path d="M8 7v10m8-7v4M6 9h4m6-2h4m-4 10h4"></path></svg>
+  <div class="navline">
+    <div class="navline-inner">
+      <nav class="secondary">
+        <a class="chosen" href="#explore">Explore</a>
+        <a href="#holdings">Holdings</a>
+        <a href="#positions">Positions</a>
+        <a href="#orders">Orders</a>
+        <a href="#watchlist">Watchlist</a>
+      </nav>
+      <div class="terminal-wrap">
+        <button class="terminal-btn" id="terminalBtn">
+          <svg viewBox="0 0 24 24"><path d="M8 6v12m8-9v6M5 9h6m3-3h5m-5 12h5"/></svg>
           Terminal
         </button>
-      </nav>
-    </div>
-
-    <div class="ticker-row">
-      <div class="ticker-track" id="tickerTrack">
-        <div class="ticker-item"><b>NIFTY</b><span>22,780.25</span><em class="loss">-360.25 (1.56%)</em></div>
-        <div class="ticker-item"><b>SENSEX</b><span>72,771.72</span><em class="loss">-1,124.02 (1.52%)</em></div>
-        <div class="ticker-item"><b>BANKNIFTY</b><span>54,471.65</span><em class="loss">-1,108.75 (1.99%)</em></div>
-        <div class="ticker-item"><b>MIDCPNIFTY</b><span>13,776.35</span><em class="loss">-251.35 (1.79%)</em></div>
-        <div class="ticker-item"><b>FINNIFTY</b><span>24,038.05</span><em class="loss">-441.15 (1.80%)</em></div>
+        <div class="terminal-menu open" id="terminalMenu">
+          <button id="optionChain"><span>↗</span>Option chain</button>
+          <button id="terminalMenuItem"><span>◫</span>Terminal</button>
+        </div>
       </div>
-      <button class="ticker-world" aria-label="Market language">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18"></path></svg>
-      </button>
     </div>
+  </div>
 
-    <main class="main-layout" id="explore">
-      <section class="main-column">
-        <section class="section-block">
-          <h1 class="section-title">Most bought stocks on Groww</h1>
-          <div class="stock-grid">
-            <button class="stock-card" data-stock="TATAGOLD">
-              <div class="stock-logo logo-tatagold"><span>TATA</span><small>mutual fund</small></div>
-              <div class="stock-name">TATAGOLD</div>
-              <div class="stock-price">₹14.26</div>
-              <div class="stock-change loss">-0.36 (2.46%)</div>
-            </button>
+  <div class="ticker">
+    <div class="ticker-inner">
+      <div class="ticker-item"><b>NIFTY</b><span>22,780.25</span><em>-360.25 (1.56%)</em></div>
+      <div class="ticker-item"><b>SENSEX</b><span>72,771.72</span><em>-1,124.02 (1.52%)</em></div>
+      <div class="ticker-item"><b>BANKNIFTY</b><span>54,471.65</span><em>-1,108.75 (1.99%)</em></div>
+      <div class="ticker-item active-ticker"><b>MIDCPNIFTY</b><span>13,776.35</span><em>-251.35 (1.79%)</em></div>
+      <div class="ticker-item"><b>FINNIFTY</b><span>24,038.05</span><em>-441.15 (1.80%)</em></div>
+    </div>
+    <button class="world" aria-label="Language"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18"/></svg></button>
+  </div>
 
-            <button class="stock-card" data-stock="SS Retail">
-              <div class="stock-logo logo-ss">SS</div>
-              <div class="stock-name">SS Retail</div>
-              <div class="stock-price">₹716.95</div>
-              <div class="stock-change loss">-11.25 (1.54%)</div>
-            </button>
-
-            <button class="stock-card" data-stock="NSE">
-              <div class="stock-logo logo-nse"><span>◆</span></div>
-              <div class="stock-name">NSE</div>
-              <div class="stock-price">₹1,762.70</div>
-              <div class="stock-change loss">-29.95 (1.67%)</div>
-            </button>
-
-            <button class="stock-card" data-stock="Hero Motors">
-              <div class="stock-logo logo-hero"><span>HERO</span><small>MOTOCORP</small></div>
-              <div class="stock-name">Hero Motors</div>
-              <div class="stock-price">₹135.06</div>
-              <div class="stock-change loss">-6.63 (4.68%)</div>
-            </button>
-          </div>
-          <button class="see-more" id="seeMoreStocks">See more <span>›</span></button>
-        </section>
-
-        <section class="section-block movers-section">
-          <h2 class="section-title">Top movers today</h2>
-          <div class="filter-row">
-            <button class="filter-pill active">Gainers</button>
-            <button class="filter-pill">Losers</button>
-            <button class="filter-pill">Volume shockers</button>
-            <span class="filter-divider"></span>
-            <button class="filter-pill index-pill">NIFTY 100 <span>⌄</span></button>
-          </div>
-
-          <div class="movers-table">
-            <div class="table-head">
-              <div>Company</div>
-              <div>Market price (1D)</div>
-              <div>Volume</div>
-            </div>
-
-            <button class="table-row stock-row" data-stock="Dr. Reddy's Labs.">
-              <div class="company-cell">
-                <div class="stock-logo table-logo logo-reddy">R</div>
-                <span>Dr. Reddy's Labs.</span>
-              </div>
-              <div class="market-cell">
-                <svg class="sparkline" viewBox="0 0 150 38" preserveAspectRatio="none">
-                  <path d="M0 30 L8 25 L14 28 L22 20 L27 23 L35 19 L44 23 L51 16 L58 19 L67 11 L76 15 L82 8 L90 6 L98 10 L106 7 L112 12 L120 13 L130 16 L138 10 L145 12 L150 8"></path>
-                </svg>
-                <div><span>₹1,221.00</span><em class="gain">20.00 (1.67%)</em></div>
-              </div>
-              <div class="volume-cell">34,01,676</div>
-            </button>
-
-            <button class="table-row stock-row" data-stock="Infosys">
-              <div class="company-cell">
-                <div class="stock-logo table-logo logo-infy">I</div>
-                <span>Infosys</span>
-              </div>
-              <div class="market-cell">
-                <svg class="sparkline" viewBox="0 0 150 38" preserveAspectRatio="none">
-                  <path d="M0 31 L10 26 L18 25 L26 29 L36 18 L43 20 L52 17 L60 13 L69 17 L78 12 L88 13 L96 7 L105 10 L115 5 L123 9 L133 4 L141 6 L150 2"></path>
-                </svg>
-                <div><span>₹1,495.40</span><em class="gain">18.45 (1.25%)</em></div>
-              </div>
-              <div class="volume-cell">18,95,430</div>
-            </button>
-
-            <button class="table-row stock-row" data-stock="ITC">
-              <div class="company-cell">
-                <div class="stock-logo table-logo logo-itc">ITC</div>
-                <span>ITC</span>
-              </div>
-              <div class="market-cell">
-                <svg class="sparkline" viewBox="0 0 150 38" preserveAspectRatio="none">
-                  <path d="M0 30 L12 29 L22 24 L33 27 L43 19 L55 21 L63 15 L76 17 L84 12 L95 13 L105 8 L119 11 L130 5 L143 7 L150 3"></path>
-                </svg>
-                <div><span>₹443.80</span><em class="gain">7.10 (1.63%)</em></div>
-              </div>
-              <div class="volume-cell">21,10,203</div>
-            </button>
-          </div>
-        </section>
+  <main class="content" id="explore">
+    <section class="left">
+      <section class="start-card">
+        <div>
+          <h2>Start investing from 29th Sep, 09:00 AM</h2>
+          <p>We're setting up your investment accounts to get you started as soon as possible.</p>
+        </div>
+        <div class="calendar-art" aria-hidden="true">
+          <div class="cal-top">•••</div>
+          <div class="cal-body"><span>29</span><span>30</span><span>1</span><span>2</span><span>3</span><span>4</span><span class="today">5</span><span>6</span></div>
+          <div class="cal-base"></div>
+        </div>
       </section>
 
-      <aside class="side-column">
-        <section class="setup-card">
-          <div class="setup-art">
-            <div class="art-window">
-              <div class="art-screen"></div>
-              <div class="art-laptop"><span>!</span></div>
+      <section class="bought">
+        <h1>Most bought stocks on Groww</h1>
+        <div class="stock-grid">
+          <button class="stock-card" data-stock="TATAGOLD">
+            <div class="logo tatagold"><b>TATA</b><small>mutual fund</small></div>
+            <div class="name">TATAGOLD</div>
+            <div class="price">₹14.26</div>
+            <div class="change">-0.36 (2.46%)</div>
+          </button>
+          <button class="stock-card" data-stock="SS Retail">
+            <div class="logo ss">SS</div>
+            <div class="name">SS Retail</div>
+            <div class="price">₹716.95</div>
+            <div class="change">-11.25 (1.54%)</div>
+          </button>
+          <button class="stock-card" data-stock="NSE">
+            <div class="logo nse">✦</div>
+            <div class="name">NSE</div>
+            <div class="price">₹1,762.70</div>
+            <div class="change">-29.95 (1.67%)</div>
+          </button>
+          <button class="stock-card" data-stock="Hero Motors">
+            <div class="logo hero"><b>HERO</b><small>MOTORS</small></div>
+            <div class="name">Hero Motors</div>
+            <div class="price">₹135.06</div>
+            <div class="change">-6.63 (4.68%)</div>
+          </button>
+        </div>
+        <button class="see-more" id="seeMore">See more <span>›</span></button>
+      </section>
+
+      <section class="movers">
+        <h2>Top movers today</h2>
+        <div class="chips">
+          <button class="chip active">Gainers</button>
+          <button class="chip">Losers</button>
+          <button class="chip">Volume shockers</button>
+          <span class="divider"></span>
+          <button class="chip nifty">NIFTY 100 <span>⌄</span></button>
+        </div>
+        <div class="movers-box">
+          <div class="movers-head"><div>Company</div><div>Market price (1D)</div><div>Volume</div></div>
+          <button class="mover-row" data-stock="Dr. Reddy's Labs.">
+            <div class="company"><span class="table-logo reddy">R</span><b>Dr. Reddy's Labs.</b></div>
+            <div class="market">
+              <svg viewBox="0 0 150 40" preserveAspectRatio="none"><path d="M0 32 L9 27 L16 30 L24 22 L31 25 L40 20 L47 23 L54 18 L63 22 L71 13 L80 16 L88 8 L97 12 L105 7 L115 11 L123 5 L134 9 L142 6 L150 10"/></svg>
+              <div><span>₹1,221.00</span><em>20.00 (1.67%)</em></div>
             </div>
-            <span class="art-cloud c1"></span><span class="art-cloud c2"></span>
+            <div class="volume">34,01,676</div>
+          </button>
+          <button class="mover-row" data-stock="Infosys">
+            <div class="company"><span class="table-logo infy">I</span><b>Infosys</b></div>
+            <div class="market">
+              <svg viewBox="0 0 150 40" preserveAspectRatio="none"><path d="M0 31 L10 28 L18 29 L28 22 L38 24 L46 18 L57 22 L67 15 L75 13 L87 16 L96 9 L106 11 L115 6 L124 10 L136 4 L144 7 L150 2"/></svg>
+              <div><span>₹1,495.40</span><em>18.45 (1.25%)</em></div>
+            </div>
+            <div class="volume">18,95,430</div>
+          </button>
+        </div>
+      </section>
+    </section>
+
+    <aside class="right">
+      <section class="investments" id="holdings">
+        <h2>Your investments</h2>
+        <div class="investments-box">
+          <div class="invest-art">
+            <span class="bubble b1"></span><span class="bubble b2"></span>
+            <div class="art-card"></div>
+            <div class="person p1"></div><div class="person p2"></div><div class="person p3"></div>
+            <div class="plant"></div>
           </div>
-          <div class="setup-content">
-            <h3>Attention required!</h3>
-            <p>Complete setting up your account to start investing on Groww</p>
-            <button class="setup-button" id="setupBtn">COMPLETE SETUP</button>
-          </div>
-        </section>
+          <p>You haven't invested yet</p>
+        </div>
+      </section>
 
-        <section class="investments-card" id="holdings">
-          <h2>Your investments</h2>
-          <div class="investment-placeholder">
-            <div class="placeholder-orbit"><span></span><span></span><span></span></div>
-            <strong>Start investing to build your portfolio</strong>
-            <p>Track all your investments in one place.</p>
-            <button class="small-green-btn" id="startInvestBtn">Start investing</button>
-          </div>
-        </section>
-      </aside>
-    </main>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-  <div class="modal" id="demoModal" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" data-close>×</button>
-      <div class="modal-mark">G</div>
-      <h3>Complete setup</h3>
-      <p>This replica opens a demo flow. No real account is created.</p>
-      <label>Mobile number</label>
-      <input id="mobileNumber" type="tel" inputmode="numeric" maxlength="10" placeholder="Enter 10-digit number">
-      <button class="setup-button modal-submit" id="modalSubmit">CONTINUE</button>
-    </div>
-  </div>
-
-  <script src="./script.js"></script>
+      <section class="tools">
+        <h2>Products &amp; Tools</h2>
+        <div class="tools-box">
+          <button class="tool-row" data-tool="IPO"><span class="tool-icon">📣</span><b>IPO</b><span class="pill">18 open</span></button>
+          <button class="tool-row" data-tool="Bonds"><span class="tool-icon">📜</span><b>Bonds</b><span class="pill">1 open</span></button>
+          <button class="tool-row" data-tool="ETFs"><span class="tool-icon">🗂</span><b>ETFs</b><span class="pill hidden"> </span></button>
+          <button class="tool-row" data-tool="Gold"><span class="tool-icon">▣</span><b>Gold</b><span class="pill hidden"> </span></button>
+          <button class="tool-row" data-tool="SGB"><span class="tool-icon">◫</span><b>SGB</b><span class="pill hidden"> </span></button>
+        </div>
+      </section>
+    </aside>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="./script.js"></script>
 </body>
 </html>
