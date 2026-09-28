@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Orders · Groww Replica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./orders.css">
+</head>
+<body>
+<script>if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("./index.html")}</script>
+
+<header class="orders-header">
+  <div class="orders-header-inner">
+    <a class="orders-brand" href="./dashboard.html" aria-label="Groww"><span class="brand-symbol"><i></i><i></i><i></i></span></a>
+    <nav class="orders-primary">
+      <a href="./dashboard.html">Stocks</a><a href="#">F&amp;O</a><a href="#">Mutual Funds</a>
+    </nav>
+    <div class="orders-spacer"></div>
+    <div class="orders-search"><span>⌕</span><input id="search" placeholder="Search Groww...."><small>Ctrl+K</small></div>
+    <button class="orders-bell" id="bell">♧</button>
+    <button class="orders-avatar" id="profile">MS</button>
+  </div>
+</header>
+
+<main class="orders-page">
+  <h1>All orders</h1>
+
+  <div class="order-tabs">
+    <button class="active">Stocks</button>
+    <button>F&amp;O</button>
+    <button>Mutual Funds</button>
+    <button>Bonds</button>
+  </div>
+
+  <div class="filters">
+    <button class="filter-icon" id="filterBtn"><span class="sliders">☷</span><b>2</b></button>
+    <button class="filter-pill" id="typeFilter">Stocks &amp; ETF <span>⌄</span></button>
+    <button class="filter-pill" id="regularFilter">Regular <span>⌄</span></button>
+    <button class="clear-btn" id="clearBtn">Clear all</button>
+  </div>
+
+  <section class="empty-orders">
+    <div class="binocular-illustration" aria-hidden="true">
+      <svg viewBox="0 0 220 140">
+        <g fill="none" stroke="#77a6b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M67 35 L93 18 L117 31 L99 106 L63 92 Z"/>
+          <path d="M103 30 L135 14 L158 30 L141 104 L105 90 Z"/>
+          <ellipse cx="78" cy="82" rx="19" ry="27" fill="#d9edf3"/>
+          <ellipse cx="128" cy="80" rx="19" ry="27" fill="#d9edf3"/>
+          <path d="M99 63 L108 63"/>
+        </g>
+        <ellipse cx="105" cy="112" rx="54" ry="8" fill="#6a9baa" opacity=".28"/>
+        <g fill="#77a6b8">
+          <circle cx="48" cy="42" r="2"/><circle cx="177" cy="43" r="2"/><circle cx="188" cy="66" r="3"/>
+        </g>
+        <g stroke="#77a6b8" stroke-width="2"><path d="M50 63 h10 M55 58 v10 M170 38 h12 M176 32 v12"/></g>
+      </svg>
+    </div>
+    <h2>No results found</h2>
+    <p>Try changing or removing the filters</p>
+    <button class="change-filters" id="changeBtn">Change filters</button>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+<script>
+const toast=(m)=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove("show"),1700)};
+document.getElementById("profile").addEventListener("click",()=>location.href="./dashboard.html");
+document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
+document.getElementById("changeBtn").addEventListener("click",()=>toast("Filters opened"));
+document.getElementById("filterBtn").addEventListener("click",()=>toast("2 filters applied"));
+document.getElementById("clearBtn").addEventListener("click",()=>toast("Filters cleared"));
+document.querySelectorAll(".order-tabs button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".order-tabs button").forEach(x=>x.classList.remove("active"));btn.classList.add("active");toast(btn.textContent+" selected")}));
+document.getElementById("typeFilter").addEventListener("click",()=>toast("Stocks & ETF"));
+document.getElementById("regularFilter").addEventListener("click",()=>toast("Regular"));
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
+</script>
+</body>
+</html>
