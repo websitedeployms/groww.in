@@ -1,55 +1,38 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Stocks · Explore · Groww Replica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./dashboard.css">
 </head>
 <body>
-<script>
-(function(){if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("./index.html");}})();
-</script>
+<script>if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("./index.html")}</script>
 
-<header class="top">
-  <div class="top-inner">
-    <a class="mini-brand" href="./dashboard.html" aria-label="Groww">
-      <span class="brand-mark"><i></i><i></i><i></i></span>
-    </a>
-    <nav class="product-nav">
+<header class="app-header">
+  <div class="header-inner">
+    <a href="./dashboard.html" class="brand-mark-only"><span class="brand-symbol"><i></i><i></i><i></i></span></a>
+    <nav class="primary-nav">
       <a class="active" href="./dashboard.html">Stocks</a>
       <a href="#">F&amp;O</a>
       <a href="#">Mutual Funds</a>
     </nav>
-    <div class="top-spacer"></div>
-    <div class="search-wrap">
-      <span class="search-ico">⌕</span>
-      <input id="searchInput" placeholder="Search Groww...." aria-label="Search Groww">
-      <span class="search-key">Ctrl+K</span>
-      <div class="search-menu" id="searchMenu"></div>
-    </div>
-    <button class="header-icon" id="bellBtn" aria-label="Notifications">
-      <svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
-    </button>
-    <button class="avatar" id="accountBtn" title="Sign out">MS</button>
+    <div class="header-grow"></div>
+    <div class="search-box"><span class="search-icon">⌕</span><input id="searchInput" placeholder="Search Groww...."><span>Ctrl+K</span><div class="search-results" id="searchResults"></div></div>
+    <button class="header-bell" id="bell" aria-label="Notifications">♧</button>
+    <button class="profile-avatar" id="accountBtn" aria-label="Sign out">MS</button>
   </div>
 
-  <div class="secondary-row">
-    <nav class="secondary-inner">
-      <a class="selected" href="#explore">Explore</a>
-      <a href="#">Holdings</a>
-      <a href="#">Positions</a>
-      <a href="#">Orders</a>
-      <a href="#">Watchlist</a>
+  <div class="subnav-row">
+    <nav class="subnav">
+      <a class="active" href="#explore">Explore</a><a href="#">Holdings</a><a href="#">Positions</a><a href="#">Orders</a><a href="#">Watchlist</a>
     </nav>
     <div class="terminal-wrap">
-      <button class="terminal-btn" id="terminalBtn">◫ &nbsp; Terminal</button>
-      <div class="terminal-menu" id="terminalMenu">
-        <button>◌ &nbsp; Option chain</button>
-        <button>◫ &nbsp; Terminal</button>
+      <button id="terminalBtn" class="terminal-btn">◫ <span>Terminal</span></button>
+      <div id="terminalMenu" class="terminal-menu">
+        <button>◌ <span>Option chain</span></button>
+        <button>◫ <span>Terminal</span></button>
       </div>
     </div>
   </div>
@@ -59,187 +42,129 @@
       <div><b>NIFTY</b><span>22,780.25</span><em>-360.25 (1.56%)</em></div>
       <div><b>SENSEX</b><span>72,771.72</span><em>-1,124.02 (1.52%)</em></div>
       <div><b>BANKNIFTY</b><span>54,471.65</span><em>-1,108.75 (1.99%)</em></div>
-      <div class="t-highlight"><b>MIDCPNIFTY</b><span>13,776.35</span><em>-251.35 (1.79%)</em></div>
+      <div class="ticker-focus"><b>MIDCPNIFTY</b><span>13,776.35</span><em>-251.35 (1.79%)</em></div>
       <div><b>FINNIFTY</b><span>24,038.05</span><em>-441.15 (1.80%)</em></div>
     </div>
-    <button class="world-btn" aria-label="Language">◎</button>
+    <button class="language-btn">◎</button>
   </div>
 </header>
 
-<main class="dashboard" id="explore">
-  <div class="dashboard-grid">
-    <section class="main-column">
+<main class="page-wrap" id="explore">
+  <div class="dashboard-layout">
+    <section class="content-col">
 
-      <section class="section first-section">
+      <section class="content-section top-bought">
         <h1>Most bought stocks on Groww</h1>
-        <div class="cards four">
-          <button class="stock-card" data-name="TATAGOLD">
-            <div class="logo tatagold"><b>TATA</b><small>mutual fund</small></div>
-            <h3>TATAGOLD</h3><strong>₹14.26</strong><em>-0.36 (2.46%)</em>
-          </button>
-          <button class="stock-card" data-name="SS Retail">
-            <div class="logo ss">SS</div>
-            <h3>SS Retail</h3><strong>₹716.95</strong><em>-11.25 (1.54%)</em>
-          </button>
-          <button class="stock-card" data-name="NSE">
-            <div class="logo nse">✦</div>
-            <h3>NSE</h3><strong>₹1,762.70</strong><em>-29.95 (1.67%)</em>
-          </button>
-          <button class="stock-card" data-name="Hero Motors">
-            <div class="logo hero"><b>HERO</b><small>MOTORS</small></div>
-            <h3>Hero Motors</h3><strong>₹135.06</strong><em>-6.63 (4.68%)</em>
-          </button>
+        <div class="four-cards">
+          <button class="quote-card" data-label="TATAGOLD"><span class="company-logo tata"><b>TATA</b><small>mutual fund</small></span><strong>TATAGOLD</strong><span class="quote-price">₹14.26</span><em>-0.36 (2.46%)</em></button>
+          <button class="quote-card" data-label="SS Retail"><span class="company-logo ss">SS</span><strong>SS Retail</strong><span class="quote-price">₹716.95</span><em>-11.25 (1.54%)</em></button>
+          <button class="quote-card" data-label="NSE"><span class="company-logo nse">✦</span><strong>NSE</strong><span class="quote-price">₹1,762.70</span><em>-29.95 (1.67%)</em></button>
+          <button class="quote-card" data-label="Hero Motors"><span class="company-logo hero"><b>HERO</b><small>MOTORS</small></span><strong>Hero Motors</strong><span class="quote-price">₹135.06</span><em>-6.63 (4.68%)</em></button>
         </div>
-        <button class="see-more">See more ›</button>
+        <button class="see-link">See more ›</button>
       </section>
 
-      <section class="section">
+      <section class="content-section movers">
         <h2>Top movers today</h2>
-        <div class="chips">
-          <button class="chip active">Gainers</button><button class="chip">Losers</button>
-          <button class="chip">Volume shockers</button><span class="divider"></span><button class="chip">NIFTY 100⌄</button>
+        <div class="filter-bar"><button class="filter active">Gainers</button><button class="filter">Losers</button><button class="filter">Volume shockers</button><span></span><button class="filter">NIFTY 100⌄</button></div>
+        <div class="movers-card">
+          <div class="movers-header"><span>Company</span><span>Market price (1D)</span><span>Volume</span></div>
+          <button class="mover-row" data-label="Dr. Reddy's Labs."><span class="company-cell"><i class="row-logo reddy">R</i><b>Dr. Reddy's Labs.</b></span><span class="market-cell"><svg viewBox="0 0 110 32"><path d="M0 22 L8 18 L14 21 L20 17 L28 18 L35 15 L42 18 L49 13 L56 16 L63 10 L70 13 L77 7 L84 10 L91 8 L98 12 L105 7"/></svg><span>₹1,221.00<em>20.00 (1.67%)</em></span></span><span class="volume">34,01,676</span></button><button class="mover-row" data-label="Zydus"><span class="company-cell"><i class="row-logo zydus">Z</i><b>Zydus</b></span><span class="market-cell"><svg viewBox="0 0 110 32"><path d="M0 24 L8 14 L15 12 L21 17 L29 8 L38 11 L45 9 L54 13 L62 10 L70 14 L78 12 L86 16 L94 20 L101 15 L109 17"/></svg><span>₹1,215.00<em>11.10 (0.92%)</em></span></span><span class="volume">39,86,338</span></button><button class="mover-row" data-label="Infosys"><span class="company-cell"><i class="row-logo infosys">Infosys</i><b>Infosys</b></span><span class="market-cell"><svg viewBox="0 0 110 32"><path d="M0 16 L8 21 L15 18 L23 22 L30 19 L37 20 L44 16 L51 14 L58 11 L66 13 L73 9 L81 6 L88 10 L97 7 L104 9 L109 5"/></svg><span>₹1,003.20<em>3.00 (0.30%)</em></span></span><span class="volume">85,67,672</span></button><button class="mover-row" data-label="LTM"><span class="company-cell"><i class="row-logo ltm">LT</i><b>LTM</b></span><span class="market-cell"><svg viewBox="0 0 110 32"><path d="M0 20 L8 25 L15 21 L22 23 L30 16 L38 13 L45 17 L52 11 L60 9 L67 14 L75 11 L82 15 L90 12 L98 14 L109 11"/></svg><span>₹4,091.40<em>8.40 (0.21%)</em></span></span><span class="volume">4,08,185</span></button><button class="mover-row" data-label="HDFC Life Insurance"><span class="company-cell"><i class="row-logo hdfc">H</i><b>HDFC Life Insurance</b></span><span class="market-cell"><svg viewBox="0 0 110 32"><path d="M0 14 L8 20 L15 17 L22 23 L30 16 L37 18 L45 12 L52 16 L60 10 L67 13 L75 6 L82 12 L91 10 L99 15 L109 8"/></svg><span>₹531.60<em>0.60 (0.11%)</em></span></span><span class="volume">23,07,139</span></button>
         </div>
-        <div class="table-card">
-          <div class="table-head"><span>Company</span><span>Market price (1D)</span><span>Volume</span></div>
-          <button class="table-row" data-name="Dr. Reddy's Labs.">
-            <span class="company"><i class="logo-row reddy">R</i><b>Dr. Reddy's Labs.</b></span>
-            <span class="quote"><svg viewBox="0 0 110 32"><path d="M1 23 L8 17 L13 22 L18 15 L23 16 L30 14 L35 17 L42 10 L50 12 L55 8 L61 12 L68 5 L73 9 L80 7 L88 11 L96 6 L102 10 L109 7"/></svg><span>₹1,221.00<em>20.00 (1.67%)</em></span></span>
-            <span class="vol">34,01,676</span>
-          </button>
-          <button class="table-row" data-name="Zydus">
-            <span class="company"><i class="logo-row zydus">Z</i><b>Zydus</b></span>
-            <span class="quote"><svg viewBox="0 0 110 32"><path d="M1 23 L7 14 L13 12 L18 16 L23 8 L30 11 L36 10 L44 12 L51 9 L59 13 L67 11 L75 14 L82 17 L89 14 L96 18 L103 14 L109 16"/></svg><span>₹1,215.00<em>11.10 (0.92%)</em></span></span>
-            <span class="vol">39,86,338</span>
-          </button>
-          <button class="table-row" data-name="Infosys">
-            <span class="company"><i class="logo-row infy">Infosys</i><b>Infosys</b></span>
-            <span class="quote"><svg viewBox="0 0 110 32"><path d="M1 14 L9 20 L16 18 L24 22 L30 18 L37 19 L44 14 L51 13 L58 10 L64 12 L72 9 L80 6 L87 10 L95 7 L103 9 L109 5"/></svg><span>₹1,003.20<em>3.00 (0.30%)</em></span></span>
-            <span class="vol">85,67,672</span>
-          </button>
-          <button class="table-row" data-name="LTM">
-            <span class="company"><i class="logo-row ltm">LT</i><b>LTM</b></span>
-            <span class="quote"><svg viewBox="0 0 110 32"><path d="M1 19 L9 24 L16 20 L23 22 L31 15 L38 12 L45 16 L52 10 L60 8 L68 13 L75 10 L82 14 L90 11 L99 13 L109 10"/></svg><span>₹4,091.40<em>8.40 (0.21%)</em></span></span>
-            <span class="vol">4,08,185</span>
-          </button>
-          <button class="table-row highlight-row" data-name="HDFC Life Insurance">
-            <span class="company"><i class="logo-row hdfc">H</i><b>HDFC Life Insurance</b></span>
-            <span class="quote"><svg viewBox="0 0 110 32"><path d="M1 12 L8 18 L15 15 L22 22 L30 15 L37 17 L45 11 L52 15 L59 9 L67 12 L75 5 L82 11 L91 9 L99 14 L109 7"/></svg><span>₹531.60<em>0.60 (0.11%)</em></span></span>
-            <span class="row-actions"><span>◫</span><span>▢</span></span>
-          </button>
-        </div>
-        <button class="see-more">See more ›</button>
+        <button class="see-link">See more ›</button>
       </section>
 
-      <section class="section">
+      <section class="content-section">
         <h2>Most traded stocks in MTF</h2>
-        <div class="cards four">
-          <button class="stock-card compact" data-name="DAM Capital Advisors"><div class="logo word">DAM</div><h3>DAM Capital Advisors</h3><strong>₹158.66</strong><em class="green">20.48 (14.82%)</em></button>
-          <button class="stock-card compact" data-name="Optiemus infracom"><div class="logo optiemus">optiemus</div><h3>Optiemus infracom</h3><strong>₹809.95</strong><em class="green">51.40 (6.78%)</em></button>
-          <button class="stock-card compact" data-name="Apollo Micro Systems"><div class="logo apollo">AM</div><h3>Apollo Micro Systems</h3><strong>₹408.30</strong><em class="green">12.70 (3.21%)</em></button>
-          <button class="stock-card compact" data-name="Clean Max Env. Energ"><div class="logo clean">CleanMax</div><h3>Clean Max Env. Energ</h3><strong>₹1,373.10</strong><em>-20.30 (1.46%)</em></button>
+        <div class="four-cards">
+          <button class="quote-card small" data-label="DAM Capital Advisors"><span class="company-logo dam">DAM</span><strong>DAM Capital Advisors</strong><span class="quote-price">₹158.66</span><em class="gain">20.48 (14.82%)</em></button>
+          <button class="quote-card small" data-label="Optiemus infracom"><span class="company-logo optiemus">optiemus</span><strong>Optiemus infracom</strong><span class="quote-price">₹809.95</span><em class="gain">51.40 (6.78%)</em></button>
+          <button class="quote-card small" data-label="Apollo Micro Systems"><span class="company-logo apollo">AMS</span><strong>Apollo Micro Systems</strong><span class="quote-price">₹408.30</span><em class="gain">12.70 (3.21%)</em></button>
+          <button class="quote-card small" data-label="Clean Max Env. Energ"><span class="company-logo clean">CleanMax</span><strong>Clean Max Env. Energ</strong><span class="quote-price">₹1,373.10</span><em>-20.30 (1.46%)</em></button>
         </div>
-        <button class="see-more">See more ›</button>
+        <button class="see-link">See more ›</button>
       </section>
 
-      <section class="section">
+      <section class="content-section">
         <h2>Top intraday stocks</h2>
-        <div class="cards four">
-          <button class="stock-card compact"><div class="logo ss">SS</div><h3>SS Retail</h3><strong>₹716.95</strong><em>-11.25 (1.54%)</em></button>
-          <button class="stock-card compact"><div class="logo r">R</div><h3>R Systems Internatl.</h3><strong>₹275.21</strong><em class="green">39.59 (16.80%)</em></button>
-          <button class="stock-card compact"><div class="logo clean">CleanMax</div><h3>Clean Max Env. Energ</h3><strong>₹1,373.10</strong><em>-20.30 (1.46%)</em></button>
-          <button class="stock-card compact"><div class="logo raymond">raymond</div><h3>Raymond</h3><strong>₹1,179.95</strong><em>-16.70 (1.40%)</em></button>
+        <div class="four-cards">
+          <button class="quote-card small" data-label="SS Retail"><span class="company-logo ss">SS</span><strong>SS Retail</strong><span class="quote-price">₹716.95</span><em>-11.25 (1.54%)</em></button>
+          <button class="quote-card small" data-label="R Systems Internatl."><span class="company-logo rsy">R</span><strong>R Systems Internatl.</strong><span class="quote-price">₹275.21</span><em class="gain">39.59 (16.80%)</em></button>
+          <button class="quote-card small featured" data-label="Clean Max Env. Energ"><span class="bookmark">♡</span><span class="company-logo clean">CleanMax</span><strong>Clean Max Env. Energ</strong><span class="quote-price">₹1,373.10</span><em>-20.30 (1.46%)</em></button>
+          <button class="quote-card small" data-label="Raymond"><span class="company-logo raymond">raymond</span><strong>Raymond</strong><span class="quote-price">₹1,179.95</span><em>-16.70 (1.40%)</em></button>
         </div>
-        <button class="see-more">Intraday screener ›</button>
+        <button class="see-link">Intraday screener ›</button>
       </section>
 
-      <section class="section">
+      <section class="content-section">
         <h2>Sectors trending today</h2>
-        <div class="sector-table">
+        <div class="sector-card">
           <div class="sector-head"><span>Sector</span><span>Gainers/Losers</span><span>1D price change</span></div>
-          <div class="sector-row"><span class="sector-name">✦ <b>Rating Agencies</b></span><span class="bar"><small>2</small><i style="width:100%"></i><small>0</small></span><strong class="green">+2.52%</strong></div>
-          <div class="sector-row"><span class="sector-name">◉ <b>Electronic Manufacturers</b></span><span class="bar"><small>15</small><i style="width:42%"></i><i class="redbar" style="width:58%"></i><small>24</small></span><strong class="green">+0.53%</strong></div>
-          <div class="sector-row"><span class="sector-name">▣ <b>Electrical Appliances</b></span><span class="bar"><small>13</small><i style="width:35%"></i><i class="redbar" style="width:65%"></i><small>25</small></span><strong>-0.30%</strong></div>
-          <div class="sector-row"><span class="sector-name">♜ <b>Power</b></span><span class="bar"><small>17</small><i style="width:25%"></i><i class="redbar" style="width:75%"></i><small>51</small></span><strong>-2.62%</strong></div>
-          <div class="sector-row"><span class="sector-name">◩ <b>Education</b></span><span class="bar"><small>9</small><i style="width:27%"></i><i class="redbar" style="width:73%"></i><small>24</small></span><strong>-3.67%</strong></div>
-          <div class="sector-row"><span class="sector-name">◈ <b>Leather</b></span><span class="bar"><small>1</small><i style="width:20%"></i><i class="redbar" style="width:80%"></i><small>4</small></span><strong>-4.50%</strong></div>
+          <div class="sector-row"><span>✦ <b>Rating Agencies</b></span><span class="bars"><small>2</small><i class="greenbar" style="width:100%"></i><small>0</small></span><strong class="gain">+2.52%</strong></div>
+          <div class="sector-row"><span>◉ <b>Electronic Manufacturers</b></span><span class="bars"><small>15</small><i class="greenbar" style="width:42%"></i><i class="redbar" style="width:58%"></i><small>24</small></span><strong class="gain">+0.53%</strong></div>
+          <div class="sector-row"><span>▣ <b>Electrical Appliances</b></span><span class="bars"><small>13</small><i class="greenbar" style="width:35%"></i><i class="redbar" style="width:65%"></i><small>25</small></span><strong>-0.30%</strong></div>
+          <div class="sector-row"><span>♜ <b>Power</b></span><span class="bars"><small>17</small><i class="greenbar" style="width:25%"></i><i class="redbar" style="width:75%"></i><small>51</small></span><strong>-2.62%</strong></div>
+          <div class="sector-row"><span>◩ <b>Education</b></span><span class="bars"><small>9</small><i class="greenbar" style="width:27%"></i><i class="redbar" style="width:73%"></i><small>24</small></span><strong>-3.67%</strong></div>
+          <div class="sector-row"><span>◈ <b>Leather</b></span><span class="bars"><small>1</small><i class="greenbar" style="width:20%"></i><i class="redbar" style="width:80%"></i><small>4</small></span><strong>-4.50%</strong></div>
         </div>
-        <button class="see-more">See all sectors ›</button>
+        <button class="see-link">See all sectors ›</button>
       </section>
 
-      <section class="section">
+      <section class="content-section">
         <h2>Most bought ETFs</h2>
-        <div class="cards four etf-cards">
-          <button class="etf-small"><small>GOLD</small><div><h3>Tata Gold Exchange Trade...</h3><span class="logo mini tata-mini">TATA</span></div><strong>₹14.26</strong><em>-0.36 (2.46%)</em></button>
-          <button class="etf-small"><small>SILVER</small><div><h3>Nippon India<br>Silver ETF</h3><span class="logo mini nippon">◆</span></div><strong>₹210.65</strong><em>-8.15 (3.72%)</em></button>
-          <button class="etf-small"><small>INTERNATIONAL</small><div><h3>Motilal Oswal<br>MOST Shares...</h3><span class="logo mini motilal">MO</span></div><strong>₹323.86</strong><em>-0.25 (0.08%)</em></button>
-          <button class="etf-small"><small>NIFTY 50</small><div><h3>Groww Nifty 50<br>ETF</h3><span class="logo mini groww-mini">↗</span></div><strong>₹9.24</strong><em>-0.12 (1.28%)</em></button>
+        <div class="four-cards">
+          <button class="etf-card"><small>GOLD</small><div><h3>Tata Gold<br>Exchange Trade...</h3><span class="company-logo tata mini">TATA</span></div><strong>₹14.26</strong><em>-0.36 (2.46%)</em></button>
+          <button class="etf-card"><small>SILVER</small><div><h3>Nippon India<br>Silver ETF</h3><span class="company-logo nippon mini">◆</span></div><strong>₹210.65</strong><em>-8.15 (3.72%)</em></button>
+          <button class="etf-card"><small>INTERNATIONAL</small><div><h3>Motilal Oswal<br>MOST Shares...</h3><span class="company-logo motilal mini">MO</span></div><strong>₹323.86</strong><em>-0.25 (0.08%)</em></button>
+          <button class="etf-card"><small>NIFTY 50</small><div><h3>Groww Nifty 50<br>ETF</h3><span class="company-logo groww-mini mini">↗</span></div><strong>₹9.24</strong><em>-0.12 (1.28%)</em></button>
         </div>
-        <button class="see-more">See all ETFs ›</button>
+        <button class="see-link">See all ETFs ›</button>
       </section>
 
-      <section class="section">
+      <section class="content-section">
         <h2>ETFs by Groww</h2>
-        <div class="cards four">
-          <button class="stock-card compact"><div class="logo groww-small">↗</div><h3>Groww Nifty PSE ETF</h3><strong>₹95.15</strong><em>-1.47 (1.52%)</em></button>
-          <button class="stock-card compact"><div class="logo groww-small">↗</div><h3>Groww Nifty PSU Bank ...</h3><strong>₹81.40</strong><em>-2.35 (2.81%)</em></button>
-          <button class="stock-card compact"><div class="logo groww-small">↗</div><h3>Groww Nifty Private Ba...</h3><strong>₹26.60</strong><em>-0.46 (1.70%)</em></button>
-          <button class="stock-card compact"><div class="logo groww-small">↗</div><h3>Groww Nifty India Defe...</h3><strong>₹92.40</strong><em>-1.47 (1.57%)</em></button>
+        <div class="four-cards">
+          <button class="quote-card small"><span class="company-logo groww-logo">↗</span><strong>Groww Nifty PSE ETF</strong><span class="quote-price">₹95.15</span><em>-1.47 (1.52%)</em></button>
+          <button class="quote-card small"><span class="company-logo groww-logo">↗</span><strong>Groww Nifty PSU Bank ...</strong><span class="quote-price">₹81.40</span><em>-2.35 (2.81%)</em></button>
+          <button class="quote-card small"><span class="company-logo groww-logo">↗</span><strong>Groww Nifty Private Ba...</strong><span class="quote-price">₹26.60</span><em>-0.46 (1.70%)</em></button>
+          <button class="quote-card small"><span class="company-logo groww-logo">↗</span><strong>Groww Nifty India Defe...</strong><span class="quote-price">₹92.40</span><em>-1.47 (1.57%)</em></button>
         </div>
-        <button class="see-more">See all ETFs ›</button>
+        <button class="see-link">See all ETFs ›</button>
       </section>
 
-      <section class="section">
+      <section class="content-section">
         <h2>Popular Bonds</h2>
-        <div class="cards four">
-          <button class="bond-card"><div class="logo keen">✹</div><h3>Keertana Finserv Ltd.<br>Dec '28</h3><strong>12.25%</strong><small>26 months</small><span>A- ●</span></button>
-          <button class="bond-card"><div class="logo adani">adani</div><h3>Adani Enterprises<br>Limited Sep '27</h3><strong>8.60%</strong><small>11 months</small><span>AA- ●</span></button>
-          <button class="bond-card"><div class="logo indel">INDEL<br>MONEY</div><h3>Indel Money Ltd. Aug '29</h3><strong>11.05%</strong><small>34 months</small><span>A- ●</span></button>
-          <button class="bond-card"><div class="logo samasta">✺</div><h3>IIFL Samasta Finance<br>Dec '28</h3><strong>10.25%</strong><small>27 months</small><span>AA- ●</span></button>
+        <div class="four-cards">
+          <button class="bond-card"><span class="company-logo keen">✹</span><strong>Keertana Finserv Ltd.<br>Dec '28</strong><b>12.25%</b><small>26 months</small><i>A- ●</i></button>
+          <button class="bond-card"><span class="company-logo adani">adani</span><strong>Adani Enterprises<br>Limited Sep '27</strong><b>8.60%</b><small>11 months</small><i>AA- ●</i></button>
+          <button class="bond-card"><span class="company-logo indel">INDEL<br>MONEY</span><strong>Indel Money Ltd. Aug '29</strong><b>11.05%</b><small>34 months</small><i>A- ●</i></button>
+          <button class="bond-card"><span class="company-logo samasta">✺</span><strong>IIFL Samasta Finance<br>Dec '28</strong><b>10.25%</b><small>27 months</small><i>AA- ●</i></button>
         </div>
-        <button class="see-more">See more ›</button>
-      
-      <section class="section news-section">
+        <button class="see-link">See more ›</button>
+      </section>
+
+      <section class="content-section">
         <h2>Stocks in news today</h2>
         <div class="news-grid">
-          <button class="news-card">
-            <div class="news-top"><span class="logo news-hcl">HCL</span><b>HCL Tech.</b><em class="red">-0.43%</em></div>
-            <p>HCLSoftware plans to acquire Robotic.ai for €9M to enhance agentic automation. The acquisition strengthe...</p>
-            <small>19 minutes ago</small>
-          </button>
-          <button class="news-card">
-            <div class="news-top"><span class="logo news-country">↟</span><b>Country Condo's</b><em class="red">-0.15%</em></div>
-            <p>Country Condos Ltd held its 39th AGM on September 28, 2026, via video conferencing. All resolutions, including...</p>
-            <small>22 minutes ago</small>
-          </button>
-          <button class="news-card">
-            <div class="news-top"><span class="logo news-nova">N</span><b>Nova Iron &amp; Steel</b><em>0.00%</em></div>
-            <p>Nova Iron &amp; Steel's Board approved MOA amendment for business expansion. Amendment allows trading in metal...</p>
-            <small>22 minutes ago</small>
-          </button>
-          <button class="news-card">
-            <div class="news-top"><span class="logo news-vamshi">✓</span><b>Vamshi Rubber</b><em class="green">+2.34%</em></div>
-            <p>Vamshi Rubber Ltd held its 32nd AGM on 28th Sept 2026 via video conferencing, chaired by Mr. Merreddy Ramesh...</p>
-            <small>22 minutes ago</small>
-          </button>
+          <button class="news-card"><span class="news-logo sonalis">◌</span><div class="news-title"><b>Sonalis Cons Product</b><em>-4.17%</em></div><p>Sonalis Consumer Products Limited submitted the voting results and Scrutinizer's Report for its 04th Annual...</p><small>5 minutes ago</small></button>
+          <button class="news-card"><span class="news-logo dirl">DIRL</span><div class="news-title"><b>Delta Industrial</b><em>-5.00%</em></div><p>Delta Industrial Resources Limited concluded its 41st AGM, transacting businesses including the adoption of...</p><small>7 minutes ago</small></button>
+          <button class="news-card"><span class="news-logo bn">bn</span><div class="news-title"><b>BN Agrochem</b><em>-0.19%</em></div><p>BN Agrochem Ltd has submitted a company update pursuant to Regulation 30 of SEBI (Listing Obligations a...</p><small>8 minutes ago</small></button>
+          <button class="news-card"><span class="news-logo inox">INOX<span>Green</span></span><div class="news-title"><b>Inox Green Energy Se</b><em>-1.35%</em></div><p>Inox Green Energy Services Limited submitted its Scrutinizer's Report, confirming that shareholders...</p><small>8 minutes ago</small></button>
         </div>
-        <button class="see-more">See more news ›</button>
+        <button class="see-link">See more news ›</button>
       </section>
-
 
     </section>
 
-    <aside class="side-column">
-      <section class="side-card">
+    <aside class="side-col">
+      <section class="side-section investments">
         <h2>Your investments</h2>
-        <div class="investment-empty">
-          <div class="people-art"><span></span><span></span><span></span><i></i><b></b></div>
-          <p>You haven't invested yet</p>
-        </div>
+        <div class="empty-investment"><div class="invest-art"><span></span><span></span><span></span><i></i><b></b></div><p>You haven't invested yet</p></div>
       </section>
 
-      <section class="side-card tools-card">
+      <section class="side-section tools">
         <h2>Products &amp; Tools</h2>
-        <div class="tools-list">
+        <div class="tools-card">
           <button><span>📣</span><b>IPO</b><em>18 open</em></button>
           <button><span>📜</span><b>Bonds</b><em>1 open</em></button>
           <button><span>▱</span><b>ETFs</b></button>
@@ -251,14 +176,14 @@
         </div>
       </section>
 
-      <section class="side-card trading-card">
+      <section class="side-section trading">
         <h2>Trading screens</h2>
-        <div class="trading-list">
-          <button><div><small class="tag bull">Bullish</small><b>Resistance breakouts</b></div><div class="screen-mini graph1"></div></button>
-          <button><div><small class="tag bull">Bullish</small><b>MACD above signal line</b></div><div class="screen-mini graph2"></div></button>
-          <button><div><small class="tag bear">Bearish</small><b>RSI overbought</b></div><div class="screen-mini graph3"></div></button>
-          <button><div><small class="tag bull">Bullish</small><b>RSI oversold</b></div><div class="screen-mini graph4"></div></button>
-          <button class="trading-link">Intraday screener ›</button>
+        <div class="trading-card">
+          <button><div><small class="bull">Bullish</small><b>Resistance breakouts</b></div><span class="mini-chart c1"></span></button>
+          <button><div><small class="bull">Bullish</small><b>MACD above signal line</b></div><span class="mini-chart c2"></span></button>
+          <button><div><small class="bear">Bearish</small><b>RSI overbought</b></div><span class="mini-chart c3"></span></button>
+          <button><div><small class="bull">Bullish</small><b>RSI oversold</b></div><span class="mini-chart c4"></span></button>
+          <button class="screen-link">Intraday screener ›</button>
         </div>
       </section>
     </aside>
@@ -266,47 +191,47 @@
 </main>
 
 <footer class="dashboard-footer">
-  <div class="footer-top">
+  <div class="footer-main">
     <div class="footer-brand-area">
-      <a class="footer-logo" href="#"><span class="brand-mark"><i></i><i></i><i></i></span><strong>Groww</strong></a>
+      <a class="footer-brand" href="#"><span class="brand-symbol"><i></i><i></i><i></i></span><strong>Groww</strong></a>
       <p>Vaishnavi Tech Park, South Tower, 3rd Floor<br>Sarjapur Main Road, Bellandur, Bengaluru - 560103<br>Karnataka</p>
-      <div class="contact-apps"><a href="#">Contact Us</a><span></span><b>Download the App</b></div>
-      <div class="footer-social"><span>𝕏</span><span>◎</span><span>f</span><span>in</span><span>▶</span><i>●</i><i>▶</i></div>
+      <div class="footer-contact"><a href="#">Contact Us</a><b>Download the App</b></div>
+      <div class="socials"><span>𝕏</span><span>◎</span><span>f</span><span>in</span><span>▶</span><i>●</i><i>▶</i></div>
       <small>© 2016-2026 Groww. All rights reserved.</small>
     </div>
-    <div class="footer-links-area">
-      <div class="footer-col"><h4>GROWW</h4><a>About Us</a><a>Pricing</a><a>Blog</a><a>Media &amp; Press</a><a>Careers</a><a>Help &amp; Support</a><a>Trust &amp; Safety</a><a>Investor Relations</a></div>
-      <div class="footer-col products"><h4>PRODUCTS</h4><div class="products-grid"><div><a>Stocks</a><a>F&amp;O</a><a>MTF</a><a>ETF</a><a>IPO</a><a>Mutual Funds</a><a>Commodities</a><a>Groww Terminal</a></div><div><a>915 Terminal</a><a>Stock Screens</a><a>Algo Trading</a><a>Groww Charts</a><a>Groww Digest</a><a>Demat Account</a><a>Groww AMC</a><a>PMS</a></div><div><a>Bonds</a><a>Credit</a></div></div></div>
+    <div class="footer-links">
+      <div><h4>GROWW</h4><a>About Us</a><a>Pricing</a><a>Blog</a><a>Media &amp; Press</a><a>Careers</a><a>Help &amp; Support</a><a>Trust &amp; Safety</a><a>Investor Relations</a></div>
+      <div><h4>PRODUCTS</h4><div class="product-link-cols"><div><a>Stocks</a><a>F&amp;O</a><a>MTF</a><a>ETF</a><a>IPO</a><a>Mutual Funds</a><a>Commodities</a><a>Groww Terminal</a></div><div><a>915 Terminal</a><a>Stock Screens</a><a>Algo Trading</a><a>Groww Charts</a><a>Groww Digest</a><a>Demat Account</a><a>Groww AMC</a><a>PMS</a></div><div><a>Bonds</a><a>Credit</a></div></div></div>
     </div>
   </div>
-  <div class="footer-mid"><span>Version: 8.0.3</span></div>
-  <div class="seo-area">
+  <div class="footer-version">Version: 8.0.3</div>
+  <div class="footer-seo">
     <div class="seo-tabs"><span class="active">Share Market</span><span>Indices</span><span>F&amp;O</span><span>Mutual Funds</span><span>ETFs</span><span>Funds By Groww</span><span>Calculators</span><span>IPO</span><span>Miscellaneous</span></div>
-    <div class="seo-links">
+    <div class="seo-columns">
       <div><a>Top Gainers Stocks</a><a>52 Weeks High Stocks</a><a>Tata Motors</a><a>NHPC</a><a>ITC</a><a>Wipro</a></div>
       <div><a>Top Losers Stocks</a><a>52 Weeks Low Stocks</a><a>IREDA</a><a>State Bank of India</a><a>Adani Power</a><a>CDSL</a></div>
       <div><a>Most Traded Stocks</a><a>Stocks Market Calender</a><a>Tata Steel</a><a>Tata Power</a><a>Bharat Heavy Electricals</a><a>Indian Oil Corporation</a></div>
       <div><a>Stocks Feed</a><a>Suzlon Energy</a><a>Zomato (Eternal)</a><a>Yes Bank</a><a>Infosys</a><a>NBCC</a></div>
       <div><a>FII DII Activity</a><a>IRFC</a><a>Bharat Electronics</a><a>HDFC Bank</a><a>Vedanta</a><a>Reliance Power</a></div>
     </div>
-    <div class="seo-more">Show More⌄</div>
-    <div class="footer-disclosure"><b>Others:</b><span>NSE</span><span>BSE</span><span>MCX</span><span>Terms and Conditions</span><span>Policies and Procedures</span><span>Regulatory &amp; Other Info</span><span>Privacy Policy</span><span>Disclosure</span><span>SMART ODR</span><span>Download Forms</span><span>Information Security Practices</span><span>Investor Charter and Grievance</span><span>Bug Bounty</span><span>Groww Pay - Terms of use</span><span>Groww Pay - Privacy policy</span><span>Groww IFSC</span></div>
+    <div class="show-more-seo">Show More⌄</div>
+    <div class="disclosures"><b>Others:</b><span>NSE</span><span>BSE</span><span>MCX</span><span>Terms and Conditions</span><span>Policies and Procedures</span><span>Regulatory &amp; Other Info</span><span>Privacy Policy</span><span>Disclosure</span><span>SMART ODR</span><span>Download Forms</span><span>Information Security Practices</span><span>Investor Charter and Grievance</span><span>Bug Bounty</span><span>Groww Pay - Terms of use</span><span>Groww Pay - Privacy policy</span><span>Groww IFSC</span></div>
     <div class="alphabet"><b>Stocks:</b><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span><span>Others</span></div>
   </div>
 </footer>
 
 <div class="toast" id="toast"></div>
 <script>
-const toast=(m)=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1900)};
-document.querySelectorAll("[data-name]").forEach(el=>el.addEventListener("click",()=>toast(el.dataset.name+" selected")));
-document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));c.classList.add("active");toast(c.textContent.trim()+" selected")}));
-document.getElementById("bellBtn").addEventListener("click",()=>toast("No new notifications"));
+const toast=(m)=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1800)};
+document.querySelectorAll(".quote-card,.mover-row").forEach(el=>el.addEventListener("click",()=>toast((el.dataset.label||"Stock")+" selected")));
+document.querySelectorAll(".filter").forEach(x=>x.addEventListener("click",()=>{document.querySelectorAll(".filter").forEach(y=>y.classList.remove("active"));x.classList.add("active");toast(x.textContent.trim()+" selected")}));
+document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
 document.getElementById("terminalBtn").addEventListener("click",e=>{e.stopPropagation();document.getElementById("terminalMenu").classList.toggle("show")});
 document.addEventListener("click",e=>{if(!e.target.closest(".terminal-wrap"))document.getElementById("terminalMenu").classList.remove("show")});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("searchInput").focus()}});
-const searchInput=document.getElementById("searchInput"), searchMenu=document.getElementById("searchMenu");
-const data=["TATAGOLD","SS Retail","NSE","Hero Motors","Dr. Reddy's Labs.","Zydus","Infosys","LTM","HDFC Life Insurance","DAM Capital Advisors","Optiemus infracom","Apollo Micro Systems","Raymond"];
-searchInput.addEventListener("input",()=>{const q=searchInput.value.trim().toLowerCase();if(!q){searchMenu.classList.remove("show");return}const hits=data.filter(x=>x.toLowerCase().includes(q)).slice(0,6);searchMenu.innerHTML=hits.length?hits.map(x=>'<div>'+x+'</div>').join(""):'<div>No result</div>';searchMenu.classList.add("show");searchMenu.querySelectorAll("div").forEach(x=>x.addEventListener("click",()=>{searchInput.value=x.textContent;searchMenu.classList.remove("show");toast(x.textContent+" selected")}))});
+const search=document.getElementById("searchInput"),results=document.getElementById("searchResults");
+const names=["TATAGOLD","SS Retail","NSE","Hero Motors","Dr. Reddy's Labs.","Zydus","Infosys","LTM","HDFC Life Insurance","DAM Capital Advisors","Optiemus infracom","Apollo Micro Systems","Raymond"];
+search.addEventListener("input",()=>{const q=search.value.trim().toLowerCase();if(!q){results.classList.remove("show");return}const hits=names.filter(n=>n.toLowerCase().includes(q)).slice(0,6);results.innerHTML=hits.length?hits.map(n=>'<div>'+n+'</div>').join(""):'<div>No result</div>';results.classList.add("show");results.querySelectorAll("div").forEach(r=>r.addEventListener("click",()=>{search.value=r.textContent;results.classList.remove("show");toast(r.textContent+" selected")}))});
 document.getElementById("accountBtn").addEventListener("click",()=>{if(confirm("Sign out of the demo account?")){["groww_demo_logged_in","groww_demo_provider","groww_demo_auth_time","groww_demo_email","groww_demo_mobile"].forEach(k=>localStorage.removeItem(k));location.replace("./index.html")}});
 </script>
 </body>
