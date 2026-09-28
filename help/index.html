@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Help &amp; Support | Groww Replica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/help/styles.css">
+</head>
+<body>
+<script>if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("/index.html")}</script>
+<header class="help-header">
+  <div class="help-header-inner">
+    <a class="help-brand" href="/dashboard.html"><span class="brand-symbol"><i></i><i></i><i></i></span></a>
+    <nav class="help-primary"><a class="active" href="/dashboard.html">Stocks</a><a href="#">F&amp;O</a><a href="#">Mutual Funds</a></nav>
+    <div class="header-fill"></div>
+    <div class="help-search"><span>⌕</span><input id="search" placeholder="Search Groww...."><small>Ctrl+K</small></div>
+    <button class="help-bell" id="bell">♧</button>
+    <button class="help-avatar" id="profile">MS</button>
+  </div>
+</header>
+
+<main class="help-page">
+  <h1>Customer Support</h1>
+  <div class="help-layout">
+    <section class="faq-card">
+      <h2>FAQs</h2>
+      <button class="faq-row"><span class="faq-icon">⚑</span><b>Complete Setup</b><span class="chevron">›</span></button><button class="faq-row"><span class="faq-icon">♙</span><b>My Account</b><span class="chevron">›</span></button><button class="faq-row"><span class="faq-icon">☑</span><b>Stocks, F&O, IPO & MTF</b><span class="chevron">›</span></button><button class="faq-row"><span class="faq-icon">▣</span><b>Payments & Withdrawals</b><span class="chevron">›</span></button><button class="faq-row"><span class="faq-icon">◉</span><b>Mutual Funds</b><span class="chevron">›</span></button><button class="faq-row"><span class="faq-icon">▣</span><b>FDs</b><span class="chevron">›</span></button><button class="faq-row"><span class="faq-icon">▣</span><b>US Stocks</b><span class="chevron">›</span></button>
+    </section>
+    <aside class="contact-col">
+      <h2>Contact us 24x7</h2>
+      <div class="contact-card">
+        <button class="contact-row"><span class="contact-icon">⌕</span><div><b>Call us</b><small>+91 9108800604</small></div></button>
+        <button class="contact-row"><span class="contact-icon">▤</span><div><b>Chat with us</b><small>Get an instant reply</small></div></button>
+        <button class="contact-row"><span class="contact-icon">✉</span><div><b>Email us</b><small>support@groww.in</small></div></button>
+      </div>
+      <div class="quick-links"><button>What's new <span>›</span></button><button>Feedback <span>›</span></button><button>Grievance <span>›</span></button></div>
+    </aside>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+<script>
+const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove("show"),1700)};
+document.getElementById("profile").addEventListener("click",()=>location.href="/dashboard.html");
+document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
+document.querySelectorAll(".faq-row").forEach(b=>b.addEventListener("click",()=>toast(b.querySelector("b").textContent+" opened")));
+document.querySelectorAll(".contact-row").forEach(b=>b.addEventListener("click",()=>toast(b.querySelector("b").textContent+" selected")));
+document.querySelectorAll(".quick-links button").forEach(b=>b.addEventListener("click",()=>toast(b.textContent.replace("›","").trim())));
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
+</script>
+</body>
+</html>
