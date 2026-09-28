@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#00d09c" />
+  <title>Groww — Investing made simple (Replica)</title>
+  <meta name="description" content="A frontend replica inspired by Groww's current investing homepage." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-shell">
+      <a class="brand" href="#" aria-label="Groww home">
+        <span class="brand-mark"><i></i><i></i><i></i></span>
+        <span>Groww</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a class="nav-link active" href="#products">Explore</a>
+        <a class="nav-link" href="#portfolio">Investments</a>
+      </nav>
+
+      <div class="nav-search">
+        <span class="search-icon">⌕</span>
+        <input id="searchInput" type="search" placeholder="Search stocks, mutual funds and more" aria-label="Search" />
+        <kbd>⌘ K</kbd>
+        <div id="searchResults" class="search-results"></div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="icon-btn" title="Notifications" aria-label="Notifications">♧</button>
+        <button class="login-btn" id="loginBtn">Login</button>
+        <button class="avatar-btn" aria-label="Account">MS</button>
+      </div>
+
+      <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse-dot"></span> India's investing platform</div>
+        <h1>Groww your wealth<span>.</span></h1>
+        <p>Invest in stocks, mutual funds, ETFs, IPOs and more. Simple tools, transparent pricing, all in one place.</p>
+        <div class="hero-actions">
+          <button class="primary-btn" id="startBtn">Get started <span>→</span></button>
+          <button class="text-btn" id="watchDemo">See how it works <span>↗</span></button>
+        </div>
+        <div class="hero-trust">
+          <div class="trust-avatars"><span>R</span><span>S</span><span>A</span><span>+</span></div>
+          <div><strong>Trusted by 2 Cr+ active investors</strong><br><small>Built for first-time investors and experts.</small></div>
+        </div>
+      </div>
+
+      <div class="hero-product">
+        <div class="phone-card">
+          <div class="phone-top"><span>Portfolio</span><span>•••</span></div>
+          <div class="portfolio-value">₹12,84,650 <small>+18.42%</small></div>
+          <div class="mini-chart">
+            <svg viewBox="0 0 520 210" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#00d09c" stop-opacity=".28"/>
+                  <stop offset="100%" stop-color="#00d09c" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path class="chart-fill" d="M0,172 C35,150 58,190 90,150 C118,115 136,170 168,139 C206,103 229,117 267,91 C303,67 315,121 352,80 C384,44 398,76 435,41 C462,19 483,48 520,18 L520,210 L0,210 Z"></path>
+              <path class="chart-line" d="M0,172 C35,150 58,190 90,150 C118,115 136,170 168,139 C206,103 229,117 267,91 C303,67 315,121 352,80 C384,44 398,76 435,41 C462,19 483,48 520,18"></path>
+            </svg>
+          </div>
+          <div class="time-tabs"><span>1D</span><span>1W</span><span>1M</span><span>1Y</span><span class="selected">All</span></div>
+          <div class="holding-row"><span>Reliance Industries</span><strong>₹1,953.00</strong><em>+2.14%</em></div>
+          <div class="holding-row"><span>Tata Motors</span><strong>₹1,076.20</strong><em>+1.82%</em></div>
+        </div>
+        <div class="floating-chip chip-one">Stocks ↗</div>
+        <div class="floating-chip chip-two">Mutual Funds</div>
+      </div>
+    </section>
+
+    <section class="ticker-strip">
+      <div class="ticker-inner">
+        <span>MARKETS</span>
+        <div class="market-pill"><b>NIFTY 50</b><strong>25,301.90</strong><em>+0.42%</em></div>
+        <div class="market-pill"><b>SENSEX</b><strong>82,197.64</strong><em>+0.36%</em></div>
+        <div class="market-pill"><b>BANK NIFTY</b><strong>56,404.35</strong><em>-0.12%</em></div>
+        <div class="market-pill"><b>NASDAQ</b><strong>22,340.90</strong><em>+0.71%</em></div>
+      </div>
+    </section>
+
+    <section id="products" class="section container">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">INVESTMENT PRODUCTS</span>
+          <h2>India's stock market at your fingertips</h2>
+        </div>
+        <button class="outline-btn" data-scroll="#portfolio">Explore all</button>
+      </div>
+
+      <div class="product-grid">
+        <button class="product-card featured" data-product="Stocks">
+          <div class="card-icon stock-icon">↗</div>
+          <h3>Stocks</h3>
+          <p>Track prices, charts and returns in one view.</p>
+          <span>Explore stocks →</span>
+        </button>
+        <button class="product-card" data-product="ETFs">
+          <div class="card-icon">▦</div>
+          <h3>ETFs</h3>
+          <p>Diversify with index, gold and global ETFs.</p>
+          <span>Explore ETFs →</span>
+        </button>
+        <button class="product-card" data-product="Mutual Funds">
+          <div class="card-icon">◎</div>
+          <h3>Mutual Funds</h3>
+          <p>Build long-term wealth, SIP by SIP.</p>
+          <span>Invest now →</span>
+        </button>
+        <button class="product-card" data-product="IPOs">
+          <div class="card-icon">◆</div>
+          <h3>IPOs</h3>
+          <p>Discover upcoming, open and recently listed IPOs.</p>
+          <span>View IPOs →</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="feature-band">
+      <div class="container feature-grid">
+        <div class="feature-copy">
+          <span class="section-kicker">MUTUAL FUNDS</span>
+          <h2>Build wealth, SIP by SIP.</h2>
+          <p>Discover direct mutual funds, compare categories and start investing with a few simple steps.</p>
+          <button class="primary-btn" id="investBtn">Invest now <span>→</span></button>
+        </div>
+        <div class="sip-card">
+          <div class="sip-top"><span>SIP calculator</span><span class="ghost-dot"></span></div>
+          <div class="sip-number">₹10,000 <span>/ month</span></div>
+          <div class="range-line"><div></div><span></span></div>
+          <div class="sip-meta"><span>10 years</span><span>12.0% expected return</span></div>
+          <div class="sip-result"><span>Estimated value</span><strong>₹23.23L</strong></div>
+          <button class="small-btn" id="calculatorBtn">Calculate your SIP</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio" class="section container">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">FUTURES & OPTIONS</span>
+          <h2>Trade like a pro</h2>
+          <p class="section-sub">Charts, positions, options chains and watchlists in one customisable workspace.</p>
+        </div>
+      </div>
+      <div class="terminal-card">
+        <div class="terminal-header"><span>Groww Terminal</span><div><span class="tiny-dot"></span><span class="tiny-dot"></span><span class="tiny-dot"></span></div></div>
+        <div class="terminal-layout">
+          <aside class="watchlist">
+            <div class="wl-title">WATCHLIST</div>
+            <div class="wl-row active"><span>NIFTY 50</span><b>25,301.90</b><em>+0.42%</em></div>
+            <div class="wl-row"><span>BANKNIFTY</span><b>56,404.35</b><em>-0.12%</em></div>
+            <div class="wl-row"><span>RELIANCE</span><b>1,953.00</b><em>+2.14%</em></div>
+            <div class="wl-row"><span>HDFCBANK</span><b>1,012.70</b><em>+0.88%</em></div>
+          </aside>
+          <div class="terminal-main">
+            <div class="chart-head"><strong>NIFTY 50</strong><span>25,301.90</span><em>+105.85 (+0.42%)</em></div>
+            <svg class="big-chart" viewBox="0 0 720 270" preserveAspectRatio="none">
+              <g class="grid-lines"><path d="M0 50H720M0 105H720M0 160H720M0 215H720"></path><path d="M120 0V270M240 0V270M360 0V270M480 0V270M600 0V270"></path></g>
+              <path class="chart-area" d="M0 208 C45 186 62 194 95 165 C124 141 155 160 182 147 C215 131 248 157 279 128 C312 97 338 120 371 88 C404 58 437 94 470 66 C500 39 537 82 568 49 C601 20 628 55 661 37 C682 27 702 34 720 23 V270 H0 Z"></path>
+              <path class="chart-stroke" d="M0 208 C45 186 62 194 95 165 C124 141 155 160 182 147 C215 131 248 157 279 128 C312 97 338 120 371 88 C404 58 437 94 470 66 C500 39 537 82 568 49 C601 20 628 55 661 37 C682 27 702 34 720 23"></path>
+            </svg>
+            <div class="chart-times"><span>09:15</span><span>11:00</span><span>13:00</span><span>15:30</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-links">
+        <button>Explore Terminal <span>→</span></button>
+        <button>Option Chain <span>→</span></button>
+        <button>Explore Commodities <span>→</span></button>
+      </div>
+    </section>
+
+    <section class="simple-stock-section">
+      <div class="container stock-simple-grid">
+        <div>
+          <span class="section-kicker">STOCK TRADING</span>
+          <h2>Stock trading made simple.</h2>
+          <p>Fast, simple and secure stock trading. All in one app.</p>
+          <button class="text-btn" id="stockBtn">Explore stocks <span>→</span></button>
+        </div>
+        <div class="mini-product-grid">
+          <div class="mini-card"><span>▥</span><strong>Intraday</strong><small>Monitor top intraday stocks in real time.</small></div>
+          <div class="mini-card"><span>×4</span><strong>MTF</strong><small>Up to 4× leverage with margin trading.</small></div>
+          <div class="mini-card"><span>◇</span><strong>Pledge</strong><small>Unlock instant margin from your holdings.</small></div>
+          <div class="mini-card"><span>₹0</span><strong>Account opening</strong><small>No account opening charges.</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonial-section container">
+      <div class="testimonial-card">
+        <div class="quote">“</div>
+        <p>When I came across Groww, I found it much easier to understand because of the user-friendly design and simple investing experience.</p>
+        <div class="testimonial-author"><span class="author-avatar">RG</span><div><strong>Rahul Gupta</strong><small>Entrepreneur</small></div></div>
+      </div>
+      <div class="trust-panel">
+        <span class="section-kicker">BUILT FOR TRUST</span>
+        <h2>Secure your money, not your worries.</h2>
+        <p>Your account is protected with multiple layers of security and privacy controls.</p>
+        <div class="security-item"><span>✓</span><div><strong>Multi-level security</strong><small>Protection across login, transactions and devices.</small></div></div>
+        <div class="security-item"><span>✓</span><div><strong>Transparent pricing</strong><small>Clear charges with no hidden surprises.</small></div></div>
+      </div>
+    </section>
+
+    <section class="cta-section container">
+      <div class="cta-box">
+        <div><span class="section-kicker">READY TO START?</span><h2>No account opening charges, no barriers.<br><b>Just Groww.</b></h2></div>
+        <button class="primary-btn" id="ctaBtn">Start now <span>→</span></button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#"><span class="brand-mark"><i></i><i></i><i></i></span><span>Groww</span></a>
+        <p>A frontend replica for learning and UI development.</p>
+      </div>
+      <div><h4>GROWW</h4><a>About Us</a><a>Pricing</a><a>Blog</a><a>Careers</a><a>Help & Support</a></div>
+      <div><h4>PRODUCTS</h4><a>Stocks</a><a>F&O</a><a>ETF</a><a>IPO</a><a>Mutual Funds</a></div>
+      <div><h4>TOOLS</h4><a>SIP calculator</a><a>Brokerage calculator</a><a>Margin calculator</a><a>SWP calculator</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© 2026 Demo replica. Not affiliated with Groww.</span><span>Built for frontend practice.</span></div>
+  </footer>
+
+  <div class="modal" id="loginModal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" data-close>×</button>
+      <div class="modal-icon">G</div>
+      <h3>Welcome to Groww</h3>
+      <p>Enter your mobile number to continue.</p>
+      <label>Mobile number</label>
+      <input id="mobileInput" inputmode="numeric" maxlength="10" placeholder="98765 43210" />
+      <button class="primary-btn full" id="continueBtn">Continue</button>
+      <small class="modal-note">Demo UI only — no real account is created.</small>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="./script.js"></script>
+</body>
+</html>
