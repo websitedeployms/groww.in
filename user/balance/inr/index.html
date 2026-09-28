@@ -78,7 +78,7 @@
 const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1700)};
 document.getElementById("profile").addEventListener("click",()=>location.href="/dashboard.html");
 document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
-document.getElementById("transactionsBtn").addEventListener("click",()=>toast("All transactions opened"));
+document.getElementById("transactionsBtn").addEventListener("click",()=>{location.href="/user/balance/inr/transactions"});
 document.getElementById("cashBtn").addEventListener("click",()=>toast("Cash balance: ₹0.00"));
 document.getElementById("pledgeBtn").addEventListener("click",()=>toast("Pledge flow opened"));
 document.getElementById("instantBtn").addEventListener("click",()=>toast("Pledge flow opened"));
