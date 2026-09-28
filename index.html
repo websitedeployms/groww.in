@@ -3,173 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Groww Stocks · Replica</title>
+<meta name="theme-color" content="#00b386">
+<title>Login / Sign up · Groww Replica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./login.css">
 </head>
 <body>
-<div class="page">
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="#"><span class="groww-mark"><i></i><i></i><i></i></span></a>
-      <nav class="products">
-        <a class="active" href="#">Stocks</a>
-        <a href="#">F&amp;O</a>
-        <a href="#">Mutual Funds</a>
-      </nav>
-      <div class="top-fill"></div>
-      <div class="search">
-        <span class="search-icon">⌕</span>
-        <input id="search" placeholder="Search Groww...." aria-label="Search Groww">
-        <span class="search-shortcut">Ctrl+K</span>
-        <div class="search-results" id="searchResults"></div>
-      </div>
-      <button class="bell" id="bell" aria-label="Notifications">
-        <svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
-      </button>
-      <a class="login-signup" href="./login.html">Login/Sign up</a>
-    </div>
+<script>
+  if (localStorage.getItem("groww_demo_logged_in") === "1") location.replace("./dashboard.html");
+</script>
+
+<div class="login-page">
+  <header class="login-header">
+    <a href="./index.html" class="brand" aria-label="Groww">
+      <span class="groww-mark"><i></i><i></i><i></i></span>
+      <span class="brand-name">Groww</span>
+    </a>
   </header>
 
-  <div class="navline">
-    <div class="navline-inner">
-      <nav class="secondary">
-        <a class="chosen" href="#explore">Explore</a>
-        <a href="#holdings">Holdings</a>
-        <a href="#positions">Positions</a>
-        <a href="#orders">Orders</a>
-        <a href="#watchlist">Watchlist</a>
-      </nav>
-      <div class="terminal-wrap">
-        <button class="terminal-btn" id="terminalBtn">
-          <svg viewBox="0 0 24 24"><path d="M8 6v12m8-9v6M5 9h6m3-3h5m-5 12h5"/></svg>
-          Terminal
-        </button>
-        <div class="terminal-menu open" id="terminalMenu">
-          <button id="optionChain"><span>↗</span>Option chain</button>
-          <button id="terminalMenuItem"><span>◫</span>Terminal</button>
-        </div>
-      </div>
+  <main class="login-main">
+    <div class="login-intro">
+      <span class="intro-kicker">WELCOME TO GROWW</span>
+      <h1>Grow your wealth.</h1>
+      <p>Login or sign up to start investing in stocks, mutual funds and more.</p>
     </div>
-  </div>
 
-  <div class="ticker">
-    <div class="ticker-inner">
-      <div class="ticker-item"><b>NIFTY</b><span>22,780.25</span><em>-360.25 (1.56%)</em></div>
-      <div class="ticker-item"><b>SENSEX</b><span>72,771.72</span><em>-1,124.02 (1.52%)</em></div>
-      <div class="ticker-item"><b>BANKNIFTY</b><span>54,471.65</span><em>-1,108.75 (1.99%)</em></div>
-      <div class="ticker-item active-ticker"><b>MIDCPNIFTY</b><span>13,776.35</span><em>-251.35 (1.79%)</em></div>
-      <div class="ticker-item"><b>FINNIFTY</b><span>24,038.05</span><em>-441.15 (1.80%)</em></div>
-    </div>
-    <button class="world" aria-label="Language"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18"/></svg></button>
-  </div>
+    <section class="login-card" aria-labelledby="loginTitle">
+      <div class="login-icon"><span class="groww-mark small"><i></i><i></i><i></i></span></div>
+      <h2 id="loginTitle">Login / Sign up</h2>
+      <p class="subtitle">Enter your mobile number to continue</p>
 
-  <main class="content" id="explore">
-    <section class="left">
-      <section class="start-card">
-        <div>
-          <h2>Start investing from 29th Sep, 09:00 AM</h2>
-          <p>We're setting up your investment accounts to get you started as soon as possible.</p>
+      <form id="loginForm" novalidate>
+        <label for="mobile">Mobile number</label>
+        <div class="phone-field">
+          <span>+91</span>
+          <input id="mobile" type="tel" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="Enter mobile number">
         </div>
-        <div class="calendar-art" aria-hidden="true">
-          <div class="cal-top">•••</div>
-          <div class="cal-body"><span>29</span><span>30</span><span>1</span><span>2</span><span>3</span><span>4</span><span class="today">5</span><span>6</span></div>
-          <div class="cal-base"></div>
-        </div>
-      </section>
+        <div class="field-error" id="fieldError"></div>
+        <button class="continue-btn" type="submit">Continue</button>
+      </form>
 
-      <section class="bought">
-        <h1>Most bought stocks on Groww</h1>
-        <div class="stock-grid">
-          <button class="stock-card" data-stock="TATAGOLD">
-            <div class="logo tatagold"><b>TATA</b><small>mutual fund</small></div>
-            <div class="name">TATAGOLD</div>
-            <div class="price">₹14.26</div>
-            <div class="change">-0.36 (2.46%)</div>
-          </button>
-          <button class="stock-card" data-stock="SS Retail">
-            <div class="logo ss">SS</div>
-            <div class="name">SS Retail</div>
-            <div class="price">₹716.95</div>
-            <div class="change">-11.25 (1.54%)</div>
-          </button>
-          <button class="stock-card" data-stock="NSE">
-            <div class="logo nse">✦</div>
-            <div class="name">NSE</div>
-            <div class="price">₹1,762.70</div>
-            <div class="change">-29.95 (1.67%)</div>
-          </button>
-          <button class="stock-card" data-stock="Hero Motors">
-            <div class="logo hero"><b>HERO</b><small>MOTORS</small></div>
-            <div class="name">Hero Motors</div>
-            <div class="price">₹135.06</div>
-            <div class="change">-6.63 (4.68%)</div>
-          </button>
-        </div>
-        <button class="see-more" id="seeMore">See more <span>›</span></button>
-      </section>
+      <div class="or"><span>or</span></div>
 
-      <section class="movers">
-        <h2>Top movers today</h2>
-        <div class="chips">
-          <button class="chip active">Gainers</button>
-          <button class="chip">Losers</button>
-          <button class="chip">Volume shockers</button>
-          <span class="divider"></span>
-          <button class="chip nifty">NIFTY 100 <span>⌄</span></button>
-        </div>
-        <div class="movers-box">
-          <div class="movers-head"><div>Company</div><div>Market price (1D)</div><div>Volume</div></div>
-          <button class="mover-row" data-stock="Dr. Reddy's Labs.">
-            <div class="company"><span class="table-logo reddy">R</span><b>Dr. Reddy's Labs.</b></div>
-            <div class="market">
-              <svg viewBox="0 0 150 40" preserveAspectRatio="none"><path d="M0 32 L9 27 L16 30 L24 22 L31 25 L40 20 L47 23 L54 18 L63 22 L71 13 L80 16 L88 8 L97 12 L105 7 L115 11 L123 5 L134 9 L142 6 L150 10"/></svg>
-              <div><span>₹1,221.00</span><em>20.00 (1.67%)</em></div>
-            </div>
-            <div class="volume">34,01,676</div>
-          </button>
-          <button class="mover-row" data-stock="Infosys">
-            <div class="company"><span class="table-logo infy">I</span><b>Infosys</b></div>
-            <div class="market">
-              <svg viewBox="0 0 150 40" preserveAspectRatio="none"><path d="M0 31 L10 28 L18 29 L28 22 L38 24 L46 18 L57 22 L67 15 L75 13 L87 16 L96 9 L106 11 L115 6 L124 10 L136 4 L144 7 L150 2"/></svg>
-              <div><span>₹1,495.40</span><em>18.45 (1.25%)</em></div>
-            </div>
-            <div class="volume">18,95,430</div>
-          </button>
-        </div>
-      </section>
+      <button class="google-btn" id="googleBtn" type="button">
+        <span class="google-g">G</span>
+        Continue with Google
+      </button>
+
+      <p class="terms">By continuing, you agree to Groww's <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
     </section>
 
-    <aside class="right">
-      <section class="investments" id="holdings">
-        <h2>Your investments</h2>
-        <div class="investments-box">
-          <div class="invest-art">
-            <span class="bubble b1"></span><span class="bubble b2"></span>
-            <div class="art-card"></div>
-            <div class="person p1"></div><div class="person p2"></div><div class="person p3"></div>
-            <div class="plant"></div>
-          </div>
-          <p>You haven't invested yet</p>
-        </div>
-      </section>
-
-      <section class="tools">
-        <h2>Products &amp; Tools</h2>
-        <div class="tools-box">
-          <button class="tool-row" data-tool="IPO"><span class="tool-icon">📣</span><b>IPO</b><span class="pill">18 open</span></button>
-          <button class="tool-row" data-tool="Bonds"><span class="tool-icon">📜</span><b>Bonds</b><span class="pill">1 open</span></button>
-          <button class="tool-row" data-tool="ETFs"><span class="tool-icon">🗂</span><b>ETFs</b><span class="pill hidden"> </span></button>
-          <button class="tool-row" data-tool="Gold"><span class="tool-icon">▣</span><b>Gold</b><span class="pill hidden"> </span></button>
-          <button class="tool-row" data-tool="SGB"><span class="tool-icon">◫</span><b>SGB</b><span class="pill hidden"> </span></button>
-        </div>
-      </section>
-    </aside>
+    <div class="secure-note"><span class="shield">✓</span> Your information is encrypted and secure</div>
   </main>
 </div>
+
 <div class="toast" id="toast"></div>
-<script src="./script.js"></script>
+
+<script>
+const form=document.getElementById("loginForm");
+const mobile=document.getElementById("mobile");
+const error=document.getElementById("fieldError");
+const toast=document.getElementById("toast");
+const showToast=(m)=>{toast.textContent=m;toast.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>toast.classList.remove("show"),2100)};
+mobile.addEventListener("input",()=>{mobile.value=mobile.value.replace(/\D/g,"").slice(0,10);error.textContent=""});
+form.addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const value=mobile.value.replace(/\D/g,"");
+  if(value.length!==10){error.textContent="Enter a valid 10-digit mobile number";mobile.focus();return}
+  error.textContent="";
+  localStorage.setItem("groww_demo_logged_in","1");
+  localStorage.setItem("groww_demo_mobile",value);
+  showToast("Login successful");
+  setTimeout(()=>location.replace("./dashboard.html"),450);
+});
+document.getElementById("googleBtn").addEventListener("click",()=>{
+  localStorage.setItem("groww_demo_logged_in","1");
+  localStorage.setItem("groww_demo_provider","google");
+  showToast("Google demo login successful");
+  setTimeout(()=>location.replace("./dashboard.html"),450);
+});
+</script>
 </body>
 </html>
