@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Groww Balance | INR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/user/balance/inr/styles.css">
+</head>
+<body>
+<script>if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("/index.html")}</script>
+
+<header class="balance-header">
+  <div class="balance-header-inner">
+    <a class="balance-brand" href="/dashboard.html" aria-label="Groww"><span class="brand-symbol"><i></i><i></i><i></i></span></a>
+    <nav class="balance-nav"><a class="active" href="/dashboard.html">Stocks</a><a href="#">F&amp;O</a><a href="#">Mutual Funds</a></nav>
+    <div class="header-spacer"></div>
+    <div class="balance-search"><span>⌕</span><input id="search" placeholder="Search Groww...."><small>Ctrl+K</small></div>
+    <button class="balance-bell" id="bell">♧</button>
+    <button class="balance-avatar" id="profile">MS</button>
+  </div>
+</header>
+
+<main class="balance-page">
+  <div class="balance-grid">
+    <section class="left-col">
+      <div class="summary-card">
+        <div class="summary-head">
+          <span>Stocks, F&amp;O balance</span>
+          <strong>₹<b>0</b><sup>.00</sup></strong>
+        </div>
+        <div class="summary-body">
+          <div class="cash-row">
+            <span>Cash</span><button id="cashBtn">₹0.00 <i></i></button>
+          </div>
+          <div class="pledge-row">
+            <span>Pledge</span><button id="pledgeBtn">Add <i></i></button>
+            <p>Add balance for stocks intraday and F&amp;O by pledging your holdings on Groww</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="transaction-link" id="transactionsBtn"><span>All transactions</span><b>›</b></button>
+
+      <div class="instant-card">
+        <div><strong>Instant trade balance</strong><p>Get ₹0 for Intraday, MTF &amp; FnO</p></div>
+        <button id="instantBtn">Pledge</button>
+      </div>
+    </section>
+
+    <section class="money-card">
+      <div class="money-tabs">
+        <button class="active" data-tab="add">Add money</button>
+        <button data-tab="withdraw">Withdraw</button>
+      </div>
+
+      <div class="money-body">
+        <div class="amount-display" id="amountDisplay">₹100</div>
+        <div class="amount-chips">
+          <button data-amount="100">+₹100</button>
+          <button data-amount="5000">+₹5,000</button>
+          <button data-amount="10000">+₹10,000</button>
+        </div>
+      </div>
+
+      <button class="bank-pay" id="bankPay">
+        <span class="upi-logo">◢</span>
+        <span><b id="paymentTitle">Scan QR to pay</b><small>STATE BANK OF INDIA ••••4181</small></span>
+        <b class="arrow">›</b>
+      </button>
+      <button class="add-money-btn" id="addMoneyBtn">Add money</button>
+    </section>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+<script>
+const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1700)};
+document.getElementById("profile").addEventListener("click",()=>location.href="/dashboard.html");
+document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
+document.getElementById("transactionsBtn").addEventListener("click",()=>toast("All transactions opened"));
+document.getElementById("cashBtn").addEventListener("click",()=>toast("Cash balance: ₹0.00"));
+document.getElementById("pledgeBtn").addEventListener("click",()=>toast("Pledge flow opened"));
+document.getElementById("instantBtn").addEventListener("click",()=>toast("Pledge flow opened"));
+document.getElementById("bankPay").addEventListener("click",()=>toast("Payment method: SBI ••••4181"));
+document.getElementById("addMoneyBtn").addEventListener("click",()=>toast("Add money selected"));
+document.querySelectorAll(".amount-chips button").forEach(btn=>btn.addEventListener("click",()=>{document.getElementById("amountDisplay").textContent="₹"+Number(btn.dataset.amount).toLocaleString("en-IN");toast("Amount selected")}));
+document.querySelectorAll(".money-tabs button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".money-tabs button").forEach(x=>x.classList.remove("active"));btn.classList.add("active");const isAdd=btn.dataset.tab==="add";document.getElementById("paymentTitle").textContent=isAdd?"Scan QR to pay":"Withdraw to bank";document.getElementById("addMoneyBtn").textContent=isAdd?"Add money":"Withdraw";toast(isAdd?"Add money":"Withdraw")}));
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
+</script>
+</body>
+</html>
