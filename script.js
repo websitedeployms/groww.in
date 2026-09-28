@@ -1,94 +1,50 @@
-const toast = (message) => {
-  const el = document.getElementById("toast");
-  el.textContent = message;
-  el.classList.add("show");
-  clearTimeout(window.__toastTimer);
-  window.__toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+const toast=(msg)=>{
+  const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");
+  clearTimeout(window.__t);window.__t=setTimeout(()=>el.classList.remove("show"),2000);
 };
 
-const modal = document.getElementById("demoModal");
-const openModal = () => {
-  modal.classList.add("open");
-  modal.setAttribute("aria-hidden","false");
-  setTimeout(() => document.getElementById("mobileNumber")?.focus(), 60);
-};
-const closeModal = () => {
-  modal.classList.remove("open");
-  modal.setAttribute("aria-hidden","true");
-};
+const terminalBtn=document.getElementById("terminalBtn");
+const terminalMenu=document.getElementById("terminalMenu");
+terminalBtn?.addEventListener("click",e=>{e.stopPropagation();terminalMenu.classList.toggle("open")});
+document.addEventListener("click",e=>{if(!e.target.closest(".terminal-wrap")) terminalMenu?.classList.remove("open")});
+document.getElementById("optionChain")?.addEventListener("click",()=>toast("Option chain opened"));
+document.getElementById("terminalMenuItem")?.addEventListener("click",()=>toast("Terminal opened"));
 
-document.getElementById("setupBtn")?.addEventListener("click", openModal);
-document.getElementById("startInvestBtn")?.addEventListener("click", () => toast("Investment flow opened"));
-document.getElementById("terminalBtn")?.addEventListener("click", () => toast("Terminal opened in demo mode"));
-document.getElementById("notificationBtn")?.addEventListener("click", () => toast("You are all caught up"));
-document.getElementById("profileBtn")?.addEventListener("click", () => toast("Profile menu opened"));
-document.getElementById("seeMoreStocks")?.addEventListener("click", () => toast("Showing more stocks in demo mode"));
-document.querySelectorAll("[data-close]").forEach((btn) => btn.addEventListener("click", closeModal));
-modal?.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeModal();
-  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
-    event.preventDefault();
-    const input = document.getElementById("globalSearch");
-    if (input) input.focus();
-  }
+document.getElementById("bell")?.addEventListener("click",()=>toast("No new notifications"));
+document.getElementById("avatar")?.addEventListener("click",()=>toast("Profile menu"));
+
+document.querySelectorAll(".stock-card,.mover-row").forEach(el=>{
+  el.addEventListener("click",()=>toast(el.dataset.stock+" selected"));
 });
 
-document.getElementById("modalSubmit")?.addEventListener("click", () => {
-  const value = document.getElementById("mobileNumber").value.replace(/\D/g, "");
-  if (value.length !== 10) {
-    toast("Enter a valid 10-digit mobile number");
-    return;
-  }
-  closeModal();
-  toast("Demo setup submitted");
-});
-
-document.querySelectorAll(".filter-pill").forEach((pill) => {
-  pill.addEventListener("click", () => {
-    document.querySelectorAll(".filter-pill").forEach((item) => item.classList.remove("active"));
-    pill.classList.add("active");
-    toast(pill.textContent.trim() + " selected");
+document.getElementById("seeMore")?.addEventListener("click",()=>toast("More stocks loaded"));
+document.querySelectorAll(".chip").forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    if(chip.classList.contains("nifty")){toast("NIFTY 100 selected");return}
+    document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+    chip.classList.add("active");toast(chip.textContent.trim()+" selected");
   });
 });
+document.querySelectorAll(".tool-row").forEach(row=>row.addEventListener("click",()=>toast(row.dataset.tool+" selected")));
 
-document.querySelectorAll("[data-stock]").forEach((card) => {
-  card.addEventListener("click", () => toast(card.dataset.stock + " selected"));
-});
-
-const searchData = [
-  ["TATAGOLD","TATAGOLD • NSE","₹14.26"],
-  ["SS Retail","SS RETAIL • NSE","₹716.95"],
-  ["NSE","NSE • NSE","₹1,762.70"],
-  ["Hero Motors","HERO MOTORS • NSE","₹135.06"],
-  ["Dr. Reddy's Labs.","DRREDDY • NSE","₹1,221.00"],
-  ["Infosys","INFY • NSE","₹1,495.40"],
-  ["ITC","ITC • NSE","₹443.80"]
+const data=[
+ ["TATAGOLD","TATAGOLD • NSE","₹14.26"],
+ ["SS Retail","SS RETAIL • NSE","₹716.95"],
+ ["NSE","NSE • NSE","₹1,762.70"],
+ ["Hero Motors","HERO MOTORS • NSE","₹135.06"],
+ ["Dr. Reddy's Labs.","DRREDDY • NSE","₹1,221.00"],
+ ["Infosys","INFY • NSE","₹1,495.40"]
 ];
-
-const searchInput = document.getElementById("globalSearch");
-const searchDropdown = document.getElementById("searchDropdown");
-
-searchInput?.addEventListener("input", () => {
-  const query = searchInput.value.trim().toLowerCase();
-  if (!query) {
-    searchDropdown.classList.remove("show");
-    searchDropdown.innerHTML = "";
-    return;
-  }
-  const matches = searchData.filter(([name, meta]) => (name + " " + meta).toLowerCase().includes(query)).slice(0,5);
-  searchDropdown.innerHTML = matches.length
-    ? matches.map(([name, meta, price]) => `<div class="search-result" data-name="${name}"><div><strong>${name}</strong><small>${meta}</small></div><b>${price}</b></div>`).join("")
-    : '<div class="search-result"><div><strong>No result</strong><small>Try a stock or index name</small></div></div>';
-  searchDropdown.classList.add("show");
-  searchDropdown.querySelectorAll("[data-name]").forEach((item) => {
-    item.addEventListener("click", () => {
-      searchInput.value = item.dataset.name;
-      searchDropdown.classList.remove("show");
-      toast(item.dataset.name + " selected");
-    });
-  });
+const input=document.getElementById("search"),box=document.getElementById("searchResults");
+input?.addEventListener("input",()=>{
+  const q=input.value.trim().toLowerCase();
+  if(!q){box.classList.remove("show");box.innerHTML="";return}
+  const hits=data.filter(x=>(x[0]+" "+x[1]).toLowerCase().includes(q)).slice(0,5);
+  box.innerHTML=hits.length?hits.map(x=>`<div class="result" data-result="${x[0]}"><div><strong>${x[0]}</strong><small>${x[1]}</small></div><b>${x[2]}</b></div>`).join(""):'<div class="result"><strong>No result</strong></div>';
+  box.classList.add("show");
+  box.querySelectorAll("[data-result]").forEach(item=>item.addEventListener("click",()=>{input.value=item.dataset.result;box.classList.remove("show");toast(item.dataset.result+" selected")}));
 });
-document.addEventListener("click", (event) => {
-  if (!event.target.closest(".search-box")) searchDropdown?.classList.remove("show");
+document.addEventListener("keydown",e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();input?.focus()}
 });
+document.addEventListener("click",e=>{if(!e.target.closest(".search"))box?.classList.remove("show")});
