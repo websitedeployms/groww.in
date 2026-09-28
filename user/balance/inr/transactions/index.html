@@ -57,27 +57,40 @@
       </div>
     </aside>
 
-    <section class="empty-state">
-      <div class="wallet-illus" aria-hidden="true">
-        <svg viewBox="0 0 260 230" role="img">
-          <defs>
-            <linearGradient id="walletFill" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stop-color="#f8f9fa"/>
-              <stop offset="1" stop-color="#eef0f2"/>
-            </linearGradient>
-          </defs>
-          <path d="M95 75c-2-14 5-23 18-26l95-18c13-2 23 6 25 18l3 15" fill="none" stroke="#eceff1" stroke-width="8" stroke-linecap="round"/>
-          <path d="M75 79l125-23c12-2 23 6 25 18l7 71c2 14-8 25-21 27l-120 18c-14 2-25-8-27-21L66 98c-2-10 2-16 9-19z" fill="url(#walletFill)" stroke="#e6e9ec" stroke-width="6"/>
-          <path d="M205 88h21c18 0 28 11 28 26s-10 26-28 26h-24c-11 0-20-9-20-20v-10c0-12 9-22 23-22z" fill="#f6f7f8" stroke="#e6e9ec" stroke-width="6"/>
-          <circle cx="225" cy="114" r="7" fill="#d5d9de"/>
-          <path d="M137 57l3-17" stroke="#12c89d" stroke-width="6" stroke-linecap="round"/>
-          <path d="M171 48l4-11" stroke="#12c89d" stroke-width="5" stroke-linecap="round"/>
-          <path d="M108 33c4-5 9-7 14-6" stroke="#b8f0e3" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <path d="M154 23c4-5 9-7 14-6" stroke="#b8f0e3" stroke-width="4" fill="none" stroke-linecap="round"/>
-        </svg>
+    <section class="transactions-results">
+      <h2>Transactions</h2>
+      <div class="transaction-list">
+        <div class="transaction-row">
+          <span class="transaction-status success">✓</span>
+          <div class="transaction-copy"><b>Add money</b><small>20 Aug 2026, 10:24 AM</small></div>
+          <strong>₹5,000.00</strong>
+        </div>
+        <div class="transaction-row">
+          <span class="transaction-status success">✓</span>
+          <div class="transaction-copy"><b>Add money</b><small>21 Aug 2026, 09:41 AM</small></div>
+          <strong>₹10,000.00</strong>
+        </div>
+        <div class="transaction-row">
+          <span class="transaction-status success">✓</span>
+          <div class="transaction-copy"><b>Add money</b><small>21 Aug 2026, 11:18 AM</small></div>
+          <strong>₹10,000.00</strong>
+        </div>
+        <div class="transaction-row">
+          <span class="transaction-status success">✓</span>
+          <div class="transaction-copy"><b>Add money</b><small>21 Aug 2026, 01:37 PM</small></div>
+          <strong>₹15,000.00</strong>
+        </div>
+        <div class="transaction-row">
+          <span class="transaction-status success">✓</span>
+          <div class="transaction-copy"><b>Add money</b><small>21 Aug 2026, 03:52 PM</small></div>
+          <strong>₹5,000.00</strong>
+        </div>
+        <div class="transaction-row">
+          <span class="transaction-status success">✓</span>
+          <div class="transaction-copy"><b>Add money</b><small>21 Aug 2026, 06:26 PM</small></div>
+          <strong>₹15,000.00</strong>
+        </div>
       </div>
-      <h2>No transactions found</h2>
-      <p>Try changing or clearing the filters</p>
     </section>
   </div>
 </main>
@@ -88,11 +101,43 @@ const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.class
 document.getElementById("profile").addEventListener("click",()=>location.href="/dashboard.html");
 document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
 document.getElementById("statementBtn").addEventListener("click",()=>toast("No transactions to include in the statement"));
-document.querySelectorAll(".filter-check").forEach(c=>c.addEventListener("change",()=>toast("Filter updated")));
+const rows=[...document.querySelectorAll(".transaction-row")];
+const failedCheck=document.querySelectorAll(".filter-check")[0];
+const typeChecks=[...document.querySelectorAll(".filter-check")].slice(1);
+const emptyState=()=>{
+  let el=document.getElementById("noResults");
+  if(!el){
+    el=document.createElement("div");
+    el.id="noResults";
+    el.className="filtered-empty";
+    el.innerHTML="<div class=\"filtered-empty-icon\">◌</div><h3>No transactions found</h3><p>Try changing or clearing the filters</p>";
+    document.querySelector(".transactions-results").appendChild(el);
+  }
+  return el;
+};
+function applyFilters(){
+  const onlyFailed=failedCheck.checked;
+  const deposit=typeChecks[0].checked;
+  const withdraw=typeChecks[1].checked;
+  const stocks=typeChecks[2].checked;
+  const fno=typeChecks[3].checked;
+  const others=typeChecks[4].checked;
+  const anyType=deposit||withdraw||stocks||fno||others;
+  let shown=0;
+  rows.forEach(row=>{
+    let visible=!onlyFailed && (!anyType || deposit);
+    row.style.display=visible?"grid":"none";
+    if(visible) shown++;
+  });
+  const empty=emptyState();
+  empty.style.display=shown?"none":"block";
+}
+document.querySelectorAll(".filter-check").forEach(c=>c.addEventListener("change",()=>{applyFilters();toast("Filter updated")}));
 document.getElementById("clearFilters").addEventListener("click",()=>{
   document.querySelectorAll(".filter-check").forEach(c=>c.checked=false);
   document.getElementById("fromDate").value="";
   document.getElementById("toDate").value="";
+  applyFilters();
   toast("Filters cleared");
 });
 document.querySelectorAll(".date-input input").forEach(i=>i.addEventListener("change",()=>toast("Date range updated")));
