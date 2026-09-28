@@ -291,7 +291,7 @@ document.getElementById("settingsBtn").addEventListener("click",(e)=>{
   e.stopPropagation();
   toast("Settings");
 });
-document.getElementById("balanceBtn").addEventListener("click",()=>toast("Available balance: ₹0.00"));
+document.getElementById("balanceBtn").addEventListener("click",()=>{location.href="/user/balance/inr"});
 document.getElementById("allOrdersBtn").addEventListener("click",()=>{location.href="./orders.html"});
 document.getElementById("bankDetailsBtn").addEventListener("click",()=>{location.href="./bank-details.html"});
 document.getElementById("supportBtn").addEventListener("click",()=>{location.href="/help"});
