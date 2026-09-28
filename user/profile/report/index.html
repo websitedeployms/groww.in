@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>User Profile · Reports · Groww Replica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<script>if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("/index.html")}</script>
+
+<header class="report-header">
+  <div class="report-header-inner">
+    <a class="report-brand" href="/dashboard.html"><span class="brand-symbol"><i></i><i></i><i></i></span></a>
+    <nav class="report-primary"><a class="active" href="/dashboard.html">Stocks</a><a href="#">F&amp;O</a><a href="#">Mutual Funds</a></nav>
+    <div class="header-fill"></div>
+    <div class="report-search"><span>⌕</span><input id="search" placeholder="Search Groww...."><small>Ctrl+K</small></div>
+    <button class="report-bell">♧</button>
+    <button class="report-avatar" id="profileBtn">MS</button>
+  </div>
+</header>
+
+<main class="profile-page">
+  <div class="profile-grid">
+    <aside class="profile-menu">
+      <div class="profile-summary">
+        <div class="profile-photo">MS</div>
+        <h1>Manav Singh</h1>
+      </div>
+      <button class="profile-link">Basic Details <span>›</span></button>
+      <button class="profile-link active">Reports <span>›</span></button>
+      <button class="profile-link">Change Password <span>›</span></button>
+      <button class="profile-link">Change Groww PIN <span>›</span></button>
+      <button class="profile-link">Trading controls <span>›</span></button>
+      <button class="profile-link">Trading APIs <span>›</span></button>
+      <button class="profile-link">Sell authorisation mode <span>›</span></button>
+      <button class="profile-link">Trading Details <span>›</span></button>
+      <button class="profile-link">Account Related Forms <span>›</span></button>
+      <button class="profile-link">Nominee Details <span>›</span></button>
+      <button class="profile-link">Active Devices <span>›</span></button>
+      <button class="profile-link">Report suspicious activity <span>›</span></button>
+    </aside>
+
+    <section class="reports-column">
+      <section class="report-card">
+        <div class="report-card-title"><span class="title-icon profit-icon">◈</span><h2>Profit &amp; Loss</h2></div>
+        <button class="report-row">Stocks P&amp;L <span>›</span></button>
+        <button class="report-row">Dividend report <span>›</span></button>
+      </section>
+
+      <section class="report-card tax-card">
+        <div class="report-card-title"><span class="title-icon tax-icon">◒</span><h2>Tax</h2></div>
+        <button class="report-row">Mutual Funds - ELSS statement <span>›</span></button>
+        <button class="report-row">Mutual Funds - Capital gains <span>›</span></button>
+        <button class="report-row">Stocks - Capital gains <span>›</span></button>
+        <button class="report-row">F&amp;O - Tax report <span>›</span></button>
+        <button class="report-row">Commodities - Tax report <span>›</span></button>
+        <button class="report-row">GST invoice <span>›</span></button>
+      </section>
+
+      <section class="report-card">
+        <div class="report-card-title"><span class="title-icon holdings-icon">◩</span><h2>Holdings</h2></div>
+        <button class="report-row">Mutual Funds - Holdings statement <span>›</span></button>
+        <button class="report-row">Stocks - Holdings statement <span>›</span></button>
+        <button class="report-row">Demat report <span>›</span></button>
+        <button class="report-row">CMR copy <span>›</span></button>
+      </section>
+
+      <section class="report-card">
+        <div class="report-card-title"><span class="title-icon transaction-icon">▤</span><h2>Transactions</h2></div>
+        <button class="report-row">Mutual Funds - Order history <span>›</span></button>
+        <button class="report-row">Stocks - Order history <span>›</span></button>
+        <button class="report-row">Groww Balance statement <span>›</span></button>
+        <button class="report-row">Contract note <span>›</span></button>
+      </section>
+    </section>
+
+    <aside class="preview-column">
+      <div class="report-preview">
+        <div class="preview-lines"><span></span><span></span><span></span></div>
+        <div class="preview-pointer">⌁</div>
+        <p>Select a report to get started</p>
+      </div>
+      <button class="need-help"><span>?</span> Need help? <b>›</b></button>
+    </aside>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+<script>
+const toast=(m)=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove("show"),1700)};
+document.getElementById("profileBtn").addEventListener("click",()=>location.href="/dashboard.html");
+document.querySelectorAll(".report-row").forEach(btn=>btn.addEventListener("click",()=>toast("Report selected")));
+document.querySelectorAll(".profile-link").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".profile-link").forEach(x=>x.classList.remove("active"));btn.classList.add("active");toast(btn.textContent.replace("›","").trim())}));
+document.querySelector(".need-help").addEventListener("click",()=>toast("Help opened"));
+document.getElementById("search").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.value.trim())toast("Search: "+e.target.value.trim())});
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
+</script>
+</body>
+</html>
