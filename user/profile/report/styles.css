@@ -7,3 +7,32 @@
 @media(max-width:600px){.report-header{height:70px}.report-header-inner{height:66px;width:100%;padding:0 13px;gap:14px}.report-primary{gap:14px}.report-primary a{font-size:12px}.report-search{width:34px;overflow:hidden}.report-search input{width:34px;padding:0;font-size:0}.report-search small{display:none}.report-search>span{left:4px}.report-bell{display:none}.report-avatar{width:35px;height:35px}.profile-page{width:100%;padding:25px 12px}.profile-summary{height:185px}.profile-photo{width:98px;height:98px}.profile-link{height:58px;font-size:13px}.report-card-title{height:61px}.report-card-title h2{font-size:17px}.report-row{min-height:56px;height:auto;padding:14px 16px;font-size:12px}.reports-column{gap:20px}}
 
 .site-logo{display:block;width:39px;height:39px;object-fit:cover;border-radius:50%;overflow:hidden}
+
+/* Simple MS profile avatars */
+.report-avatar,
+.profile-photo{
+  background:#33445f!important;
+  color:#fff!important;
+}
+.report-avatar{
+  display:grid!important;
+  place-items:center!important;
+  font-size:13px!important;
+  font-weight:700!important;
+}
+.profile-photo{
+  display:grid!important;
+  place-items:center!important;
+  box-shadow:none!important;
+}
+.profile-photo .profile-initials{
+  color:#fff;
+  font-size:30px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:.5px;
+}
+@media (max-width:768px){
+  .report-avatar{width:40px!important;height:40px!important;font-size:13px!important}
+  .profile-photo .profile-initials{font-size:28px!important}
+}
