@@ -48,3 +48,58 @@ document.addEventListener("keydown",e=>{
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();input?.focus()}
 });
 document.addEventListener("click",e=>{if(!e.target.closest(".search"))box?.classList.remove("show")});
+
+
+/* Manual market ticker: drag/swipe left or right */
+(() => {
+  const ticker = document.querySelector('.ticker-row');
+  const track = ticker?.querySelector('.ticker-inner');
+  if (!ticker || !track) return;
+
+  let dragging = false;
+  let startX = 0;
+  let startOffset = 0;
+  let offset = 0;
+  let maxOffset = 0;
+
+  const measure = () => {
+    const distance = track.scrollWidth - ticker.clientWidth;
+    maxOffset = Math.max(0, distance / 2);
+    offset = Math.max(-maxOffset, Math.min(0, offset));
+    track.style.transform = `translate3d(\${offset}px,0,0)`;
+  };
+
+  const setOffset = (value) => {
+    offset = Math.max(-maxOffset, Math.min(0, value));
+    track.style.transform = `translate3d(\${offset}px,0,0)`;
+  };
+
+  ticker.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    startX = e.clientX;
+    startOffset = offset;
+    ticker.classList.add('is-dragging');
+    ticker.setPointerCapture?.(e.pointerId);
+  });
+
+  ticker.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    setOffset(startOffset + (e.clientX - startX));
+  });
+
+  const stopDrag = (e) => {
+    if (!dragging) return;
+    dragging = false;
+    ticker.classList.remove('is-dragging');
+    ticker.releasePointerCapture?.(e.pointerId);
+  };
+
+  ticker.addEventListener('pointerup', stopDrag);
+  ticker.addEventListener('pointercancel', stopDrag);
+  ticker.addEventListener('lostpointercapture', () => {
+    dragging = false;
+    ticker.classList.remove('is-dragging');
+  });
+  window.addEventListener('resize', measure);
+  measure();
+})();
