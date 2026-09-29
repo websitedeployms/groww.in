@@ -56,6 +56,7 @@
 
       <div class="money-body">
         <div class="amount-display" id="amountDisplay">₹100</div>
+        <input class="withdraw-input" id="withdrawInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter withdrawal amount" aria-label="Withdrawal amount">
         <div class="amount-chips">
           <button data-amount="100">+₹100</button>
           <button data-amount="5000">+₹5,000</button>
@@ -75,17 +76,73 @@
 
 <div class="toast" id="toast"></div>
 <script>
-const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1700)};
+const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1800)};
+const balanceKey="groww_demo_cash_balance";
+const withdrawalKey="groww_demo_pending_withdrawals";
+const initialBalance=39.80;
+let cashBalance=Number(localStorage.getItem(balanceKey));
+if(!Number.isFinite(cashBalance)) cashBalance=initialBalance;
+
+const balanceValue=()=>cashBalance.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+function syncBalanceUI(){
+  document.querySelector(".summary-head strong").innerHTML="₹<b>"+Math.floor(cashBalance).toLocaleString("en-IN")+"</b><sup>."+String(Math.round((cashBalance%1)*100)).padStart(2,"0")+"</sup>";
+  document.getElementById("cashBtn").innerHTML="₹"+balanceValue()+" <i></i>";
+}
+syncBalanceUI();
+
 document.getElementById("profile").addEventListener("click",()=>location.href="/dashboard.html");
 document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
 document.getElementById("transactionsBtn").addEventListener("click",()=>{location.href="/user/balance/inr/transactions"});
-document.getElementById("cashBtn").addEventListener("click",()=>toast("Cash balance: ₹0.00"));
+document.getElementById("cashBtn").addEventListener("click",()=>toast("Cash balance: ₹"+balanceValue()));
 document.getElementById("pledgeBtn").addEventListener("click",()=>toast("Pledge flow opened"));
 document.getElementById("instantBtn").addEventListener("click",()=>toast("Pledge flow opened"));
-document.getElementById("bankPay").addEventListener("click",()=>toast("Payment method: SBI ••••4181"));
-document.getElementById("addMoneyBtn").addEventListener("click",()=>toast("Add money selected"));
-document.querySelectorAll(".amount-chips button").forEach(btn=>btn.addEventListener("click",()=>{document.getElementById("amountDisplay").textContent="₹"+Number(btn.dataset.amount).toLocaleString("en-IN");toast("Amount selected")}));
-document.querySelectorAll(".money-tabs button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".money-tabs button").forEach(x=>x.classList.remove("active"));btn.classList.add("active");const isAdd=btn.dataset.tab==="add";document.getElementById("paymentTitle").textContent=isAdd?"Scan QR to pay":"Withdraw to bank";document.getElementById("addMoneyBtn").textContent=isAdd?"Add money":"Withdraw";toast(isAdd?"Add money":"Withdraw")}));
+document.getElementById("bankPay").addEventListener("click",()=>toast(document.querySelector('.money-tabs button.active').dataset.tab==="withdraw"?"Withdrawal bank: SBI ••••4181":"Payment method: SBI ••••4181"));
+
+const amountDisplay=document.getElementById("amountDisplay");
+const withdrawInput=document.getElementById("withdrawInput");
+const actionBtn=document.getElementById("addMoneyBtn");
+
+function updateActionMode(isAdd){
+  amountDisplay.style.display=isAdd?"block":"none";
+  withdrawInput.style.display=isAdd?"none":"block";
+  document.getElementById("paymentTitle").textContent=isAdd?"Scan QR to pay":"Withdraw to bank";
+  actionBtn.textContent=isAdd?"Add money":"Withdraw";
+}
+document.querySelectorAll(".money-tabs button").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll(".money-tabs button").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  const isAdd=btn.dataset.tab==="add";
+  updateActionMode(isAdd);
+  toast(isAdd?"Add money":"Withdraw");
+}));
+updateActionMode(true);
+
+document.querySelectorAll(".amount-chips button").forEach(btn=>btn.addEventListener("click",()=>{
+  const amount=Number(btn.dataset.amount);
+  if(document.querySelector('.money-tabs button.active').dataset.tab==="withdraw"){
+    withdrawInput.value=amount;
+  }else{
+    amountDisplay.textContent="₹"+amount.toLocaleString("en-IN");
+  }
+  toast("Amount selected");
+}));
+
+actionBtn.addEventListener("click",()=>{
+  const isWithdraw=document.querySelector('.money-tabs button.active').dataset.tab==="withdraw";
+  if(!isWithdraw){toast("Add money selected");return;}
+  const amount=Number(withdrawInput.value || 5000);
+  if(!Number.isFinite(amount) || amount<=0){toast("Enter a valid withdrawal amount");return;}
+  if(amount>cashBalance+0.0001){toast("Insufficient balance. Available ₹"+balanceValue());return;}
+  cashBalance=Number((cashBalance-amount).toFixed(2));
+  localStorage.setItem(balanceKey,String(cashBalance));
+  const pending=JSON.parse(localStorage.getItem(withdrawalKey)||"[]");
+  pending.unshift({amount,date:new Date().toISOString(),status:"Pending"});
+  localStorage.setItem(withdrawalKey,JSON.stringify(pending));
+  syncBalanceUI();
+  toast("₹"+amount.toLocaleString("en-IN",{minimumFractionDigits:2})+" withdrawal requested. It should be credited within 15–20 working days.");
+  withdrawInput.value="";
+});
+
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
 </script>
 </body>
