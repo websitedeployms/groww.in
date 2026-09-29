@@ -50,7 +50,8 @@ document.addEventListener("keydown",e=>{
 document.addEventListener("click",e=>{if(!e.target.closest(".search"))box?.classList.remove("show")});
 
 
-/* Manual market ticker: drag/swipe left or right */
+
+/* Manual market ticker: touch swipe + mouse drag */
 (() => {
   const ticker = document.querySelector('.ticker-row');
   const track = ticker?.querySelector('.ticker-inner');
@@ -63,43 +64,52 @@ document.addEventListener("click",e=>{if(!e.target.closest(".search"))box?.class
   let maxOffset = 0;
 
   const measure = () => {
-    const distance = track.scrollWidth - ticker.clientWidth;
-    maxOffset = Math.max(0, distance / 2);
+    const setWidth = track.scrollWidth / 2;
+    maxOffset = Math.max(0, setWidth - ticker.clientWidth);
     offset = Math.max(-maxOffset, Math.min(0, offset));
-    track.style.transform = `translate3d(\${offset}px,0,0)`;
+    track.style.transform = 'translate3d(' + offset + 'px,0,0)';
   };
 
-  const setOffset = (value) => {
-    offset = Math.max(-maxOffset, Math.min(0, value));
-    track.style.transform = `translate3d(\${offset}px,0,0)`;
+  const move = (clientX) => {
+    if (!dragging) return;
+    offset = Math.max(-maxOffset, Math.min(0, startOffset + clientX - startX));
+    track.style.transform = 'translate3d(' + offset + 'px,0,0)';
   };
 
-  ticker.addEventListener('pointerdown', (e) => {
+  const begin = (clientX) => {
     dragging = true;
-    startX = e.clientX;
+    startX = clientX;
     startOffset = offset;
     ticker.classList.add('is-dragging');
-    ticker.setPointerCapture?.(e.pointerId);
-  });
-
-  ticker.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
-    setOffset(startOffset + (e.clientX - startX));
-  });
-
-  const stopDrag = (e) => {
-    if (!dragging) return;
-    dragging = false;
-    ticker.classList.remove('is-dragging');
-    ticker.releasePointerCapture?.(e.pointerId);
   };
 
-  ticker.addEventListener('pointerup', stopDrag);
-  ticker.addEventListener('pointercancel', stopDrag);
-  ticker.addEventListener('lostpointercapture', () => {
+  const end = () => {
     dragging = false;
     ticker.classList.remove('is-dragging');
+  };
+
+  // Mobile touch handling
+  ticker.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    begin(e.touches[0].clientX);
+  }, {passive:true});
+
+  ticker.addEventListener('touchmove', e => {
+    if (!dragging || e.touches.length !== 1) return;
+    move(e.touches[0].clientX);
+  }, {passive:true});
+
+  ticker.addEventListener('touchend', end, {passive:true});
+  ticker.addEventListener('touchcancel', end, {passive:true});
+
+  // Desktop mouse handling
+  ticker.addEventListener('mousedown', e => {
+    e.preventDefault();
+    begin(e.clientX);
   });
+  window.addEventListener('mousemove', e => move(e.clientX));
+  window.addEventListener('mouseup', end);
+
   window.addEventListener('resize', measure);
-  measure();
+  requestAnimationFrame(measure);
 })();
