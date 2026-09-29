@@ -44,3 +44,23 @@
 @media(max-width:700px){.investment-card{height:190px;padding:18px}.investment-card-top strong{font-size:24px}.investment-title-row a{font-size:11px}}
 
 .site-logo{display:block;width:39px;height:39px;object-fit:cover;border-radius:50%;overflow:hidden}.site-logo-dashboard,.site-logo-orders{width:39px;height:39px;border-radius:50%;object-fit:cover}.site-logo-landing{width:39px;height:39px;border-radius:50%;object-fit:cover}
+
+/* Simple MS header avatar */
+.profile-avatar{
+  background:#33445f!important;
+  color:#fff!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:13px!important;
+  font-weight:700!important;
+  letter-spacing:.3px;
+}
+@media (max-width:768px){
+  .profile-avatar{
+    width:58px!important;
+    height:58px!important;
+    min-width:58px!important;
+    background:#33445f!important;
+    font-size:15px!important;
+  }
+}
