@@ -5,3 +5,6 @@
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,15px);opacity:0;background:#293b56;color:#fff;padding:10px 16px;border-radius:8px;font-size:12px;transition:.2s;z-index:20}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:1000px){.help-page{width:calc(100% - 30px)}.help-layout{grid-template-columns:1fr 320px}.help-header-inner{width:calc(100% - 30px)}.help-search{width:280px}}
 @media(max-width:750px){.help-header{height:70px}.help-header-inner{width:100%;height:66px;padding:0 13px;gap:14px}.help-primary{gap:14px}.help-primary a{font-size:12px}.help-primary a:nth-child(3){display:none}.help-search{width:34px;overflow:hidden}.help-search input{width:34px;padding:0;font-size:0}.help-search small{display:none}.help-search>span{left:4px}.help-bell{display:none}.help-avatar{width:35px;height:35px}.help-page{width:100%;padding:29px 13px}.help-page>h1{font-size:23px;margin-bottom:23px}.help-layout{grid-template-columns:1fr}.faq-row{height:58px}.faq-row b{font-size:13px}.contact-col h2{margin-top:28px}.quick-links{margin-bottom:20px}}
+
+/* Main Groww logo: use the uploaded favicon.png, matching the rest of the site. */
+.help-logo{display:block;width:39px;height:39px;object-fit:contain;border-radius:50%;}
