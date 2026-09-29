@@ -42,26 +42,45 @@
     <button class="clear-btn" id="clearBtn">Clear all</button>
   </div>
 
-  <section class="empty-orders">
-    <div class="binocular-illustration" aria-hidden="true">
-      <svg viewBox="0 0 220 140">
-        <g fill="none" stroke="#77a6b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M67 35 L93 18 L117 31 L99 106 L63 92 Z"/>
-          <path d="M103 30 L135 14 L158 30 L141 104 L105 90 Z"/>
-          <ellipse cx="78" cy="82" rx="19" ry="27" fill="#d9edf3"/>
-          <ellipse cx="128" cy="80" rx="19" ry="27" fill="#d9edf3"/>
-          <path d="M99 63 L108 63"/>
-        </g>
-        <ellipse cx="105" cy="112" rx="54" ry="8" fill="#6a9baa" opacity=".28"/>
-        <g fill="#77a6b8">
-          <circle cx="48" cy="42" r="2"/><circle cx="177" cy="43" r="2"/><circle cx="188" cy="66" r="3"/>
-        </g>
-        <g stroke="#77a6b8" stroke-width="2"><path d="M50 63 h10 M55 58 v10 M170 38 h12 M176 32 v12"/></g>
-      </svg>
+  <section class="orders-results">
+    <div class="orders-results-head">
+      <h2>Stocks orders</h2>
+      <span>₹60,000 total</span>
     </div>
-    <h2>No results found</h2>
-    <p>Try changing or removing the filters</p>
-    <button class="change-filters" id="changeBtn">Change filters</button>
+    <div class="orders-list">
+      <div class="order-entry">
+        <div class="order-company">
+          <div class="company-logo tata">T</div>
+          <div><b>Tata Motors</b><small>BUY · Regular</small></div>
+        </div>
+        <div class="order-meta"><span>Qty <b>100</b></span><span>Price <b>₹150.00</b></span></div>
+        <div class="order-amount"><b>₹15,000.00</b><span class="status">Executed</span></div>
+      </div>
+      <div class="order-entry">
+        <div class="order-company">
+          <div class="company-logo reliance">R</div>
+          <div><b>Reliance Industries</b><small>BUY · Regular</small></div>
+        </div>
+        <div class="order-meta"><span>Qty <b>100</b></span><span>Price <b>₹200.00</b></span></div>
+        <div class="order-amount"><b>₹20,000.00</b><span class="status">Executed</span></div>
+      </div>
+      <div class="order-entry">
+        <div class="order-company">
+          <div class="company-logo infosys">i</div>
+          <div><b>Infosys</b><small>BUY · Regular</small></div>
+        </div>
+        <div class="order-meta"><span>Qty <b>50</b></span><span>Price <b>₹200.00</b></span></div>
+        <div class="order-amount"><b>₹10,000.00</b><span class="status">Executed</span></div>
+      </div>
+      <div class="order-entry">
+        <div class="order-company">
+          <div class="company-logo hdfc">H</div>
+          <div><b>HDFC Bank</b><small>BUY · Regular</small></div>
+        </div>
+        <div class="order-meta"><span>Qty <b>50</b></span><span>Price <b>₹300.00</b></span></div>
+        <div class="order-amount"><b>₹15,000.00</b><span class="status">Executed</span></div>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -70,12 +89,12 @@
 const toast=(m)=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove("show"),1700)};
 document.getElementById("profile").addEventListener("click",()=>location.href="./dashboard.html");
 document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
-document.getElementById("changeBtn").addEventListener("click",()=>toast("Filters opened"));
 document.getElementById("filterBtn").addEventListener("click",()=>toast("2 filters applied"));
 document.getElementById("clearBtn").addEventListener("click",()=>toast("Filters cleared"));
 document.querySelectorAll(".order-tabs button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".order-tabs button").forEach(x=>x.classList.remove("active"));btn.classList.add("active");toast(btn.textContent+" selected")}));
 document.getElementById("typeFilter").addEventListener("click",()=>toast("Stocks & ETF"));
 document.getElementById("regularFilter").addEventListener("click",()=>toast("Regular"));
+document.querySelectorAll(".order-entry").forEach(row=>row.addEventListener("click",()=>toast(row.querySelector(".order-company b").textContent+" order details")));
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
 </script>
 </body>
