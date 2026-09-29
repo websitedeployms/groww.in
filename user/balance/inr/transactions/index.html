@@ -143,5 +143,18 @@ document.getElementById("clearFilters").addEventListener("click",()=>{
 document.querySelectorAll(".date-input input").forEach(i=>i.addEventListener("change",()=>toast("Date range updated")));
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
 </script>
+<script>
+const pending=JSON.parse(localStorage.getItem("groww_demo_pending_withdrawals")||"[]");
+const list=document.querySelector(".transaction-list");
+pending.forEach(item=>{
+  const row=document.createElement("div");
+  row.className="transaction-row pending-row";
+  const d=new Date(item.date);
+  const ds=d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+  const ts=d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+  row.innerHTML='<span class="transaction-status pending">⏳</span><div class="transaction-copy"><b>Withdraw</b><small>'+ds+', '+ts+' · Pending</small></div><strong>−₹'+Number(item.amount).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})+'</strong>';
+  list.prepend(row);
+});
+</script>
 </body>
 </html>
