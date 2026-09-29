@@ -605,36 +605,27 @@ button,a,input{min-height:40px}
 }
 
 
-/* --- Continuous NIFTY/SENSEX market ticker: right-to-left --- */
-@keyframes marketTickerRTL{
-  from{transform:translate3d(0,0,0)}
-  to{transform:translate3d(-50%,0,0)}
-}
+/* --- Manual NIFTY/SENSEX ticker drag --- */
 .app-header .ticker-row{
   position:relative!important;
   overflow:hidden!important;
   white-space:nowrap!important;
+  cursor:grab!important;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+  touch-action:pan-y!important;
 }
+.app-header .ticker-row.is-dragging{cursor:grabbing!important}
 .app-header .ticker-inner{
   display:flex!important;
   width:max-content!important;
   min-width:max-content!important;
   flex-wrap:nowrap!important;
-  animation:marketTickerRTL 24s linear infinite!important;
+  animation:none!important;
   will-change:transform!important;
+  transform:translate3d(0,0,0);
 }
 .app-header .ticker-inner>div{
   flex:0 0 auto!important;
   white-space:nowrap!important;
-}
-@media (max-width:680px){
-  .app-header .ticker-inner{
-    animation-duration:20s!important;
-  }
-}
-@media (prefers-reduced-motion:reduce){
-  .app-header .ticker-inner{
-    animation:none!important;
-    transform:none!important;
-  }
 }
