@@ -605,16 +605,24 @@ button,a,input{min-height:40px}
 }
 
 
-/* --- Manual NIFTY/SENSEX ticker drag --- */
+
+/* --- Manual horizontal NIFTY/SENSEX ticker --- */
 .app-header .ticker-row{
   position:relative!important;
-  overflow:hidden!important;
+  width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
   white-space:nowrap!important;
   cursor:grab!important;
   user-select:none!important;
   -webkit-user-select:none!important;
-  touch-action:pan-y!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-x:contain!important;
+  scrollbar-width:none!important;
+  -ms-overflow-style:none!important;
+  touch-action:pan-x!important;
 }
+.app-header .ticker-row::-webkit-scrollbar{display:none!important}
 .app-header .ticker-row.is-dragging{cursor:grabbing!important}
 .app-header .ticker-inner{
   display:flex!important;
@@ -622,33 +630,8 @@ button,a,input{min-height:40px}
   min-width:max-content!important;
   flex-wrap:nowrap!important;
   animation:none!important;
-  will-change:transform!important;
-  transform:translate3d(0,0,0);
-}
-.app-header .ticker-inner>div{
-  flex:0 0 auto!important;
-  white-space:nowrap!important;
-}
-
-
-/* --- Manual market ticker: touch swipe + mouse drag --- */
-.app-header .ticker-row{
-  position:relative!important;
-  overflow:hidden!important;
-  white-space:nowrap!important;
-  cursor:grab!important;
-  user-select:none!important;
-  -webkit-user-select:none!important;
-  touch-action:pan-y!important;
-}
-.app-header .ticker-row.is-dragging{cursor:grabbing!important}
-.app-header .ticker-inner{
-  display:flex!important;
-  width:max-content!important;
-  min-width:max-content!important;
-  flex-wrap:nowrap!important;
-  animation:none!important;
-  will-change:transform!important;
+  transform:none!important;
+  margin:0!important;
 }
 .app-header .ticker-inner>div{
   flex:0 0 auto!important;
