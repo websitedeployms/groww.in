@@ -1,6 +1,6 @@
 :root{--ink:#4b5164;--navy:#2e3d59;--muted:#808999;--line:#e6e8ec;--green:#00b98a;--red:#ff4c38}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);background:#fff}button,input{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
-.app-header{height:157px;background:#fff;border-top:4px solid #344157;position:sticky;top:0;z-index:50}
+.app-header{height:157px;background:#fff;border-top:0!important;position:sticky;top:0;z-index:50}
 .header-inner{height:72px;width:min(1360px,calc(100% - 56px));margin:auto;display:flex;align-items:center;gap:21px}
 .brand-mark-only{width:40px;height:40px;display:grid;place-items:center}.brand-symbol{display:block;width:39px;height:39px;border-radius:50%;position:relative;overflow:hidden;background:linear-gradient(160deg,#5b6bff 0 50%,#09d9a8 51% 100%)}.brand-symbol i{position:absolute;width:7px;background:#fff;border-radius:9px;transform:rotate(52deg)}.brand-symbol i:nth-child(1){height:16px;left:9px;top:12px}.brand-symbol i:nth-child(2){height:24px;left:17px;top:7px}.brand-symbol i:nth-child(3){height:13px;right:6px;top:15px}
 .primary-nav{display:flex;gap:28px}.primary-nav a{font-size:18px;color:#59647a}.primary-nav a.active{font-weight:700;color:#2d3d59}.header-grow{flex:1}
@@ -64,3 +64,8 @@
     font-size:15px!important;
   }
 }
+
+
+/* PWA: keep the app header clean directly below the Android status bar */
+html, body { background:#fff; color-scheme:light; }
+.app-header { border-top:0!important; }
