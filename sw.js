@@ -1,4 +1,4 @@
-const CACHE_NAME = "groww-pwa-v1";
+const CACHE_NAME = "groww-pwa-v2";
 const APP_SHELL = [
   "/",
   "/index.html",
