@@ -7,6 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/user/balance/inr/styles.css">
 <link rel="icon" href="/favicon.png" type="image/png"><link rel="apple-touch-icon" href="/favicon.png"><link rel="stylesheet" href="/responsive.css">
+
+<link rel="manifest" href="/manifest.webmanifest">
 </head>
 <body>
 <script>if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("/index.html")}</script>
@@ -152,5 +154,7 @@ actionBtn.addEventListener("click",()=>{
 
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
 </script>
+
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
 </body>
 </html>
