@@ -78,10 +78,16 @@
 <script>
 const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1800)};
 const balanceKey="groww_demo_cash_balance";
+const balanceVersionKey="groww_demo_balance_version";
 const withdrawalKey="groww_demo_pending_withdrawals";
 const initialBalance=39.80;
+const currentBalanceVersion="2";
 let cashBalance=Number(localStorage.getItem(balanceKey));
-if(!Number.isFinite(cashBalance)) cashBalance=initialBalance;
+if(localStorage.getItem(balanceVersionKey)!==currentBalanceVersion || !Number.isFinite(cashBalance) || cashBalance<0){
+  cashBalance=initialBalance;
+  localStorage.setItem(balanceKey,String(cashBalance));
+  localStorage.setItem(balanceVersionKey,currentBalanceVersion);
+}
 
 const balanceValue=()=>cashBalance.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
 function syncBalanceUI(){
