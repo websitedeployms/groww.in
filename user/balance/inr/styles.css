@@ -10,3 +10,7 @@
   pointer-events:auto!important;
   touch-action:manipulation;
 }
+
+/* Prevent the hidden popup from blocking taps; only the visible popup is interactive */
+.toast{pointer-events:none!important}
+.toast.show{pointer-events:auto!important}
