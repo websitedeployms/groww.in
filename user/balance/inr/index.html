@@ -79,7 +79,8 @@
 
 <div class="toast" id="toast" role="alert" aria-live="assertive"><span id="toastMessage"></span><button class="toast-close" id="toastClose" type="button" aria-label="Close notification">×</button></div>
 <script>
-const toast=m=>{const t=document.getElementById("toast");document.getElementById("toastMessage").textContent=m;t.classList.add("show");clearTimeout(window.__toast)};\nconst closeToast=()=>document.getElementById("toast").classList.remove("show");\ndocument.getElementById("toastClose").addEventListener("click",closeToast);
+const toast=m=>{const t=document.getElementById("toast");document.getElementById("toastMessage").textContent=m;t.classList.add("show");clearTimeout(window.__toast)};
+const closeToast=()=>document.getElementById("toast").classList.remove("show");\ndocument.getElementById("toastClose").addEventListener("click",closeToast);
 const balanceKey="groww_demo_cash_balance";
 const balanceVersionKey="groww_demo_balance_version";
 const withdrawalKey="groww_demo_pending_withdrawals";
