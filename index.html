@@ -10,6 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./login.css">
 <link rel="icon" href="/favicon.png" type="image/png"><link rel="apple-touch-icon" href="/favicon.png"><link rel="stylesheet" href="/responsive.css">
+
+<link rel="manifest" href="/manifest.webmanifest">
 </head>
 <body>
 <script>
@@ -393,6 +395,12 @@ document.getElementById("loginForm").addEventListener("submit",(e)=>{
   setTimeout(()=>location.replace("./dashboard.html"),450);
 });
 email.addEventListener("input",()=>emailError.textContent="");
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+}
 </script>
 </body>
 </html>
