@@ -17,3 +17,5 @@
 @media(max-width:700px){.holding-summary{grid-template-columns:1fr 1fr}.holdings-head,.holding-row{grid-template-columns:1.6fr .6fr 1fr 1fr}.holdings-head>span:nth-child(5),.holdings-head>span:nth-child(6),.holding-row>.metric:nth-child(5),.holding-row>.metric:nth-child(6){display:none}}
 
 .site-logo{display:block;width:39px;height:39px;object-fit:cover;border-radius:50%;overflow:hidden}.site-logo-dashboard,.site-logo-orders{width:39px;height:39px;border-radius:50%;object-fit:cover}.site-logo-landing{width:39px;height:39px;border-radius:50%;object-fit:cover}
+
+.site-logo{display:block;width:39px;height:39px;object-fit:cover;border-radius:50%;overflow:hidden}.site-logo-dashboard,.site-logo-orders{width:39px;height:39px;border-radius:50%;object-fit:cover}.site-logo-landing{width:39px;height:39px;border-radius:50%;object-fit:cover}
