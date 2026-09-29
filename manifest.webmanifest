@@ -1,0 +1,39 @@
+{
+  "name": "Groww",
+  "short_name": "Groww",
+  "description": "Groww investment platform replica",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#00b386",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "url": "/dashboard.html",
+      "icons": [{ "src": "/favicon.png", "sizes": "any", "type": "image/png" }]
+    },
+    {
+      "name": "Orders",
+      "short_name": "Orders",
+      "url": "/orders.html",
+      "icons": [{ "src": "/favicon.png", "sizes": "any", "type": "image/png" }]
+    },
+    {
+      "name": "Holdings",
+      "short_name": "Holdings",
+      "url": "/holdings/",
+      "icons": [{ "src": "/favicon.png", "sizes": "any", "type": "image/png" }]
+    }
+  ]
+}
