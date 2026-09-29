@@ -10,6 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./login.css">
 <link rel="stylesheet" href="/responsive.css">
+
+<link rel="manifest" href="/manifest.webmanifest">
 </head>
 <body>
 <script>
@@ -85,6 +87,12 @@ document.getElementById("googleBtn").addEventListener("click",()=>{
   showToast("Google demo login successful");
   setTimeout(()=>location.replace("./dashboard.html"),450);
 });
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+}
 </script>
 </body>
 </html>
