@@ -329,62 +329,38 @@ document.getElementById("logoutBtn").addEventListener("click",()=>{
     location.replace("./index.html");
   }
 });
-/* Manual market ticker drag/swipe */
+
+/* Native horizontal market ticker: swipe on touch + drag with mouse */
 (() => {
   const ticker = document.querySelector('.ticker-row');
-  const track = document.querySelector('.ticker-row .ticker-inner');
-  if (!ticker || !track) return;
+  if (!ticker) return;
 
-  let isDragging = false;
+  let dragging = false;
   let startX = 0;
-  let startOffset = 0;
-  let offset = 0;
-  let maxOffset = 0;
-
-  const measure = () => {
-    const copyWidth = track.scrollWidth / 2;
-    maxOffset = Math.max(0, copyWidth - ticker.clientWidth);
-    offset = Math.max(-maxOffset, Math.min(0, offset));
-    track.style.transform = 'translate3d(' + offset + 'px,0,0)';
-  };
-
-  const begin = (x) => {
-    isDragging = true;
-    startX = x;
-    startOffset = offset;
-    ticker.classList.add('is-dragging');
-  };
-
-  const move = (x) => {
-    if (!isDragging) return;
-    const next = startOffset + (x - startX);
-    offset = Math.max(-maxOffset, Math.min(0, next));
-    track.style.transform = 'translate3d(' + offset + 'px,0,0)';
-  };
-
-  const end = () => {
-    isDragging = false;
-    ticker.classList.remove('is-dragging');
-  };
+  let startScroll = 0;
 
   ticker.addEventListener('pointerdown', (e) => {
-    begin(e.clientX);
+    if (e.pointerType === 'mouse') e.preventDefault();
+    dragging = true;
+    startX = e.clientX;
+    startScroll = ticker.scrollLeft;
+    ticker.classList.add('is-dragging');
     ticker.setPointerCapture?.(e.pointerId);
   });
 
-  ticker.addEventListener('pointermove', (e) => move(e.clientX));
-
-  ticker.addEventListener('pointerup', (e) => {
-    end();
-    ticker.releasePointerCapture?.(e.pointerId);
+  ticker.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    ticker.scrollLeft = startScroll - (e.clientX - startX);
   });
 
-  ticker.addEventListener('pointercancel', end);
+  const stop = (e) => {
+    dragging = false;
+    ticker.classList.remove('is-dragging');
+    ticker.releasePointerCapture?.(e.pointerId);
+  };
 
-  ticker.addEventListener('dragstart', (e) => e.preventDefault());
-
-  window.addEventListener('resize', measure);
-  requestAnimationFrame(measure);
+  ticker.addEventListener('pointerup', stop);
+  ticker.addEventListener('pointercancel', stop);
 })();
 
 </script>
