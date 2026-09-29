@@ -79,81 +79,193 @@
 
 <div class="toast" id="toast" role="alert" aria-live="assertive"><span id="toastMessage"></span><button class="toast-close" id="toastClose" type="button" aria-label="Close notification">×</button></div>
 <script>
-const toast=m=>{const t=document.getElementById("toast");document.getElementById("toastMessage").textContent=m;t.classList.add("show");clearTimeout(window.__toast)};
-const closeToast=()=>document.getElementById("toast").classList.remove("show");\ndocument.getElementById("toastClose").addEventListener("click",closeToast);
-const balanceKey="groww_demo_cash_balance";
-const balanceVersionKey="groww_demo_balance_version";
-const withdrawalKey="groww_demo_pending_withdrawals";
-const initialBalance=39.80;
-const currentBalanceVersion="2";
-let cashBalance=Number(localStorage.getItem(balanceKey));
-if(localStorage.getItem(balanceVersionKey)!==currentBalanceVersion || !Number.isFinite(cashBalance) || cashBalance<0){
-  cashBalance=initialBalance;
-  localStorage.setItem(balanceKey,String(cashBalance));
-  localStorage.setItem(balanceVersionKey,currentBalanceVersion);
+const toast = (message) => {
+  const t = document.getElementById("toast");
+  const m = document.getElementById("toastMessage");
+  if (!t || !m) return;
+  m.textContent = message;
+  t.classList.add("show");
+};
+
+const closeToast = () => {
+  const t = document.getElementById("toast");
+  if (t) t.classList.remove("show");
+};
+
+document.getElementById("toastClose")?.addEventListener("click", closeToast);
+
+const balanceKey = "groww_demo_cash_balance";
+const balanceVersionKey = "groww_demo_balance_version";
+const withdrawalKey = "groww_demo_pending_withdrawals";
+const initialBalance = 39.80;
+const currentBalanceVersion = "3";
+
+let cashBalance = Number(localStorage.getItem(balanceKey));
+if (
+  localStorage.getItem(balanceVersionKey) !== currentBalanceVersion ||
+  !Number.isFinite(cashBalance) ||
+  cashBalance < 0
+) {
+  cashBalance = initialBalance;
+  localStorage.setItem(balanceKey, String(cashBalance));
+  localStorage.setItem(balanceVersionKey, currentBalanceVersion);
 }
 
-const balanceValue=()=>cashBalance.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
-function syncBalanceUI(){
-  document.querySelector(".summary-head strong").innerHTML="₹<b>"+Math.floor(cashBalance).toLocaleString("en-IN")+"</b><sup>."+String(Math.round((cashBalance%1)*100)).padStart(2,"0")+"</sup>";
-  document.getElementById("cashBtn").innerHTML="₹"+balanceValue()+" <i></i>";
+const balanceValue = () =>
+  cashBalance.toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+function syncBalanceUI() {
+  const summary = document.querySelector(".summary-head strong");
+  const cash = document.getElementById("cashBtn");
+  if (summary) {
+    const whole = Math.floor(cashBalance).toLocaleString("en-IN");
+    const paise = String(Math.round((cashBalance % 1) * 100)).padStart(2, "0");
+    summary.innerHTML = "₹<b>" + whole + "</b><sup>." + paise + "</sup>";
+  }
+  if (cash) cash.innerHTML = "₹" + balanceValue() + " <i></i>";
 }
+
 syncBalanceUI();
 
-document.getElementById("profile").addEventListener("click",()=>location.href="/dashboard.html");
-document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
-document.getElementById("transactionsBtn").addEventListener("click",()=>{location.href="/user/balance/inr/transactions"});
-document.getElementById("cashBtn").addEventListener("click",()=>toast("Cash balance: ₹"+balanceValue()));
-document.getElementById("pledgeBtn").addEventListener("click",()=>toast("Pledge flow opened"));
-document.getElementById("instantBtn").addEventListener("click",()=>toast("Pledge flow opened"));
-document.getElementById("bankPay").addEventListener("click",()=>toast(document.querySelector('.money-tabs button.active').dataset.tab==="withdraw"?"Withdrawal bank: SBI ••••4181":"Payment method: SBI ••••4181"));
-
-const amountDisplay=document.getElementById("amountDisplay");
-const withdrawInput=document.getElementById("withdrawInput");
-const actionBtn=document.getElementById("addMoneyBtn");
-
-function updateActionMode(isAdd){
-  amountDisplay.style.display=isAdd?"block":"none";
-  withdrawInput.style.display=isAdd?"none":"block";
-  document.getElementById("paymentTitle").textContent=isAdd?"Scan QR to pay":"Withdraw to bank";
-  actionBtn.textContent=isAdd?"Add money":"Withdraw";
-}
-document.querySelectorAll(".money-tabs button").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".money-tabs button").forEach(x=>x.classList.remove("active"));
-  btn.classList.add("active");
-  const isAdd=btn.dataset.tab==="add";
-  updateActionMode(isAdd);
-  toast(isAdd?"Add money":"Withdraw");
-}));
-updateActionMode(true);
-
-document.querySelectorAll(".amount-chips button").forEach(btn=>btn.addEventListener("click",()=>{
-  const amount=Number(btn.dataset.amount);
-  if(document.querySelector('.money-tabs button.active').dataset.tab==="withdraw"){
-    withdrawInput.value=amount;
-  }else{
-    amountDisplay.textContent="₹"+amount.toLocaleString("en-IN");
-  }
-  toast("Amount selected");
-}));
-
-actionBtn.addEventListener("click",()=>{
-  const isWithdraw=document.querySelector('.money-tabs button.active').dataset.tab==="withdraw";
-  if(!isWithdraw){toast("Add money selected");return;}
-  const amount=Number(withdrawInput.value || 5000);
-  if(!Number.isFinite(amount) || amount<=0){toast("Enter a valid withdrawal amount");return;}
-  if(amount>cashBalance+0.0001){toast("Insufficient balance. Available ₹"+balanceValue());return;}
-  cashBalance=Number((cashBalance-amount).toFixed(2));
-  localStorage.setItem(balanceKey,String(cashBalance));
-  const pending=JSON.parse(localStorage.getItem(withdrawalKey)||"[]");
-  pending.unshift({amount,date:new Date().toISOString(),status:"Pending"});
-  localStorage.setItem(withdrawalKey,JSON.stringify(pending));
-  syncBalanceUI();
-  toast("₹"+amount.toLocaleString("en-IN",{minimumFractionDigits:2})+" withdrawal requested. It should be credited within 15–20 working days.");
-  withdrawInput.value="";
+document.getElementById("profile")?.addEventListener("click", () => {
+  location.href = "/dashboard.html";
 });
 
-document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
+document.getElementById("bell")?.addEventListener("click", () => {
+  toast("No new notifications");
+});
+
+document.getElementById("transactionsBtn")?.addEventListener("click", () => {
+  location.href = "/user/balance/inr/transactions/";
+});
+
+document.getElementById("cashBtn")?.addEventListener("click", () => {
+  toast("Cash balance: ₹" + balanceValue());
+});
+
+document.getElementById("pledgeBtn")?.addEventListener("click", () => {
+  toast("Pledge flow opened");
+});
+
+document.getElementById("instantBtn")?.addEventListener("click", () => {
+  toast("Pledge flow opened");
+});
+
+const amountDisplay = document.getElementById("amountDisplay");
+const withdrawInput = document.getElementById("withdrawInput");
+const actionBtn = document.getElementById("addMoneyBtn");
+const paymentTitle = document.getElementById("paymentTitle");
+const bankPay = document.getElementById("bankPay");
+const tabs = Array.from(document.querySelectorAll(".money-tabs button"));
+const chips = Array.from(document.querySelectorAll(".amount-chips button"));
+
+function isWithdrawMode() {
+  const active = document.querySelector(".money-tabs button.active");
+  return active?.dataset.tab === "withdraw";
+}
+
+function updateActionMode(isAdd) {
+  if (amountDisplay) amountDisplay.style.display = isAdd ? "block" : "none";
+  if (withdrawInput) withdrawInput.style.display = isAdd ? "none" : "block";
+  if (paymentTitle) paymentTitle.textContent = isAdd ? "Scan QR to pay" : "Withdraw to bank";
+  if (actionBtn) actionBtn.textContent = isAdd ? "Add money" : "Withdraw";
+}
+
+tabs.forEach((tab) => {
+  tab.addEventListener("click", (event) => {
+    event.preventDefault();
+    tabs.forEach((item) => item.classList.remove("active"));
+    tab.classList.add("active");
+    updateActionMode(tab.dataset.tab !== "withdraw");
+    closeToast();
+  });
+});
+
+chips.forEach((chip) => {
+  chip.addEventListener("click", (event) => {
+    event.preventDefault();
+    const amount = Number(chip.dataset.amount || 0);
+    if (!Number.isFinite(amount)) return;
+
+    if (isWithdrawMode()) {
+      if (withdrawInput) {
+        withdrawInput.value = String(amount);
+        withdrawInput.focus();
+      }
+    } else if (amountDisplay) {
+      amountDisplay.textContent = "₹" + amount.toLocaleString("en-IN");
+    }
+  });
+});
+
+bankPay?.addEventListener("click", (event) => {
+  event.preventDefault();
+  toast(isWithdrawMode() ? "Withdrawal bank: SBI ••••4181" : "Payment method: SBI ••••4181");
+});
+
+actionBtn?.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  if (!isWithdrawMode()) {
+    toast("Add money selected");
+    return;
+  }
+
+  const amount = Number(withdrawInput?.value || 0);
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    toast("Enter a valid withdrawal amount");
+    return;
+  }
+
+  if (amount > cashBalance + 0.0001) {
+    toast("Insufficient balance. Available ₹" + balanceValue());
+    return;
+  }
+
+  cashBalance = Number((cashBalance - amount).toFixed(2));
+  localStorage.setItem(balanceKey, String(cashBalance));
+
+  let pending = [];
+  try {
+    pending = JSON.parse(localStorage.getItem(withdrawalKey) || "[]");
+    if (!Array.isArray(pending)) pending = [];
+  } catch (_) {
+    pending = [];
+  }
+
+  pending.unshift({
+    amount,
+    date: new Date().toISOString(),
+    status: "Pending"
+  });
+
+  localStorage.setItem(withdrawalKey, JSON.stringify(pending));
+  syncBalanceUI();
+
+  toast(
+    "₹" +
+      amount.toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) +
+      " withdrawal requested."
+  );
+
+  if (withdrawInput) withdrawInput.value = "";
+});
+
+document.addEventListener("keydown", (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+    event.preventDefault();
+    document.getElementById("search")?.focus();
+  }
+});
+
+updateActionMode(true);
 </script>
 
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
