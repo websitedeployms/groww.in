@@ -333,3 +333,114 @@ button,a,input{min-height:40px}
     display:none!important;
   }
 }
+
+/* --- Mobile header: compact, centered and evenly aligned --- */
+@media (max-width:768px){
+  .app-header .header-inner{
+    height:76px!important;
+    min-height:76px!important;
+    padding:0 28px!important;
+    gap:0!important;
+    display:flex!important;
+    align-items:center!important;
+    border-bottom:0!important;
+  }
+  .app-header .brand-mark-only{
+    width:58px!important;
+    height:58px!important;
+    flex:0 0 58px!important;
+    margin-right:12px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+  }
+  .app-header .site-logo,
+  .app-header .site-logo-dashboard{
+    width:58px!important;
+    height:58px!important;
+    max-width:none!important;
+    border-radius:50%!important;
+    object-fit:contain!important;
+  }
+  .app-header .primary-nav{
+    flex:0 0 auto!important;
+    width:auto!important;
+    gap:26px!important;
+    min-width:0!important;
+    height:76px!important;
+    display:flex!important;
+    align-items:center!important;
+  }
+  .app-header .primary-nav a{
+    margin:0!important;
+    padding:0!important;
+    font-size:18px!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+  .app-header .primary-nav a:nth-child(3){display:none!important}
+  .app-header .header-grow{
+    display:block!important;
+    flex:1 1 auto!important;
+    min-width:10px!important;
+  }
+  .app-header .search-box{
+    width:58px!important;
+    min-width:58px!important;
+    flex:0 0 58px!important;
+    height:58px!important;
+    margin:0!important;
+  }
+  .app-header .search-box input{
+    width:58px!important;
+    height:58px!important;
+    border-radius:18px!important;
+    padding:0!important;
+    background:#fff!important;
+  }
+  .app-header .search-box .search-icon{
+    left:14px!important;
+    top:9px!important;
+    font-size:33px!important;
+    line-height:1!important;
+  }
+  .app-header .profile-wrap{
+    margin-left:22px!important;
+    width:58px!important;
+    height:58px!important;
+    flex:0 0 58px!important;
+  }
+  .app-header .profile-avatar{
+    width:58px!important;
+    height:58px!important;
+    min-width:58px!important;
+    border-radius:50%!important;
+    font-size:14px!important;
+  }
+  .app-header .subnav-row{
+    height:58px!important;
+    min-height:58px!important;
+    padding:0 28px!important;
+  }
+  .app-header .subnav{
+    height:58px!important;
+  }
+  .app-header .subnav a{
+    height:58px!important;
+    padding:0 16px!important;
+    font-size:18px!important;
+  }
+  .app-header .ticker-row{
+    height:46px!important;
+    min-height:46px!important;
+  }
+  .app-header .ticker-inner{
+    height:46px!important;
+    padding:0 28px!important;
+    gap:34px!important;
+  }
+  .app-header .ticker-inner>div{
+    font-size:14px!important;
+    gap:8px!important;
+  }
+}
