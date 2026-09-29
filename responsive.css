@@ -629,3 +629,28 @@ button,a,input{min-height:40px}
   flex:0 0 auto!important;
   white-space:nowrap!important;
 }
+
+
+/* --- Manual market ticker: touch swipe + mouse drag --- */
+.app-header .ticker-row{
+  position:relative!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  cursor:grab!important;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+  touch-action:pan-y!important;
+}
+.app-header .ticker-row.is-dragging{cursor:grabbing!important}
+.app-header .ticker-inner{
+  display:flex!important;
+  width:max-content!important;
+  min-width:max-content!important;
+  flex-wrap:nowrap!important;
+  animation:none!important;
+  will-change:transform!important;
+}
+.app-header .ticker-inner>div{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
