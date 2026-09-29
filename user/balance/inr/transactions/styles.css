@@ -12,3 +12,5 @@
 @media(max-width:720px){.transactions-results{min-height:420px}.transaction-row{grid-template-columns:30px 1fr auto;min-height:66px}.transaction-copy b{font-size:13px}.transaction-copy small{font-size:10px}.transaction-row>strong{font-size:12px}.filtered-empty{padding-top:80px}}
 
 .transaction-status.pending{color:#d59a00;background:#fff7df}.pending-row .transaction-copy b{color:#4b5365}.pending-row>strong{color:#4b5365}
+
+.site-logo{display:block;width:39px;height:39px;object-fit:cover;border-radius:50%;overflow:hidden}
