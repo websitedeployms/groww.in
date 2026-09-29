@@ -19,3 +19,17 @@
 @media(max-width:760px){.bank-header{height:70px}.bank-header-inner{width:100%;height:66px;padding:0 13px;gap:14px}.bank-nav{gap:13px}.bank-nav a{font-size:12px}.bank-nav a:nth-child(3){display:none}.bank-search{width:34px;overflow:hidden}.bank-search input{width:34px;padding:0;font-size:0}.bank-search small{display:none}.bank-search>span{left:4px}.bank-bell{display:none}.bank-avatar{width:35px;height:35px}.bank-page{width:100%;padding:30px 14px}.bank-page h1{font-size:22px;margin-bottom:24px}.bank-layout{grid-template-columns:1fr}.bank-details-card{min-height:0}.bank-list-row{height:80px;grid-template-columns:45px 1fr 76px 22px;padding:0 13px}.bank-list-row strong,.masked-short{font-size:12px}.add-bank{height:65px;font-size:13px}.bank-details-head{height:100px;padding:0 18px}.bank-details-head h2{font-size:19px}.details-grid{grid-template-columns:120px 1fr;padding:0 18px 28px;row-gap:22px;font-size:13px}.autopay-row{height:90px}.help-card{margin:18px;height:auto;min-height:62px;padding:12px 16px;font-size:11px}}
 
 .sbi-logo{overflow:hidden;background:#fff}.sbi-logo img{width:100%;height:100%;object-fit:contain;display:block}.sbi-logo.large img{width:100%;height:100%;object-fit:contain}
+
+/* Use the uploaded Sbi.png exactly; remove the previous CSS-drawn SBI mark. */
+.sbi-logo::before,
+.sbi-logo::after,
+.sbi-logo span { display:none !important; content:none !important; }
+.sbi-logo img {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  position:relative !important;
+  z-index:5 !important;
+}
