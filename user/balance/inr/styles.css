@@ -11,3 +11,19 @@
 .withdraw-input{display:none;width:min(310px,84%);height:48px;margin:0 auto 16px;border:1px solid #dce2e8;border-radius:10px;padding:0 15px;text-align:center;font-size:24px;font-weight:600;color:#4b5365;outline:none}.withdraw-input:focus{border-color:#00b98a;box-shadow:0 0 0 2px rgba(0,185,138,.08)}
 
 .site-logo{display:block;width:39px;height:39px;object-fit:cover;border-radius:50%;overflow:hidden}
+
+/* Mobile: keep the Add money / Withdraw CTA fully visible inside the card */
+@media(max-width:760px){
+  .money-card{
+    height:auto;
+    min-height:0;
+    overflow:hidden;
+  }
+  .money-body{
+    height:280px;
+    min-height:280px;
+  }
+  .add-money-btn{
+    margin:17px 14px 18px;
+  }
+}
