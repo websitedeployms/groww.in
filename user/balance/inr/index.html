@@ -53,219 +53,239 @@
 
     <section class="money-card">
       <div class="money-tabs">
-        <button class="active" data-tab="add">Add money</button>
-        <button data-tab="withdraw">Withdraw</button>
+        <button type="button" class="active" data-tab="add">Add money</button>
+        <button type="button" data-tab="withdraw">Withdraw</button>
       </div>
 
       <div class="money-body">
         <div class="amount-display" id="amountDisplay">₹100</div>
         <input class="withdraw-input" id="withdrawInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter withdrawal amount" aria-label="Withdrawal amount">
         <div class="amount-chips">
-          <button data-amount="100">+₹100</button>
-          <button data-amount="5000">+₹5,000</button>
-          <button data-amount="10000">+₹10,000</button>
+          <button type="button" data-amount="100">+₹100</button>
+          <button type="button" data-amount="5000">+₹5,000</button>
+          <button type="button" data-amount="10000">+₹10,000</button>
         </div>
       </div>
 
-      <button class="bank-pay" id="bankPay">
+      <button type="button" class="bank-pay" id="bankPay">
         <span class="upi-logo">◢</span>
         <span><b id="paymentTitle">Scan QR to pay</b><small>STATE BANK OF INDIA ••••4181</small></span>
         <b class="arrow">›</b>
       </button>
-      <button class="add-money-btn" id="addMoneyBtn">Add money</button>
+      <button type="button" class="add-money-btn" id="addMoneyBtn">Add money</button>
     </section>
   </div>
 </main>
 
 <div class="toast" id="toast" role="alert" aria-live="assertive"><span id="toastMessage"></span><button class="toast-close" id="toastClose" type="button" aria-label="Close notification">×</button></div>
 <script>
-const toast = (message) => {
-  const t = document.getElementById("toast");
-  const m = document.getElementById("toastMessage");
-  if (!t || !m) return;
-  m.textContent = message;
-  t.classList.add("show");
-};
+(function () {
+  "use strict";
 
-const closeToast = () => {
-  const t = document.getElementById("toast");
-  if (t) t.classList.remove("show");
-};
+  var toastEl = document.getElementById("toast");
+  var toastMessage = document.getElementById("toastMessage");
+  var closeBtn = document.getElementById("toastClose");
 
-document.getElementById("toastClose")?.addEventListener("click", closeToast);
-
-const balanceKey = "groww_demo_cash_balance";
-const balanceVersionKey = "groww_demo_balance_version";
-const withdrawalKey = "groww_demo_pending_withdrawals";
-const initialBalance = 39.80;
-const currentBalanceVersion = "3";
-
-let cashBalance = Number(localStorage.getItem(balanceKey));
-if (
-  localStorage.getItem(balanceVersionKey) !== currentBalanceVersion ||
-  !Number.isFinite(cashBalance) ||
-  cashBalance < 0
-) {
-  cashBalance = initialBalance;
-  localStorage.setItem(balanceKey, String(cashBalance));
-  localStorage.setItem(balanceVersionKey, currentBalanceVersion);
-}
-
-const balanceValue = () =>
-  cashBalance.toLocaleString("en-IN", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-
-function syncBalanceUI() {
-  const summary = document.querySelector(".summary-head strong");
-  const cash = document.getElementById("cashBtn");
-  if (summary) {
-    const whole = Math.floor(cashBalance).toLocaleString("en-IN");
-    const paise = String(Math.round((cashBalance % 1) * 100)).padStart(2, "0");
-    summary.innerHTML = "₹<b>" + whole + "</b><sup>." + paise + "</sup>";
+  function toast(message) {
+    if (!toastEl || !toastMessage) return;
+    toastMessage.textContent = String(message);
+    toastEl.classList.add("show");
   }
-  if (cash) cash.innerHTML = "₹" + balanceValue() + " <i></i>";
-}
 
-syncBalanceUI();
+  function closeToast() {
+    if (toastEl) toastEl.classList.remove("show");
+  }
 
-document.getElementById("profile")?.addEventListener("click", () => {
-  location.href = "/dashboard.html";
-});
+  if (closeBtn) closeBtn.addEventListener("click", closeToast);
 
-document.getElementById("bell")?.addEventListener("click", () => {
-  toast("No new notifications");
-});
+  var balanceKey = "groww_demo_cash_balance";
+  var balanceVersionKey = "groww_demo_balance_version";
+  var withdrawalKey = "groww_demo_pending_withdrawals";
+  var initialBalance = 39.80;
+  var currentBalanceVersion = "4";
 
-document.getElementById("transactionsBtn")?.addEventListener("click", () => {
-  location.href = "/user/balance/inr/transactions/";
-});
+  var storedBalance = Number(localStorage.getItem(balanceKey));
+  var storedVersion = localStorage.getItem(balanceVersionKey);
 
-document.getElementById("cashBtn")?.addEventListener("click", () => {
-  toast("Cash balance: ₹" + balanceValue());
-});
+  if (storedVersion !== currentBalanceVersion || !Number.isFinite(storedBalance) || storedBalance < 0) {
+    storedBalance = initialBalance;
+    localStorage.setItem(balanceKey, String(storedBalance));
+    localStorage.setItem(balanceVersionKey, currentBalanceVersion);
+  }
 
-document.getElementById("pledgeBtn")?.addEventListener("click", () => {
-  toast("Pledge flow opened");
-});
+  var cashBalance = storedBalance;
 
-document.getElementById("instantBtn")?.addEventListener("click", () => {
-  toast("Pledge flow opened");
-});
+  function balanceValue() {
+    return cashBalance.toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
 
-const amountDisplay = document.getElementById("amountDisplay");
-const withdrawInput = document.getElementById("withdrawInput");
-const actionBtn = document.getElementById("addMoneyBtn");
-const paymentTitle = document.getElementById("paymentTitle");
-const bankPay = document.getElementById("bankPay");
-const tabs = Array.from(document.querySelectorAll(".money-tabs button"));
-const chips = Array.from(document.querySelectorAll(".amount-chips button"));
+  function syncBalanceUI() {
+    var summary = document.querySelector(".summary-head strong");
+    var cash = document.getElementById("cashBtn");
 
-function isWithdrawMode() {
-  const active = document.querySelector(".money-tabs button.active");
-  return active?.dataset.tab === "withdraw";
-}
-
-function updateActionMode(isAdd) {
-  if (amountDisplay) amountDisplay.style.display = isAdd ? "block" : "none";
-  if (withdrawInput) withdrawInput.style.display = isAdd ? "none" : "block";
-  if (paymentTitle) paymentTitle.textContent = isAdd ? "Scan QR to pay" : "Withdraw to bank";
-  if (actionBtn) actionBtn.textContent = isAdd ? "Add money" : "Withdraw";
-}
-
-tabs.forEach((tab) => {
-  tab.addEventListener("click", (event) => {
-    event.preventDefault();
-    tabs.forEach((item) => item.classList.remove("active"));
-    tab.classList.add("active");
-    updateActionMode(tab.dataset.tab !== "withdraw");
-    closeToast();
-  });
-});
-
-chips.forEach((chip) => {
-  chip.addEventListener("click", (event) => {
-    event.preventDefault();
-    const amount = Number(chip.dataset.amount || 0);
-    if (!Number.isFinite(amount)) return;
-
-    if (isWithdrawMode()) {
-      if (withdrawInput) {
-        withdrawInput.value = String(amount);
-        withdrawInput.focus();
-      }
-    } else if (amountDisplay) {
-      amountDisplay.textContent = "₹" + amount.toLocaleString("en-IN");
+    if (summary) {
+      var whole = Math.floor(cashBalance).toLocaleString("en-IN");
+      var paise = String(Math.round((cashBalance % 1) * 100)).padStart(2, "0");
+      summary.innerHTML = "₹<b>" + whole + "</b><sup>." + paise + "</sup>";
     }
-  });
-});
 
-bankPay?.addEventListener("click", (event) => {
-  event.preventDefault();
-  toast(isWithdrawMode() ? "Withdrawal bank: SBI ••••4181" : "Payment method: SBI ••••4181");
-});
-
-actionBtn?.addEventListener("click", (event) => {
-  event.preventDefault();
-
-  if (!isWithdrawMode()) {
-    toast("Add money selected");
-    return;
+    if (cash) cash.innerHTML = "₹" + balanceValue() + " <i></i>";
   }
 
-  const amount = Number(withdrawInput?.value || 0);
-
-  if (!Number.isFinite(amount) || amount <= 0) {
-    toast("Enter a valid withdrawal amount");
-    return;
+  function isWithdrawMode() {
+    var active = document.querySelector(".money-tabs button.active");
+    return !!active && active.getAttribute("data-tab") === "withdraw";
   }
 
-  if (amount > cashBalance + 0.0001) {
-    toast("Insufficient balance. Available ₹" + balanceValue());
-    return;
+  function updateActionMode(isAdd) {
+    var amountDisplay = document.getElementById("amountDisplay");
+    var withdrawInput = document.getElementById("withdrawInput");
+    var paymentTitle = document.getElementById("paymentTitle");
+    var actionBtn = document.getElementById("addMoneyBtn");
+
+    if (amountDisplay) amountDisplay.style.display = isAdd ? "block" : "none";
+    if (withdrawInput) withdrawInput.style.display = isAdd ? "none" : "block";
+    if (paymentTitle) paymentTitle.textContent = isAdd ? "Scan QR to pay" : "Withdraw to bank";
+    if (actionBtn) actionBtn.textContent = isAdd ? "Add money" : "Withdraw";
   }
 
-  cashBalance = Number((cashBalance - amount).toFixed(2));
-  localStorage.setItem(balanceKey, String(cashBalance));
+  document.addEventListener("click", function (event) {
+    var target = event.target;
 
-  let pending = [];
-  try {
-    pending = JSON.parse(localStorage.getItem(withdrawalKey) || "[]");
-    if (!Array.isArray(pending)) pending = [];
-  } catch (_) {
-    pending = [];
-  }
+    var tab = target.closest ? target.closest(".money-tabs button") : null;
+    if (tab) {
+      event.preventDefault();
 
-  pending.unshift({
-    amount,
-    date: new Date().toISOString(),
-    status: "Pending"
-  });
+      var tabs = document.querySelectorAll(".money-tabs button");
+      for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+      tab.classList.add("active");
 
-  localStorage.setItem(withdrawalKey, JSON.stringify(pending));
-  syncBalanceUI();
+      updateActionMode(tab.getAttribute("data-tab") !== "withdraw");
+      closeToast();
+      return;
+    }
 
-  toast(
-    "₹" +
-      amount.toLocaleString("en-IN", {
+    var chip = target.closest ? target.closest(".amount-chips button") : null;
+    if (chip) {
+      event.preventDefault();
+
+      var amount = Number(chip.getAttribute("data-amount") || 0);
+      if (!Number.isFinite(amount)) return;
+
+      if (isWithdrawMode()) {
+        var input = document.getElementById("withdrawInput");
+        if (input) {
+          input.value = String(amount);
+          input.focus();
+        }
+      } else {
+        var display = document.getElementById("amountDisplay");
+        if (display) display.textContent = "₹" + amount.toLocaleString("en-IN");
+      }
+      return;
+    }
+
+    var action = target.closest ? target.closest("#addMoneyBtn") : null;
+    if (action) {
+      event.preventDefault();
+
+      if (!isWithdrawMode()) {
+        toast("Add money selected");
+        return;
+      }
+
+      var withdrawInput = document.getElementById("withdrawInput");
+      var amount = Number(withdrawInput && withdrawInput.value ? withdrawInput.value : 0);
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+        toast("Enter a valid withdrawal amount");
+        return;
+      }
+
+      if (amount > cashBalance + 0.0001) {
+        toast("Insufficient balance. Available ₹" + balanceValue());
+        return;
+      }
+
+      cashBalance = Number((cashBalance - amount).toFixed(2));
+      localStorage.setItem(balanceKey, String(cashBalance));
+
+      var pending = [];
+      try {
+        pending = JSON.parse(localStorage.getItem(withdrawalKey) || "[]");
+        if (!Array.isArray(pending)) pending = [];
+      } catch (e) {
+        pending = [];
+      }
+
+      pending.unshift({
+        amount: amount,
+        date: new Date().toISOString(),
+        status: "Pending"
+      });
+
+      localStorage.setItem(withdrawalKey, JSON.stringify(pending));
+      syncBalanceUI();
+      toast("₹" + amount.toLocaleString("en-IN", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      }) +
-      " withdrawal requested."
-  );
+      }) + " withdrawal requested.");
 
-  if (withdrawInput) withdrawInput.value = "";
-});
+      if (withdrawInput) withdrawInput.value = "";
+      return;
+    }
 
-document.addEventListener("keydown", (event) => {
-  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
-    event.preventDefault();
-    document.getElementById("search")?.focus();
-  }
-});
+    var bank = target.closest ? target.closest("#bankPay") : null;
+    if (bank) {
+      event.preventDefault();
+      toast(isWithdrawMode() ? "Withdrawal bank: SBI ••••4181" : "Payment method: SBI ••••4181");
+      return;
+    }
 
-updateActionMode(true);
+    var transactions = target.closest ? target.closest("#transactionsBtn") : null;
+    if (transactions) {
+      location.href = "/user/balance/inr/transactions/";
+      return;
+    }
+
+    var profile = target.closest ? target.closest("#profile") : null;
+    if (profile) {
+      location.href = "/dashboard.html";
+      return;
+    }
+  });
+
+  document.getElementById("bell")?.addEventListener("click", function () {
+    toast("No new notifications");
+  });
+
+  document.getElementById("cashBtn")?.addEventListener("click", function () {
+    toast("Cash balance: ₹" + balanceValue());
+  });
+
+  document.getElementById("pledgeBtn")?.addEventListener("click", function () {
+    toast("Pledge flow opened");
+  });
+
+  document.getElementById("instantBtn")?.addEventListener("click", function () {
+    toast("Pledge flow opened");
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      var search = document.getElementById("search");
+      if (search) search.focus();
+    }
+  });
+
+  syncBalanceUI();
+  updateActionMode(false);
+  updateActionMode(document.querySelector(".money-tabs button.active")?.getAttribute("data-tab") !== "withdraw");
+})();
 </script>
 
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
