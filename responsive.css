@@ -572,3 +572,34 @@ button,a,input{min-height:40px}
     font-size:12px!important;
   }
 }
+
+
+/* --- Extra 5% mobile size reduction --- */
+@media (max-width:680px){
+  .app-header .header-inner{height:65px!important;min-height:65px!important;padding:0 23px!important}
+  .app-header .brand-mark-only{width:49px!important;height:49px!important;flex-basis:49px!important;margin-right:10px!important}
+  .app-header .site-logo,.app-header .site-logo-dashboard{width:49px!important;height:49px!important}
+  .app-header .primary-nav{gap:22px!important;height:65px!important}
+  .app-header .primary-nav a{font-size:15px!important}
+  .app-header .search-box{width:49px!important;min-width:49px!important;flex-basis:49px!important;height:49px!important}
+  .app-header .search-box input{width:49px!important;height:49px!important;border-radius:15px!important}
+  .app-header .search-box .search-icon{left:11px!important;top:7px!important;font-size:28px!important}
+  .app-header .profile-wrap{margin-left:19px!important;width:49px!important;height:49px!important;flex-basis:49px!important}
+  .app-header .profile-avatar{width:49px!important;height:49px!important;min-width:49px!important;font-size:13px!important}
+  .app-header .subnav-row{height:49px!important;min-height:49px!important;padding:0 24px!important}
+  .app-header .subnav{height:49px!important}
+  .app-header .subnav a{height:49px!important;padding:0 14px!important;font-size:15px!important}
+  .app-header .ticker-row,.app-header .ticker-inner{height:40px!important;min-height:40px!important}
+  .app-header .ticker-inner{padding:0 24px!important;gap:29px!important}
+  .app-header .ticker-inner>div{font-size:12px!important}
+  .page-wrap{padding-left:10px!important;padding-right:10px!important;padding-bottom:61px!important}
+  .content-section{padding-top:27px!important}
+  .content-section h1,.content-section h2,.side-section h2{font-size:16px!important}
+  .content-section > h1,.content-section > h2{margin-bottom:13px!important}
+  .four-cards{gap:9px!important}
+  .quote-card,.quote-card.small,.bond-card{height:159px!important;padding:13px!important;border-radius:11px!important}
+  .quote-card .logo,.quote-card img,.bond-card img{width:43px!important;height:43px!important}
+  .quote-card h3,.bond-card h3{font-size:12.5px!important}
+  .quote-card .price,.bond-card .price{font-size:13.5px!important}
+  .quote-card .change,.bond-card .change{font-size:11.5px!important}
+}
