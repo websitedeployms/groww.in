@@ -1,4 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Holdings | Groww Replica</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/section.css"><link rel="icon" href="/favicon.png" type="image/png"><link rel="apple-touch-icon" href="/favicon.png"><link rel="stylesheet" href="/responsive.css">
+
+<link rel="manifest" href="/manifest.webmanifest">
 </head><body>
 <script>if(localStorage.getItem("groww_demo_logged_in")!=="1"){location.replace("/index.html")}</script>
 <header class="topbar"><div class="topbar-inner"><a class="brand" href="/dashboard.html"><img class="site-logo" src="/favicon.png" alt="Groww"></a><nav class="primary"><a class="active" href="/dashboard.html">Stocks</a><a href="#">F&amp;O</a><a href="#">Mutual Funds</a></nav><div class="spacer"></div><div class="search"><span>⌕</span><input id="search" placeholder="Search Groww...."><small>Ctrl+K</small></div><button class="bell" id="bell">♧</button><button class="avatar" id="avatar">MS</button></div></header>
@@ -21,4 +23,10 @@ const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.class
 document.getElementById("avatar").onclick=()=>location.href="/dashboard.html";
 document.getElementById("bell").onclick=()=>toast("No new notifications");
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
-</script></body></html>
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+}
+</script>
+</body></html>
