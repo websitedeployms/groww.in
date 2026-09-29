@@ -603,3 +603,38 @@ button,a,input{min-height:40px}
   .quote-card .price,.bond-card .price{font-size:13.5px!important}
   .quote-card .change,.bond-card .change{font-size:11.5px!important}
 }
+
+
+/* --- Continuous NIFTY/SENSEX market ticker: right-to-left --- */
+@keyframes marketTickerRTL{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-50%,0,0)}
+}
+.app-header .ticker-row{
+  position:relative!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+}
+.app-header .ticker-inner{
+  display:flex!important;
+  width:max-content!important;
+  min-width:max-content!important;
+  flex-wrap:nowrap!important;
+  animation:marketTickerRTL 24s linear infinite!important;
+  will-change:transform!important;
+}
+.app-header .ticker-inner>div{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+@media (max-width:680px){
+  .app-header .ticker-inner{
+    animation-duration:20s!important;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .app-header .ticker-inner{
+    animation:none!important;
+    transform:none!important;
+  }
+}
