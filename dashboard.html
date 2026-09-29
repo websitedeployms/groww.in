@@ -296,9 +296,59 @@ document.getElementById("bell").addEventListener("click",()=>toast("No new notif
 document.getElementById("terminalBtn").addEventListener("click",e=>{e.stopPropagation();document.getElementById("terminalMenu").classList.toggle("show")});
 document.addEventListener("click",e=>{if(!e.target.closest(".terminal-wrap"))document.getElementById("terminalMenu").classList.remove("show")});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("searchInput").focus()}});
+const searchBox=document.querySelector(".search-box");
 const search=document.getElementById("searchInput"),results=document.getElementById("searchResults");
-const names=["TATAGOLD","SS Retail","NSE","Hero Motors","Dr. Reddy's Labs.","Zydus","Infosys","LTM","HDFC Life Insurance","DAM Capital Advisors","Optiemus infracom","Apollo Micro Systems","Raymond"];
-search.addEventListener("input",()=>{const q=search.value.trim().toLowerCase();if(!q){results.classList.remove("show");return}const hits=names.filter(n=>n.toLowerCase().includes(q)).slice(0,6);results.innerHTML=hits.length?hits.map(n=>'<div>'+n+'</div>').join(""):'<div>No result</div>';results.classList.add("show");results.querySelectorAll("div").forEach(r=>r.addEventListener("click",()=>{search.value=r.textContent;results.classList.remove("show");toast(r.textContent+" selected")}))});
+const names=["TATAGOLD","SS Retail","NSE","Hero Motors","Dr. Reddy's Labs.","Zydus","Infosys","LTM","HDFC Life Insurance","DAM Capital Advisors","Optiemus infracom","Apollo Micro Systems","Raymond","Tata Motors","Reliance Industries","HDFC Bank","Wipro","NHPC","Iris Clothings","Jio Financial Services","Tata Steel"];
+const stockCards=[...document.querySelectorAll(".quote-card,[data-label]")];
+
+function runSearch(){
+  const q=search.value.trim().toLowerCase();
+  if(!q){results.classList.remove("show"); return;}
+  const hits=names.filter(n=>n.toLowerCase().includes(q)).slice(0,8);
+  results.innerHTML=hits.length
+    ? hits.map(n=>'<button type="button" class="search-result-item">'+n+'</button>').join("")
+    : '<div class="search-no-result">No result found</div>';
+  results.classList.add("show");
+  results.querySelectorAll(".search-result-item").forEach(item=>{
+    item.addEventListener("click",()=>{
+      const name=item.textContent.trim();
+      search.value=name;
+      results.classList.remove("show");
+      searchBox.classList.remove("mobile-search-open");
+      const target=stockCards.find(el=>(el.dataset.label||"").toLowerCase()===name.toLowerCase());
+      if(target){
+        target.scrollIntoView({behavior:"smooth",block:"center"});
+        target.animate([{transform:"scale(1)"},{transform:"scale(1.02)"},{transform:"scale(1)"}],{duration:300});
+      } else {
+        toast(name+" selected");
+      }
+    });
+  });
+}
+search.addEventListener("input",runSearch);
+search.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    const first=results.querySelector(".search-result-item");
+    if(first) first.click();
+  }
+  if(e.key==="Escape"){
+    results.classList.remove("show");
+    searchBox.classList.remove("mobile-search-open");
+    search.blur();
+  }
+});
+searchBox.addEventListener("click",e=>{
+  if(window.matchMedia("(max-width: 768px)").matches){
+    searchBox.classList.add("mobile-search-open");
+    search.focus();
+  }
+});
+document.addEventListener("click",e=>{
+  if(!e.target.closest(".search-box")){
+    results.classList.remove("show");
+    searchBox.classList.remove("mobile-search-open");
+  }
+});
 const profileWrap=document.querySelector(".profile-wrap");
 const accountMenu=document.getElementById("accountMenu");
 const accountBtn=document.getElementById("accountBtn");
