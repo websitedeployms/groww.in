@@ -340,3 +340,17 @@
     width:210px;
   }
 }
+
+/* Withdraw preset buttons */
+.withdraw-preset{
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  position:relative!important;
+  z-index:30!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:rgba(0,185,138,.12);
+}
+.withdraw-preset:active{
+  transform:scale(.96);
+  border-color:#00b98a!important;
+}
