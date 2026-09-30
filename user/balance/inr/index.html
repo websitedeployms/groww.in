@@ -114,7 +114,7 @@
       if(input){input.value=String(amount);input.focus();}
     }else{
       var display=el("amountDisplay");
-      if(display) display.textContent="₹"+Number(amount).toLocaleString("en-IN");
+      if(display){ display.value=String(amount); display.focus(); display.select(); }
     }
   }
   function balance(){
