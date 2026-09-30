@@ -86,18 +86,27 @@
   function load(){
     var data=[];
     try{data=JSON.parse(localStorage.getItem(txKey)||"[]");if(!Array.isArray(data))data=[];}catch(e){data=[];}
-    if(!data.length){
-      data=[
-        {id:"seed1",type:"Deposit",title:"Add money",amount:15000,status:"Completed",date:"2026-09-03T09:15:00+05:30"},
-        {id:"seed2",type:"Deposit",title:"Add money",amount:5000,status:"Completed",date:"2026-09-02T11:48:00+05:30"},
-        {id:"seed3",type:"Deposit",title:"Add money",amount:15000,status:"Completed",date:"2026-09-01T13:36:00+05:30"},
-        {id:"seed4",type:"Deposit",title:"Add money",amount:10000,status:"Completed",date:"2026-09-01T10:23:00+05:30"},
-        {id:"seed5",type:"Deposit",title:"Add money",amount:10000,status:"Completed",date:"2026-08-31T13:17:00+05:30"},
-        {id:"seed6",type:"Deposit",title:"Add money",amount:5000,status:"Completed",date:"2026-08-31T09:42:00+05:30"}
-      ];
-      localStorage.setItem(txKey,JSON.stringify(data));
-    }
-    return data.concat();
+    var seeds=[
+      {id:"seed1",type:"Deposit",title:"Add money",amount:15000,status:"Completed",date:"2026-09-03T09:15:00+05:30"},
+      {id:"seed2",type:"Deposit",title:"Add money",amount:5000,status:"Completed",date:"2026-09-02T11:48:00+05:30"},
+      {id:"seed3",type:"Deposit",title:"Add money",amount:15000,status:"Completed",date:"2026-09-01T13:36:00+05:30"},
+      {id:"seed4",type:"Deposit",title:"Add money",amount:10000,status:"Completed",date:"2026-09-01T10:23:00+05:30"},
+      {id:"seed5",type:"Deposit",title:"Add money",amount:10000,status:"Completed",date:"2026-08-31T13:17:00+05:30"},
+      {id:"seed6",type:"Deposit",title:"Add money",amount:5000,status:"Completed",date:"2026-08-31T09:42:00+05:30"}
+    ];
+    var pending=[];
+    try{pending=JSON.parse(localStorage.getItem(pendingKey)||"[]");if(!Array.isArray(pending))pending=[];}catch(e){pending=[];}
+    pending.forEach(function(p,i){
+      data.push({id:"pending-"+i+"-"+p.date,type:"Withdraw",title:"Withdraw",amount:Number(p.amount)||0,status:p.status||"Pending",date:p.date});
+    });
+    var combined=seeds.concat(data);
+    var seen={};
+    return combined.filter(function(item){
+      var key=item.id || (item.type+"|"+item.amount+"|"+item.date);
+      if(seen[key])return false;
+      seen[key]=true;
+      return true;
+    });
   }
   function render(){
     var data=load().sort(function(a,b){return new Date(b.date)-new Date(a.date);});
