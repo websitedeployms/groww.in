@@ -14,3 +14,75 @@
 .transaction-status.pending{color:#d59a00;background:#fff7df}.pending-row .transaction-copy b{color:#4b5365}.pending-row>strong{color:#4b5365}
 
 .site-logo{display:block;width:39px;height:39px;object-fit:cover;border-radius:50%;overflow:hidden}
+
+/* Interactive transaction rows + detail popup */
+.transaction-row-clickable{
+  width:100%;
+  border:0;
+  background:transparent;
+  text-align:left;
+  color:inherit;
+  font:inherit;
+  cursor:pointer;
+  border-radius:10px;
+  transition:background .15s ease,transform .08s ease;
+}
+.transaction-row-clickable:hover{background:#f7faf9}
+.transaction-row-clickable:active{transform:scale(.995);background:#eef9f5}
+.transaction-row-clickable:focus-visible{outline:2px solid #00b98a;outline-offset:2px}
+.transaction-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(24,34,51,.42);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .18s ease,visibility .18s ease;
+}
+.transaction-modal.show{opacity:1;visibility:visible}
+.transaction-modal-card{
+  width:min(430px,100%);
+  background:#fff;
+  border-radius:18px;
+  padding:24px;
+  position:relative;
+  box-shadow:0 18px 50px rgba(25,35,55,.24);
+}
+.transaction-modal-close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#f3f5f7;
+  color:#566174;
+  font-size:26px;
+  line-height:1;
+}
+.transaction-modal-status{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:#e8faf5;
+  color:#00b98a;
+  display:grid;
+  place-items:center;
+  font-size:25px;
+  margin-bottom:16px;
+}
+.transaction-modal-card h3{margin:0 0 6px;font-size:20px;color:#33445f}
+.transaction-modal-card>p{margin:0;color:#8a93a0;font-size:12px}
+.modal-amount{margin:22px 0;font-size:28px;font-weight:700;color:#33445f}
+.modal-detail{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #eef0f2;font-size:12px}
+.modal-detail span{color:#8a93a0}.modal-detail strong{color:#4b5568}
+@media(max-width:720px){
+  .transaction-modal-card{padding:20px;border-radius:16px}
+  .transaction-modal-card h3{font-size:18px}
+  .modal-amount{font-size:25px}
+}
