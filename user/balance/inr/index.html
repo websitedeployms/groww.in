@@ -75,93 +75,225 @@
       <button type="button" class="add-money-btn" id="addMoneyBtn" onclick="window.balanceAction()">Add money</button>
     </section>
   </div>
-</main><script>
+</main>
+<section class="money-card" id="moneyCardReplacement">
+  <div class="money-tabs">
+    <button type="button" class="active" data-tab="add" id="addTab">Add money</button>
+    <button type="button" data-tab="withdraw" id="withdrawTab">Withdraw</button>
+  </div>
+
+  <div class="money-body">
+    <div class="money-mode money-mode-add" id="addMode">
+      <div class="money-label">Amount to add</div>
+      <div class="money-amount-wrap">
+        <span>₹</span>
+        <input id="addAmountInput" type="text" inputmode="decimal" autocomplete="off" value="100" aria-label="Amount to add">
+      </div>
+      <div class="amount-chips">
+        <button type="button" data-amount="100">+₹100</button>
+        <button type="button" data-amount="5000">+₹5,000</button>
+        <button type="button" data-amount="10000">+₹10,000</button>
+      </div>
+      <p class="money-hint">Enter any amount you want to add.</p>
+    </div>
+
+    <div class="money-mode money-mode-withdraw" id="withdrawMode">
+      <div class="money-label">Amount to withdraw</div>
+      <div class="money-amount-wrap">
+        <span>₹</span>
+        <input id="withdrawInput" type="text" inputmode="decimal" autocomplete="off" placeholder="0" aria-label="Amount to withdraw">
+      </div>
+      <div class="withdraw-available">Available balance <strong id="availableBalance">₹39.80</strong></div>
+      <div class="amount-chips">
+        <button type="button" data-amount="100">₹100</button>
+        <button type="button" data-amount="5000">₹5,000</button>
+        <button type="button" data-amount="10000">₹10,000</button>
+      </div>
+      <p class="money-hint">You can withdraw up to your available cash balance.</p>
+    </div>
+  </div>
+
+  <button type="button" class="bank-pay" id="bankPay">
+    <span class="upi-logo">◢</span>
+    <span><b id="paymentTitle">Scan QR to pay</b><small>STATE BANK OF INDIA ••••4181</small></span>
+    <b class="arrow">›</b>
+  </button>
+  <button type="button" class="add-money-btn" id="addMoneyBtn">Add money</button>
+</section>
+<div class="toast" id="toast" role="alert" aria-live="assertive"><span id="toastMessage"></span><button class="toast-close" id="toastClose" type="button" aria-label="Close notification">×</button></div>
+<script>
 (function(){
   "use strict";
-  var balanceKey="groww_demo_cash_balance";
-  var withdrawalKey="groww_demo_pending_withdrawals";
-  var initialBalance=39.80;
 
-  function el(id){ return document.getElementById(id); }
-  function show(message){
-    var t=el("toast"), m=el("toastMessage");
-    if(m) m.textContent=message;
-    if(t) t.classList.add("show");
+  var balanceKey = "groww_demo_cash_balance";
+  var withdrawalKey = "groww_demo_pending_withdrawals";
+  var initialBalance = 39.80;
+
+  var addTab = document.getElementById("addTab");
+  var withdrawTab = document.getElementById("withdrawTab");
+  var addMode = document.getElementById("addMode");
+  var withdrawMode = document.getElementById("withdrawMode");
+  var addInput = document.getElementById("addAmountInput");
+  var withdrawInput = document.getElementById("withdrawInput");
+  var actionBtn = document.getElementById("addMoneyBtn");
+  var paymentTitle = document.getElementById("paymentTitle");
+  var availableBalance = document.getElementById("availableBalance");
+  var toastBox = document.getElementById("toast");
+  var toastMessage = document.getElementById("toastMessage");
+  var toastClose = document.getElementById("toastClose");
+
+  function getBalance(){
+    var value = Number(localStorage.getItem(balanceKey));
+    return Number.isFinite(value) && value >= 0 ? value : initialBalance;
   }
-  function hide(){
-    var t=el("toast");
-    if(t) t.classList.remove("show");
-  }
-  function isWithdraw(){
-    var active=document.querySelector(".money-tabs button.active");
-    return active && active.getAttribute("data-tab")==="withdraw";
-  }
-  function setMode(mode){
-    var add=mode!=="withdraw";
-    document.querySelectorAll(".money-tabs button").forEach(function(b){
-      b.classList.toggle("active",b.getAttribute("data-tab")===mode);
+
+  function formatMoney(value){
+    return Number(value).toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
-    var display=el("amountDisplay"), input=el("withdrawInput"), title=el("paymentTitle"), button=el("addMoneyBtn");
-    if(display) display.style.display=add?"block":"none";
-    if(input) input.style.display=add?"none":"block";
-    if(title) title.textContent=add?"Scan QR to pay":"Withdraw to bank";
-    if(button) button.textContent=add?"Add money":"Withdraw";
-    hide();
   }
-  function setAmount(amount){
-    if(isWithdraw()){
-      var input=el("withdrawInput");
-      if(input){input.value=String(amount);input.focus();}
-    }else{
-      var display=el("amountDisplay");
-      if(display){ display.value=String(amount); display.focus(); display.select(); }
+
+  function showToast(message){
+    if (toastMessage) toastMessage.textContent = message;
+    if (toastBox) toastBox.classList.add("show");
+  }
+
+  function hideToast(){
+    if (toastBox) toastBox.classList.remove("show");
+  }
+
+  function refreshBalance(){
+    var balance = getBalance();
+    if (availableBalance) availableBalance.textContent = "₹" + formatMoney(balance);
+    var cash = document.getElementById("cashBtn");
+    if (cash) cash.innerHTML = "₹" + formatMoney(balance) + " <i></i>";
+    var summary = document.querySelector(".summary-head strong");
+    if (summary) {
+      var whole = Math.floor(balance).toLocaleString("en-IN");
+      var paise = String(Math.round((balance % 1) * 100)).padStart(2, "0");
+      summary.innerHTML = "₹<b>" + whole + "</b><sup>." + paise + "</sup>";
     }
   }
-  function balance(){
-    var n=Number(localStorage.getItem(balanceKey));
-    return Number.isFinite(n)&&n>=0?n:initialBalance;
+
+  function setMode(mode){
+    var isAdd = mode === "add";
+    if (addTab) addTab.classList.toggle("active", isAdd);
+    if (withdrawTab) withdrawTab.classList.toggle("active", !isAdd);
+    if (addMode) addMode.classList.toggle("active-mode", isAdd);
+    if (withdrawMode) withdrawMode.classList.toggle("active-mode", !isAdd);
+    if (paymentTitle) paymentTitle.textContent = isAdd ? "Scan QR to pay" : "Withdraw to bank";
+    if (actionBtn) actionBtn.textContent = isAdd ? "Add money" : "Withdraw";
+    refreshBalance();
+    hideToast();
   }
+
+  function cleanAmount(value){
+    return String(value || "").replace(/,/g, "").trim();
+  }
+
+  function focusAndSelect(input){
+    if (!input) return;
+    input.focus();
+    try { input.select(); } catch(e) {}
+  }
+
+  function setPreset(amount){
+    if (withdrawTab && withdrawTab.classList.contains("active")) {
+      if (withdrawInput) {
+        withdrawInput.value = String(amount);
+        focusAndSelect(withdrawInput);
+      }
+    } else {
+      if (addInput) {
+        addInput.value = String(amount);
+        focusAndSelect(addInput);
+      }
+    }
+  }
+
   function action(){
-    if(!isWithdraw()){show("Add money selected");return;}
-    var input=el("withdrawInput"), amount=Number(input&&input.value||0), bal=balance();
-    if(!Number.isFinite(amount)||amount<=0){show("Enter a valid withdrawal amount");return;}
-    if(amount>bal+0.0001){show("Insufficient balance. Available ₹"+bal.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2}));return;}
-    bal=Number((bal-amount).toFixed(2));
-    localStorage.setItem(balanceKey,String(bal));
-    var list=[]; try{list=JSON.parse(localStorage.getItem(withdrawalKey)||"[]");}catch(e){list=[];}
-    if(!Array.isArray(list)) list=[];
-    list.unshift({amount:amount,date:new Date().toISOString(),status:"Pending"});
-    localStorage.setItem(withdrawalKey,JSON.stringify(list));
-    show("₹"+amount.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})+" withdrawal requested.");
-    if(input) input.value="";
+    var isAdd = addTab && addTab.classList.contains("active");
+
+    if (isAdd) {
+      var addAmount = Number(cleanAmount(addInput && addInput.value));
+      if (!Number.isFinite(addAmount) || addAmount <= 0) {
+        showToast("Enter a valid amount to add.");
+        focusAndSelect(addInput);
+        return;
+      }
+      showToast("₹" + formatMoney(addAmount) + " selected for Add money.");
+      return;
+    }
+
+    var amount = Number(cleanAmount(withdrawInput && withdrawInput.value));
+    var balance = getBalance();
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      showToast("Enter a valid withdrawal amount.");
+      focusAndSelect(withdrawInput);
+      return;
+    }
+
+    if (amount > balance + 0.0001) {
+      showToast("Insufficient balance. Available ₹" + formatMoney(balance));
+      focusAndSelect(withdrawInput);
+      return;
+    }
+
+    balance = Number((balance - amount).toFixed(2));
+    localStorage.setItem(balanceKey, String(balance));
+
+    var pending = [];
+    try {
+      pending = JSON.parse(localStorage.getItem(withdrawalKey) || "[]");
+      if (!Array.isArray(pending)) pending = [];
+    } catch(e) {
+      pending = [];
+    }
+
+    pending.unshift({
+      amount: amount,
+      date: new Date().toISOString(),
+      status: "Pending"
+    });
+
+    localStorage.setItem(withdrawalKey, JSON.stringify(pending));
+    refreshBalance();
+    if (withdrawInput) withdrawInput.value = "";
+    showToast("₹" + formatMoney(amount) + " withdrawal requested.");
   }
 
-  window.balanceSwitchTab=setMode;
-  window.balanceSetAmount=setAmount;
-  window.balanceAction=action;
-  window.balanceCloseToast=hide;
+  window.balanceSwitchTab = setMode;
+  window.balanceSetAmount = setPreset;
+  window.balanceAction = action;
+  window.balanceCloseToast = hideToast;
 
-  document.addEventListener("click",function(e){
-    var target=e.target;
-    var tab=target.closest&&target.closest(".money-tabs button");
-    if(tab){e.preventDefault();setMode(tab.getAttribute("data-tab"));return;}
-    var chip=target.closest&&target.closest(".amount-chips button");
-    if(chip){e.preventDefault();setAmount(Number(chip.getAttribute("data-amount")));return;}
-    if(target.closest&&target.closest("#addMoneyBtn")){e.preventDefault();action();return;}
-    if(target.closest&&target.closest("#bankPay")){e.preventDefault();show(isWithdraw()?"Withdrawal bank: SBI ••••4181":"Payment method: SBI ••••4181");return;}
-    if(target.closest&&target.closest("#cashBtn")){e.preventDefault();show("Cash balance: ₹"+balance().toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2}));return;}
-    if(target.closest&&target.closest("#pledgeBtn")){e.preventDefault();show("Pledge flow opened");return;}
-    if(target.closest&&target.closest("#instantBtn")){e.preventDefault();show("Pledge flow opened");return;}
+  if (addTab) addTab.addEventListener("click", function(){ setMode("add"); });
+  if (withdrawTab) withdrawTab.addEventListener("click", function(){ setMode("withdraw"); });
+
+  document.querySelectorAll(".amount-chips button").forEach(function(button){
+    button.addEventListener("click", function(){
+      setPreset(Number(button.getAttribute("data-amount")));
+    });
   });
 
-  document.addEventListener("DOMContentLoaded",function(){
-    var close=el("toastClose");
-    if(close) close.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();hide();});
-    setMode("add");
-  });
+  if (actionBtn) actionBtn.addEventListener("click", action);
+
+  var bankPay = document.getElementById("bankPay");
+  if (bankPay) {
+    bankPay.addEventListener("click", function(){
+      showToast(addTab && addTab.classList.contains("active")
+        ? "Payment method: SBI ••••4181"
+        : "Withdrawal bank: SBI ••••4181");
+    });
+  }
+
+  if (toastClose) toastClose.addEventListener("click", hideToast);
+
+  refreshBalance();
+  setMode("add");
 })();
-</script>
-<div class="toast" id="toast" role="alert" aria-live="assertive"><span id="toastMessage"></span><button class="toast-close" id="toastClose" type="button" aria-label="Close notification" onclick="window.balanceCloseToast()">×</button></div>
-<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
+</script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
 </body>
 </html>
