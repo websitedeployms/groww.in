@@ -62,104 +62,103 @@
 
     <section class="transactions-results">
       <h2>Transactions</h2>
-      <div class="transaction-list">
-        <div class="transaction-row">
-          <span class="transaction-status success">✓</span>
-          <div class="transaction-copy"><b>Add money</b><small>03 Sep 2026, 09:15 AM</small></div>
-          <strong>₹15,000.00</strong>
-        </div>
-        <div class="transaction-row">
-          <span class="transaction-status success">✓</span>
-          <div class="transaction-copy"><b>Add money</b><small>02 Sep 2026, 11:48 AM</small></div>
-          <strong>₹5,000.00</strong>
-        </div>
-        <div class="transaction-row">
-          <span class="transaction-status success">✓</span>
-          <div class="transaction-copy"><b>Add money</b><small>01 Sep 2026, 01:36 PM</small></div>
-          <strong>₹15,000.00</strong>
-        </div>
-        <div class="transaction-row">
-          <span class="transaction-status success">✓</span>
-          <div class="transaction-copy"><b>Add money</b><small>01 Sep 2026, 10:23 AM</small></div>
-          <strong>₹10,000.00</strong>
-        </div>
-        <div class="transaction-row">
-          <span class="transaction-status success">✓</span>
-          <div class="transaction-copy"><b>Add money</b><small>31 Aug 2026, 01:17 PM</small></div>
-          <strong>₹10,000.00</strong>
-        </div>
-        <div class="transaction-row">
-          <span class="transaction-status success">✓</span>
-          <div class="transaction-copy"><b>Add money</b><small>31 Aug 2026, 09:42 AM</small></div>
-          <strong>₹5,000.00</strong>
-        </div>
-      </div>
+      <div class="transaction-list" id="transactionList"></div>
     </section>
   </div>
 </main>
 
 <div class="toast" id="toast"></div>
 <script>
-const toast=m=>{const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__txToast);window.__txToast=setTimeout(()=>t.classList.remove("show"),1800)};
-document.getElementById("profile").addEventListener("click",()=>location.href="/dashboard.html");
-document.getElementById("bell").addEventListener("click",()=>toast("No new notifications"));
-document.getElementById("statementBtn").addEventListener("click",()=>toast("No transactions to include in the statement"));
-const rows=[...document.querySelectorAll(".transaction-row")];
-const failedCheck=document.querySelectorAll(".filter-check")[0];
-const typeChecks=[...document.querySelectorAll(".filter-check")].slice(1);
-const emptyState=()=>{
-  let el=document.getElementById("noResults");
-  if(!el){
-    el=document.createElement("div");
-    el.id="noResults";
-    el.className="filtered-empty";
-    el.innerHTML="<div class=\"filtered-empty-icon\">◌</div><h3>No transactions found</h3><p>Try changing or clearing the filters</p>";
-    document.querySelector(".transactions-results").appendChild(el);
-  }
-  return el;
-};
-function applyFilters(){
-  const onlyFailed=failedCheck.checked;
-  const deposit=typeChecks[0].checked;
-  const withdraw=typeChecks[1].checked;
-  const stocks=typeChecks[2].checked;
-  const fno=typeChecks[3].checked;
-  const others=typeChecks[4].checked;
-  const anyType=deposit||withdraw||stocks||fno||others;
-  let shown=0;
-  rows.forEach(row=>{
-    let visible=!onlyFailed && (!anyType || deposit);
-    row.style.display=visible?"grid":"none";
-    if(visible) shown++;
-  });
-  const empty=emptyState();
-  empty.style.display=shown?"none":"block";
-}
-document.querySelectorAll(".filter-check").forEach(c=>c.addEventListener("change",()=>{applyFilters();toast("Filter updated")}));
-document.getElementById("clearFilters").addEventListener("click",()=>{
-  document.querySelectorAll(".filter-check").forEach(c=>c.checked=false);
-  document.getElementById("fromDate").value="";
-  document.getElementById("toDate").value="";
-  applyFilters();
-  toast("Filters cleared");
-});
-document.querySelectorAll(".date-input input").forEach(i=>i.addEventListener("change",()=>toast("Date range updated")));
-document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search").focus()}});
-</script>
-<script>
-const pending=JSON.parse(localStorage.getItem("groww_demo_pending_withdrawals")||"[]");
-const list=document.querySelector(".transaction-list");
-pending.forEach(item=>{
-  const row=document.createElement("div");
-  row.className="transaction-row pending-row";
-  const d=new Date(item.date);
-  const ds=d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
-  const ts=d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
-  row.innerHTML='<span class="transaction-status pending">⏳</span><div class="transaction-copy"><b>Withdraw</b><small>'+ds+', '+ts+' · Pending</small></div><strong>−₹'+Number(item.amount).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})+'</strong>';
-  list.prepend(row);
-});
-</script>
+(function(){
+  "use strict";
+  var txKey="groww_demo_transactions";
+  var pendingKey="groww_demo_pending_withdrawals";
+  var listEl=document.getElementById("transactionList");
+  var toastEl=document.getElementById("toast");
+  var fromDate=document.getElementById("fromDate");
+  var toDate=document.getElementById("toDate");
+  var checks=[].slice.call(document.querySelectorAll(".filter-check"));
+  var modal=document.getElementById("transactionModal");
 
-<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
-</body>
-</html>
+  function toast(message){if(toastEl){toastEl.textContent=message;toastEl.classList.add("show");clearTimeout(window.__txToast);window.__txToast=setTimeout(function(){toastEl.classList.remove("show");},1800);}}
+  function fmt(n){return Number(n).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function dateText(iso){return new Date(iso).toLocaleString("en-IN",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});}
+  function load(){
+    var data=[];
+    try{data=JSON.parse(localStorage.getItem(txKey)||"[]");if(!Array.isArray(data))data=[];}catch(e){data=[];}
+    if(!data.length){
+      data=[
+        {id:"seed1",type:"Deposit",title:"Add money",amount:15000,status:"Completed",date:"2026-09-03T09:15:00+05:30"},
+        {id:"seed2",type:"Deposit",title:"Add money",amount:5000,status:"Completed",date:"2026-09-02T11:48:00+05:30"},
+        {id:"seed3",type:"Deposit",title:"Add money",amount:15000,status:"Completed",date:"2026-09-01T13:36:00+05:30"},
+        {id:"seed4",type:"Deposit",title:"Add money",amount:10000,status:"Completed",date:"2026-09-01T10:23:00+05:30"},
+        {id:"seed5",type:"Deposit",title:"Add money",amount:10000,status:"Completed",date:"2026-08-31T13:17:00+05:30"},
+        {id:"seed6",type:"Deposit",title:"Add money",amount:5000,status:"Completed",date:"2026-08-31T09:42:00+05:30"}
+      ];
+      localStorage.setItem(txKey,JSON.stringify(data));
+    }
+    return data.concat();
+  }
+  function render(){
+    var data=load().sort(function(a,b){return new Date(b.date)-new Date(a.date);});
+    var selectedTypes=[];
+    if(checks[1]?.checked)selectedTypes.push("Deposit");
+    if(checks[2]?.checked)selectedTypes.push("Withdraw");
+    if(checks[3]?.checked)selectedTypes.push("Stocks");
+    if(checks[4]?.checked)selectedTypes.push("FnO");
+    if(checks[5]?.checked)selectedTypes.push("Others");
+    var failed=checks[0]?.checked;
+    var from=fromDate?.value?new Date(fromDate.value+"T00:00:00"):null;
+    var to=toDate?.value?new Date(toDate.value+"T23:59:59"):null;
+    var filtered=data.filter(function(item){
+      var d=new Date(item.date);
+      if(failed && item.status!=="Failed")return false;
+      if(selectedTypes.length && selectedTypes.indexOf(item.type)===-1)return false;
+      if(from && d<from)return false;
+      if(to && d>to)return false;
+      return true;
+    });
+    listEl.innerHTML="";
+    filtered.forEach(function(item){
+      var row=document.createElement("button");
+      row.type="button";
+      row.className="transaction-row transaction-row-clickable "+(item.status==="Pending"?"pending-row":"");
+      var positive=item.type==="Deposit";
+      row.innerHTML='<span class="transaction-status '+(item.status==="Pending"?"pending":"success")+'">'+(item.status==="Pending"?"⏳":"✓")+'</span><div class="transaction-copy"><b>'+item.title+'</b><small>'+dateText(item.date)+(item.status==="Pending"?" · Pending":"")+'</small></div><strong>'+(positive?"+":"−")+'₹'+fmt(item.amount)+'</strong>';
+      row.addEventListener("click",function(){openModal(item);});
+      listEl.appendChild(row);
+    });
+    var empty=document.getElementById("noResults");
+    if(!empty){empty=document.createElement("div");empty.id="noResults";empty.className="filtered-empty";empty.innerHTML='<div class="filtered-empty-icon">◌</div><h3>No transactions found</h3><p>Try changing or clearing the filters</p>';listEl.parentNode.appendChild(empty);}
+    empty.style.display=filtered.length?"none":"block";
+  }
+  function openModal(item){
+    document.getElementById("modalTitle").textContent=item.title;
+    document.getElementById("modalDate").textContent=dateText(item.date);
+    document.getElementById("modalAmount").textContent=(item.type==="Deposit"?"+":"−")+"₹"+fmt(item.amount);
+    document.getElementById("modalState").textContent=item.status;
+    document.getElementById("modalType").textContent=item.type;
+    document.getElementById("modalStatus").textContent=item.status==="Pending"?"⏳":"✓";
+    modal.classList.add("show");modal.setAttribute("aria-hidden","false");
+  }
+  function closeModal(){modal.classList.remove("show");modal.setAttribute("aria-hidden","true");}
+  document.getElementById("transactionModalClose")?.addEventListener("click",closeModal);
+  modal?.addEventListener("click",function(e){if(e.target===modal)closeModal();});
+  document.getElementById("clearFilters")?.addEventListener("click",function(){
+    checks.forEach(function(x){x.checked=false;});fromDate.value="";toDate.value="";render();toast("Filters cleared");
+  });
+  checks.forEach(function(x){x.addEventListener("change",function(){render();toast("Filter updated");});});
+  fromDate?.addEventListener("change",function(){render();toast("Date range updated");});
+  toDate?.addEventListener("change",function(){render();toast("Date range updated");});
+  document.getElementById("statementBtn")?.addEventListener("click",function(){
+    var rows=load().sort(function(a,b){return new Date(b.date)-new Date(a.date);});
+    var text="Groww Demo - Transaction Statement\n\n"+rows.map(function(x){return dateText(x.date)+" | "+x.title+" | "+x.status+" | "+(x.type==="Deposit"?"+":"−")+"₹"+fmt(x.amount);}).join("\n");
+    var blob=new Blob([text],{type:"text/plain"}), url=URL.createObjectURL(blob), a=document.createElement("a");
+    a.href=url;a.download="groww-transaction-statement.txt";a.click();URL.revokeObjectURL(url);toast("Statement downloaded");
+  });
+  document.getElementById("profile")?.addEventListener("click",function(){location.href="/dashboard.html";});
+  document.getElementById("bell")?.addEventListener("click",function(){toast("No new notifications");});
+  document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();document.getElementById("search")?.focus();}if(e.key==="Escape")closeModal();});
+  render();
+})();
+</script>
