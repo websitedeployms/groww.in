@@ -35,3 +35,24 @@
 .toast-close{position:absolute;top:8px;right:10px;width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:#fff;font-size:28px;line-height:1;padding:0;display:grid;place-items:center;z-index:2}
 .toast-close:hover{background:rgba(255,255,255,.12)}
 @media(max-width:760px){.toast{width:calc(100% - 40px);min-height:76px;padding:20px 56px 20px 22px;font-size:17px}}
+
+/* Custom amount input: make the main amount directly editable on mobile */
+.amount-display{
+  width:min(380px,84%);
+  height:78px;
+  margin-top:-8px;
+  padding:0 12px;
+  border:1px solid transparent;
+  border-radius:12px;
+  background:#fff;
+  font-size:45px;
+  font-weight:600;
+  color:#4a5264;
+  text-align:center;
+  outline:none;
+  -webkit-appearance:none;
+  appearance:textfield;
+}
+.amount-display::-webkit-inner-spin-button,.amount-display::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.amount-display:focus{border-color:#dce2e8;box-shadow:0 0 0 2px rgba(0,185,138,.08)}
+@media(max-width:760px){.amount-display{height:72px;font-size:40px;width:84%}}
