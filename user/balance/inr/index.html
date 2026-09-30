@@ -165,12 +165,6 @@
   function action(){
     var add=activeAdd();
     if(add){
-      var amount=Number(clean($id("addAmountInput")?.value));
-      if(!Number.isFinite(amount)||amount<=0){toast("Enter a valid amount to add.");focusInput($id("addAmountInput"));return;}
-      var b=getBalance()+amount; setBalance(b);
-      addTransaction("Deposit",amount,"Completed");
-      refresh();
-      toast("₹"+fmt(amount)+" added successfully.");
       return;
     }
     var w=Number(clean($id("withdrawInput")?.value)), b=getBalance();
