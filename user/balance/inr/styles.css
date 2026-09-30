@@ -281,3 +281,62 @@
   }
   .money-hint{font-size:11px}
 }
+
+/* Final money controls polish */
+.money-amount-wrap{
+  width:min(360px,94%);
+  min-height:82px;
+  justify-content:center;
+  flex-direction:row;
+  border:0;
+  border-radius:0;
+  padding:0;
+  position:relative;
+  background:transparent;
+}
+.money-amount-wrap::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:min(250px,72%);
+  height:2px;
+  transform:translateX(-50%);
+  background:#aab2bd;
+  border-radius:2px;
+}
+.money-amount-wrap:focus-within::after{
+  background:#00b98a;
+}
+.money-amount-wrap > span{
+  margin-right:2px;
+}
+.money-amount-wrap input{
+  width:170px;
+  text-align:center;
+  padding:0!important;
+  flex:0 0 170px;
+}
+.money-mode .amount-chips button{
+  position:relative;
+  z-index:20;
+  pointer-events:auto!important;
+  touch-action:manipulation;
+}
+@media(max-width:760px){
+  .money-amount-wrap{
+    width:100%;
+    min-height:78px;
+  }
+  .money-amount-wrap > span,
+  .money-amount-wrap input{
+    font-size:38px;
+  }
+  .money-amount-wrap input{
+    width:155px;
+    flex-basis:155px;
+  }
+  .money-amount-wrap::after{
+    width:210px;
+  }
+}
