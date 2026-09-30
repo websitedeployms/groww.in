@@ -168,15 +168,25 @@
       return;
     }
     var w=Number(clean($id("withdrawInput")?.value)), b=getBalance();
-    if(!Number.isFinite(w)||w<=0){toast("Enter a valid withdrawal amount.");focusInput($id("withdrawInput"));return;}
-    if(w>b+0.0001){toast("Insufficient balance. Available ₹"+fmt(b));focusInput($id("withdrawInput"));return;}
-    b=Number((b-w).toFixed(2));setBalance(b);
+    if(!Number.isFinite(w)||w<100){
+      toast("Amount should be ₹100 or greater.");
+      focusInput($id("withdrawInput"));
+      return;
+    }
+    if(w>b+0.0001){
+      toast("Insufficient balance. Available ₹"+fmt(b));
+      focusInput($id("withdrawInput"));
+      return;
+    }
+    b=Number((b-w).toFixed(2));
+    setBalance(b);
     addTransaction("Withdraw",w,"Pending");
     var pending=[];try{pending=JSON.parse(localStorage.getItem(withdrawalKey)||"[]");if(!Array.isArray(pending))pending=[];}catch(e){pending=[];}
     pending.unshift({amount:w,date:new Date().toISOString(),status:"Pending"});
     localStorage.setItem(withdrawalKey,JSON.stringify(pending));
-    refresh();$id("withdrawInput").value="";
-    toast("₹"+fmt(w)+" withdrawal requested.");
+    refresh();
+    $id("withdrawInput").value="";
+    toast("₹"+fmt(w)+" will be credited within 15–20 working days.");
   }
   window.balanceSwitchTab=setMode;
   window.balanceSetAmount=setPreset;
