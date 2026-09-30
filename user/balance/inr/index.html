@@ -104,14 +104,14 @@
   var transactionKey="groww_demo_transactions";
   var withdrawalKey="groww_demo_pending_withdrawals";
   var initialBalance=39.80;
-  var currentVersion="5";
+  var currentVersion="6";
 
   function $id(id){return document.getElementById(id);}
   function fmt(n){return Number(n).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});}
   function getBalance(){
     var saved=Number(localStorage.getItem(balanceKey));
     var version=localStorage.getItem(balanceVersionKey);
-    if(version!==currentVersion || !Number.isFinite(saved) || saved<0){
+    if(version!==currentVersion || !Number.isFinite(saved) || saved<=0){
       saved=initialBalance;
       localStorage.setItem(balanceKey,String(saved));
       localStorage.setItem(balanceVersionKey,currentVersion);
