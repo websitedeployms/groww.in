@@ -99,175 +99,111 @@
 <script>
 (function(){
   "use strict";
+  var balanceKey="groww_demo_cash_balance";
+  var balanceVersionKey="groww_demo_balance_version";
+  var transactionKey="groww_demo_transactions";
+  var withdrawalKey="groww_demo_pending_withdrawals";
+  var initialBalance=39.80;
+  var currentVersion="5";
 
-  var balanceKey = "groww_demo_cash_balance";
-  var withdrawalKey = "groww_demo_pending_withdrawals";
-  var initialBalance = 39.80;
-
-  var addTab = document.getElementById("addTab");
-  var withdrawTab = document.getElementById("withdrawTab");
-  var addMode = document.getElementById("addMode");
-  var withdrawMode = document.getElementById("withdrawMode");
-  var addInput = document.getElementById("addAmountInput");
-  var withdrawInput = document.getElementById("withdrawInput");
-  var actionBtn = document.getElementById("addMoneyBtn");
-  var paymentTitle = document.getElementById("paymentTitle");
-  var availableBalance = document.getElementById("availableBalance");
-  var toastBox = document.getElementById("toast");
-  var toastMessage = document.getElementById("toastMessage");
-  var toastClose = document.getElementById("toastClose");
-
+  function $id(id){return document.getElementById(id);}
+  function fmt(n){return Number(n).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});}
   function getBalance(){
-    var value = Number(localStorage.getItem(balanceKey));
-    return Number.isFinite(value) && value >= 0 ? value : initialBalance;
+    var saved=Number(localStorage.getItem(balanceKey));
+    var version=localStorage.getItem(balanceVersionKey);
+    if(version!==currentVersion || !Number.isFinite(saved) || saved<0){
+      saved=initialBalance;
+      localStorage.setItem(balanceKey,String(saved));
+      localStorage.setItem(balanceVersionKey,currentVersion);
+    }
+    return saved;
   }
-
-  function formatMoney(value){
-    return Number(value).toLocaleString("en-IN", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+  function setBalance(v){localStorage.setItem(balanceKey,String(Number(v.toFixed(2))));}
+  function getTransactions(){
+    try{var list=JSON.parse(localStorage.getItem(transactionKey)||"[]");return Array.isArray(list)?list:[];}catch(e){return [];}
   }
-
-  function showToast(message){
-    if (toastMessage) toastMessage.textContent = message;
-    if (toastBox) toastBox.classList.add("show");
+  function saveTransactions(list){localStorage.setItem(transactionKey,JSON.stringify(list));}
+  function addTransaction(type,amount,status){
+    var list=getTransactions();
+    list.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),type:type,amount:amount,status:status||"Completed",date:new Date().toISOString()});
+    saveTransactions(list);
   }
-
-  function hideToast(){
-    if (toastBox) toastBox.classList.remove("show");
+  function toast(message){
+    var t=$id("toast"),m=$id("toastMessage");
+    if(m)m.textContent=message;
+    if(t)t.classList.add("show");
   }
-
-  function refreshBalance(){
-    var balance = getBalance();
-    if (availableBalance) availableBalance.textContent = "₹" + formatMoney(balance);
-    var cash = document.getElementById("cashBtn");
-    if (cash) cash.innerHTML = "₹" + formatMoney(balance) + " <i></i>";
-    var summary = document.querySelector(".summary-head strong");
-    if (summary) {
-      var whole = Math.floor(balance).toLocaleString("en-IN");
-      var paise = String(Math.round((balance % 1) * 100)).padStart(2, "0");
-      summary.innerHTML = "₹<b>" + whole + "</b><sup>." + paise + "</sup>";
+  function hideToast(){var t=$id("toast");if(t)t.classList.remove("show");}
+  function refresh(){
+    var b=getBalance();
+    var av=$id("availableBalance"); if(av) av.textContent="₹"+fmt(b);
+    var cash=$id("cashBtn"); if(cash) cash.innerHTML="₹"+fmt(b)+" <i></i>";
+    var summary=document.querySelector(".summary-head strong");
+    if(summary){
+      var whole=Math.floor(b).toLocaleString("en-IN");
+      var paise=String(Math.round((b%1)*100)).padStart(2,"0");
+      summary.innerHTML="₹<b>"+whole+"</b><sup>."+paise+"</sup>";
     }
   }
-
+  function clean(v){return String(v||"").replace(/,/g,"").trim();}
+  function focusInput(input){if(input){input.focus();try{input.select();}catch(e){}}}
+  function activeAdd(){return !!($id("addTab")&&$id("addTab").classList.contains("active"));}
   function setMode(mode){
-    var isAdd = mode === "add";
-    if (addTab) addTab.classList.toggle("active", isAdd);
-    if (withdrawTab) withdrawTab.classList.toggle("active", !isAdd);
-    if (addMode) addMode.classList.toggle("active-mode", isAdd);
-    if (withdrawMode) withdrawMode.classList.toggle("active-mode", !isAdd);
-    if (paymentTitle) paymentTitle.textContent = isAdd ? "Scan QR to pay" : "Withdraw to bank";
-    if (actionBtn) actionBtn.textContent = isAdd ? "Add money" : "Withdraw";
-    refreshBalance();
-    hideToast();
+    var add=mode==="add";
+    $id("addTab")?.classList.toggle("active",add);
+    $id("withdrawTab")?.classList.toggle("active",!add);
+    $id("addMode")?.classList.toggle("active-mode",add);
+    $id("withdrawMode")?.classList.toggle("active-mode",!add);
+    if($id("paymentTitle"))$id("paymentTitle").textContent=add?"Scan QR to pay":"Withdraw to bank";
+    if($id("addMoneyBtn"))$id("addMoneyBtn").textContent=add?"Add money":"Withdraw";
+    refresh();hideToast();
   }
-
-  function cleanAmount(value){
-    return String(value || "").replace(/,/g, "").trim();
-  }
-
-  function focusAndSelect(input){
-    if (!input) return;
-    input.focus();
-    try { input.select(); } catch(e) {}
-  }
-
   function setPreset(amount){
-    if (withdrawTab && withdrawTab.classList.contains("active")) {
-      if (withdrawInput) {
-        withdrawInput.value = String(amount);
-        focusAndSelect(withdrawInput);
-      }
-    } else {
-      if (addInput) {
-        addInput.value = String(amount);
-        focusAndSelect(addInput);
-      }
-    }
+    var input=activeAdd()?$id("addAmountInput"):$id("withdrawInput");
+    if(input){input.value=String(amount);focusInput(input);}
   }
-
   function action(){
-    var isAdd = addTab && addTab.classList.contains("active");
-
-    if (isAdd) {
-      var addAmount = Number(cleanAmount(addInput && addInput.value));
-      if (!Number.isFinite(addAmount) || addAmount <= 0) {
-        showToast("Enter a valid amount to add.");
-        focusAndSelect(addInput);
-        return;
-      }
-      showToast("₹" + formatMoney(addAmount) + " selected for Add money.");
+    var add=activeAdd();
+    if(add){
+      var amount=Number(clean($id("addAmountInput")?.value));
+      if(!Number.isFinite(amount)||amount<=0){toast("Enter a valid amount to add.");focusInput($id("addAmountInput"));return;}
+      var b=getBalance()+amount; setBalance(b);
+      addTransaction("Deposit",amount,"Completed");
+      refresh();
+      toast("₹"+fmt(amount)+" added successfully.");
       return;
     }
-
-    var amount = Number(cleanAmount(withdrawInput && withdrawInput.value));
-    var balance = getBalance();
-
-    if (!Number.isFinite(amount) || amount <= 0) {
-      showToast("Enter a valid withdrawal amount.");
-      focusAndSelect(withdrawInput);
-      return;
-    }
-
-    if (amount > balance + 0.0001) {
-      showToast("Insufficient balance. Available ₹" + formatMoney(balance));
-      focusAndSelect(withdrawInput);
-      return;
-    }
-
-    balance = Number((balance - amount).toFixed(2));
-    localStorage.setItem(balanceKey, String(balance));
-
-    var pending = [];
-    try {
-      pending = JSON.parse(localStorage.getItem(withdrawalKey) || "[]");
-      if (!Array.isArray(pending)) pending = [];
-    } catch(e) {
-      pending = [];
-    }
-
-    pending.unshift({
-      amount: amount,
-      date: new Date().toISOString(),
-      status: "Pending"
-    });
-
-    localStorage.setItem(withdrawalKey, JSON.stringify(pending));
-    refreshBalance();
-    if (withdrawInput) withdrawInput.value = "";
-    showToast("₹" + formatMoney(amount) + " withdrawal requested.");
+    var w=Number(clean($id("withdrawInput")?.value)), b=getBalance();
+    if(!Number.isFinite(w)||w<=0){toast("Enter a valid withdrawal amount.");focusInput($id("withdrawInput"));return;}
+    if(w>b+0.0001){toast("Insufficient balance. Available ₹"+fmt(b));focusInput($id("withdrawInput"));return;}
+    b=Number((b-w).toFixed(2));setBalance(b);
+    addTransaction("Withdraw",w,"Pending");
+    var pending=[];try{pending=JSON.parse(localStorage.getItem(withdrawalKey)||"[]");if(!Array.isArray(pending))pending=[];}catch(e){pending=[];}
+    pending.unshift({amount:w,date:new Date().toISOString(),status:"Pending"});
+    localStorage.setItem(withdrawalKey,JSON.stringify(pending));
+    refresh();$id("withdrawInput").value="";
+    toast("₹"+fmt(w)+" withdrawal requested.");
   }
+  window.balanceSwitchTab=setMode;
+  window.balanceSetAmount=setPreset;
+  window.balanceSetWithdrawAmount=setPreset;
+  window.balanceAction=action;
+  window.balanceCloseToast=hideToast;
 
-  window.balanceSwitchTab = setMode;
-  window.balanceSetAmount = setPreset;
-  window.balanceSetWithdrawAmount = function(amount){ if(withdrawInput){ withdrawInput.value = String(amount); focusAndSelect(withdrawInput); } };
-  window.balanceAction = action;
-  window.balanceCloseToast = hideToast;
+  $id("addTab")?.addEventListener("click",function(){setMode("add");});
+  $id("withdrawTab")?.addEventListener("click",function(){setMode("withdraw");});
+  document.querySelectorAll(".amount-chips button").forEach(function(btn){btn.addEventListener("click",function(){setPreset(Number(btn.dataset.amount));});});
+  $id("addMoneyBtn")?.addEventListener("click",action);
+  $id("bankPay")?.addEventListener("click",function(){toast(activeAdd()?"Payment method: SBI ••••4181":"Withdrawal bank: SBI ••••4181");});
+  $id("toastClose")?.addEventListener("click",hideToast);
+  $id("cashBtn")?.addEventListener("click",function(){toast("Cash balance: ₹"+fmt(getBalance()));});
+  $id("pledgeBtn")?.addEventListener("click",function(){toast("Pledge flow opened");});
+  $id("instantBtn")?.addEventListener("click",function(){toast("Pledge flow opened");});
+  $id("transactionsBtn")?.addEventListener("click",function(){location.href="/user/balance/inr/transactions/";});
+  $id("profile")?.addEventListener("click",function(){location.href="/dashboard.html";});
+  $id("bell")?.addEventListener("click",function(){toast("No new notifications");});
 
-  if (addTab) addTab.addEventListener("click", function(){ setMode("add"); });
-  if (withdrawTab) withdrawTab.addEventListener("click", function(){ setMode("withdraw"); });
-
-  document.querySelectorAll(".amount-chips button").forEach(function(button){
-    button.addEventListener("click", function(){
-      setPreset(Number(button.getAttribute("data-amount")));
-    });
-  });
-
-  if (actionBtn) actionBtn.addEventListener("click", action);
-
-  var bankPay = document.getElementById("bankPay");
-  if (bankPay) {
-    bankPay.addEventListener("click", function(){
-      showToast(addTab && addTab.classList.contains("active")
-        ? "Payment method: SBI ••••4181"
-        : "Withdrawal bank: SBI ••••4181");
-    });
-  }
-
-  if (toastClose) toastClose.addEventListener("click", hideToast);
-
-  refreshBalance();
+  refresh();
   setMode("add");
 })();
 </script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
