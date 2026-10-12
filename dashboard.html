@@ -39,7 +39,7 @@
     <div class="account-items">
       <button class="account-item" id="balanceBtn">
         <span class="account-icon">▣</span>
-        <span class="account-item-copy"><b>₹39.80</b><small>Stocks, F&amp;O balance</small></span>
+        <span class="account-item-copy"><b id="profileCashBalance">₹10,744.58</b><small>Stocks, F&amp;O balance</small></span>
         <span class="chevron">›</span>
       </button>
       <button class="account-item" id="allOrdersBtn">
@@ -383,6 +383,22 @@ document.getElementById("logoutBtn").addEventListener("click",()=>{
   }
 });
 
+/* Keep profile-menu cash balance in sync with the demo balance used on the balance page. */
+(() => {
+  const el = document.getElementById('profileCashBalance');
+  if (!el) return;
+  const key = 'groww_demo_cash_balance';
+  const update = () => {
+    const saved = Number(localStorage.getItem(key));
+    const amount = Number.isFinite(saved) && saved >= 0 ? saved : 10744.58;
+    el.textContent = '₹' + amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  };
+  update();
+  window.addEventListener('storage', (event) => {
+    if (!event.key || event.key === key) update();
+  });
+})();
+ 
 /* Native horizontal market ticker: swipe on touch + drag with mouse */
 (() => {
   const ticker = document.querySelector('.ticker-row');
