@@ -133,7 +133,7 @@
     var from=fromDate?.value?new Date(fromDate.value+"T00:00:00"):null;
     var to=toDate?.value?new Date(toDate.value+"T23:59:59"):null;
     var filtered=data.filter(function(item){
-      var d=new Date(item.date);
+      var displayDate=(item.id==="stock-sale-20261012-demo" ? "2026-10-12T12:30:00+05:30" : item.date); var d=new Date(displayDate);
       if(failed && item.status!=="Failed")return false;
       if(selectedTypes.length && selectedTypes.indexOf(item.type)===-1)return false;
       if(from && d<from)return false;
@@ -146,7 +146,7 @@
       row.type="button";
       row.className="transaction-row transaction-row-clickable "+(item.status==="Pending"?"pending-row":"");
       var positive=item.type==="Deposit" || item.side==="Credit" || item.title==="Stocks sold";
-      row.innerHTML='<span class="transaction-status '+(item.status==="Pending"?"pending":"success")+'">'+(item.status==="Pending"?"⏳":"✓")+'</span><div class="transaction-copy"><b>'+item.title+'</b><small>'+dateText(item.date)+(item.status==="Pending"?" · Pending":"")+'</small></div><strong>'+(positive?"+":"−")+'₹'+fmt(item.amount)+'</strong>';
+      row.innerHTML='<span class="transaction-status '+(item.status==="Pending"?"pending":"success")+'">'+(item.status==="Pending"?"⏳":"✓")+'</span><div class="transaction-copy"><b>'+item.title+'</b><small>'+dateText(item.id==="stock-sale-20261012-demo" ? "2026-10-12T12:30:00+05:30" : item.date)+(item.status==="Pending"?" · Pending":"")+'</small></div><strong>'+(positive?"+":"−")+'₹'+fmt(item.amount)+'</strong>';
       row.addEventListener("click",function(){openModal(item);});
       listEl.appendChild(row);
     });
@@ -156,7 +156,7 @@
   }
   function openModal(item){
     document.getElementById("modalTitle").textContent=item.title;
-    document.getElementById("modalDate").textContent=dateText(item.date);
+    document.getElementById("modalDate").textContent=dateText(item.id==="stock-sale-20261012-demo" ? "2026-10-12T12:30:00+05:30" : item.date);
     document.getElementById("modalAmount").textContent=((item.type==="Deposit" || item.side==="Credit" || item.title==="Stocks sold")?"+":"−")+"₹"+fmt(item.amount);
     document.getElementById("modalState").textContent=item.status;
     document.getElementById("modalType").textContent=item.type;
