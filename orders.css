@@ -13,3 +13,7 @@
 @media(max-width:720px){.orders-results{padding-top:22px}.orders-results-head h2{font-size:14px}.order-entry{grid-template-columns:1fr auto;gap:8px;min-height:82px;padding:12px 2px}.order-meta{display:none}.order-company b{font-size:12px}.order-company small{font-size:10px}.company-logo{width:36px;height:36px}.order-amount>b{font-size:12px}.order-amount .status{font-size:9px}}
 
 .site-logo{display:block;width:39px;height:39px;object-fit:cover;border-radius:50%;overflow:hidden}.site-logo-dashboard,.site-logo-orders{width:39px;height:39px;border-radius:50%;object-fit:cover}.site-logo-landing{width:39px;height:39px;border-radius:50%;object-fit:cover}
+
+/* Make executed sell orders easy to distinguish in the demo history */
+.order-entry.sell-entry{background:#f7fcfa;border-radius:10px}
+.order-entry.sell-entry .order-company small{color:#00a982;font-weight:600}
