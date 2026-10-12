@@ -7,6 +7,8 @@
   var balanceKey = "groww_demo_cash_balance";
   var transactionKey = "groww_demo_transactions";
   var saleOrdersKey = "groww_demo_stock_sales";
+  if (localStorage.getItem("groww_demo_logged_in") !== "1") return;
+
   var currentVersion = "7";
   var startingDemoBalance = 39.80;
   var proceeds = 10704.78;
