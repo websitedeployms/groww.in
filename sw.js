@@ -1,4 +1,4 @@
-const CACHE_NAME = "groww-pwa-v13";
+const CACHE_NAME = "groww-pwa-v14";
 const APP_SHELL = [
   "/",
   "/index.html",
@@ -27,7 +27,8 @@ const APP_SHELL = [
   "/user/balance/inr/transactions/styles.css",
   "/user/profile/report/styles.css",
   "/help/styles.css",
-  "/script.js"
+  "/script.js",
+  "/portfolio-demo.js"
 ];
 
 self.addEventListener("install", (event) => {
