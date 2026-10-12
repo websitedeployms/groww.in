@@ -157,7 +157,7 @@
   function openModal(item){
     document.getElementById("modalTitle").textContent=item.title;
     document.getElementById("modalDate").textContent=dateText(item.date);
-    document.getElementById("modalAmount").textContent=(item.type==="Deposit"?"+":"−")+"₹"+fmt(item.amount);
+    document.getElementById("modalAmount").textContent=((item.type==="Deposit" || item.side==="Credit" || item.title==="Stocks sold")?"+":"−")+"₹"+fmt(item.amount);
     document.getElementById("modalState").textContent=item.status;
     document.getElementById("modalType").textContent=item.type;
     document.getElementById("modalStatus").textContent=item.status==="Pending"?"⏳":"✓";
