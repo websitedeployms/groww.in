@@ -7,6 +7,21 @@
   var balanceKey = "groww_demo_cash_balance";
   var transactionKey = "groww_demo_transactions";
   var saleOrdersKey = "groww_demo_stock_sales";
+  var withdrawalFlag = "groww_demo_withdrawal_10000_20261030_applied";
+  var pendingKey = "groww_demo_pending_withdrawals";
+
+  function applyDemoWithdrawal() {
+    if (localStorage.getItem(withdrawalFlag) === "1") return;
+    var balance = Number(localStorage.getItem(balanceKey));
+    if (!Number.isFinite(balance) || balance < 10000) return;
+    var requestDate = "2026-10-30T21:50:00+05:30";
+    var pending = parseArray(pendingKey);
+    pending.unshift({ amount: 10000, date: requestDate, status: "Pending" });
+    localStorage.setItem(pendingKey, JSON.stringify(pending));
+    localStorage.setItem(balanceKey, String(Number((balance - 10000).toFixed(2))));
+    localStorage.setItem(withdrawalFlag, "1");
+  }
+
   if (localStorage.getItem("groww_demo_logged_in") !== "1") return;
 
   var currentVersion = "7";
@@ -38,6 +53,7 @@
       localStorage.setItem(balanceKey, String(startingDemoBalance));
     }
     localStorage.setItem(versionKey, currentVersion);
+    applyDemoWithdrawal();
     return;
   }
 
@@ -80,4 +96,5 @@
   }
 
   localStorage.setItem(saleFlag, "1");
+  applyDemoWithdrawal();
 })();
