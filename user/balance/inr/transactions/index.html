@@ -162,7 +162,8 @@
     document.getElementById("modalAmount").textContent=((item.type==="Deposit" || item.side==="Credit" || item.title==="Stocks sold")?"+":"−")+"₹"+fmt(item.amount);
     document.getElementById("modalState").textContent=item.status;
     document.getElementById("modalType").textContent=item.type;
-    document.getElementById("modalStatus").textContent=item.status==="Pending"?"⏳":item.status==="Failed"?"×":"✓";\n    document.getElementById("modalStatus").classList.toggle("failed",item.status==="Failed");
+    document.getElementById("modalStatus").textContent=item.status==="Pending"?"⏳":item.status==="Failed"?"×":"✓";
+    document.getElementById("modalStatus").classList.toggle("failed",item.status==="Failed");
     modal.classList.add("show");modal.setAttribute("aria-hidden","false");
   }
   function closeModal(){modal.classList.remove("show");modal.setAttribute("aria-hidden","true");}
