@@ -50,6 +50,48 @@
     }
   }
 
+
+  function applyDemoFailureAndRefund() {
+    var requestId = "demo-withdrawal-10000-20261031";
+    var failedFlag = "groww_demo_withdrawal_failed_refund_tx_20261031_applied";
+    var pending = parseArray(pendingKey);
+    var transactions = parseArray(transactionKey);
+    pending = pending.map(function (item) {
+      if (item && item.id === requestId) {
+        item.status = "Failed";
+        item.title = "Withdraw failed";
+        item.reason = "Withdrawal request failed";
+        item.failedAt = "2026-10-31T21:45:00+05:30";
+      }
+      return item;
+    });
+    transactions = transactions.map(function (item) {
+      if (item && item.id === requestId) {
+        item.status = "Failed";
+        item.title = "Withdraw failed";
+        item.side = "Debit";
+        item.failedAt = "2026-10-31T21:45:00+05:30";
+        item.description = "Demo withdrawal request failed";
+      }
+      return item;
+    });
+    if (localStorage.getItem(failedFlag) !== "1") {
+      transactions.unshift({
+        id: "demo-withdrawal-refund-10000-20261031",
+        type: "Refund",
+        title: "Refund",
+        amount: 10000,
+        status: "Completed",
+        side: "Credit",
+        date: "2026-10-31T21:46:00+05:30",
+        description: "Refund for failed demo withdrawal"
+      });
+      localStorage.setItem(failedFlag, "1");
+    }
+    localStorage.setItem(pendingKey, JSON.stringify(pending));
+    localStorage.setItem(transactionKey, JSON.stringify(transactions));
+  }
+
   function applyDemoWithdrawal() {
     var requestFlag = "groww_demo_withdrawal_10000_v2_applied";
     if (localStorage.getItem(requestFlag) === "1") return;
@@ -85,7 +127,7 @@
 
   if (localStorage.getItem("groww_demo_logged_in") !== "1") return;
 
-  var currentVersion = "9";
+  var currentVersion = "10";
   var startingDemoBalance = 39.80;
   var proceeds = 10704.78;
   var soldAt = new Date().toISOString();
@@ -116,6 +158,7 @@
     localStorage.setItem(versionKey, currentVersion);
     applyDemoWithdrawal();
     applyDemoDecline();
+    applyDemoFailureAndRefund();
     return;
   }
 
@@ -160,4 +203,5 @@
   localStorage.setItem(saleFlag, "1");
   applyDemoWithdrawal();
   applyDemoDecline();
+  applyDemoFailureAndRefund();
 })();
