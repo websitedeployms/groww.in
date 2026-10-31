@@ -10,6 +10,42 @@
   var withdrawalFlag = "groww_demo_withdrawal_10000_20261030_applied";
   var pendingKey = "groww_demo_pending_withdrawals";
 
+  function applyDemoDecline() {
+    var declineFlag = "groww_demo_withdrawal_10000_declined_refund_applied";
+    var requestId = "demo-withdrawal-10000-20261031";
+    var pending = parseArray(pendingKey);
+    var transactions = parseArray(transactionKey);
+    var hasRequest = pending.some(function (item) { return item && item.id === requestId; }) ||
+      transactions.some(function (item) { return item && item.id === requestId; });
+    if (!hasRequest) return;
+
+    pending = pending.map(function (item) {
+      if (item && item.id === requestId) {
+        item.status = "Declined";
+        item.reason = "Withdrawal request declined";
+      }
+      return item;
+    });
+    transactions = transactions.map(function (item) {
+      if (item && item.id === requestId) {
+        item.status = "Declined";
+        item.side = "Debit";
+        item.description = "Demo withdrawal request declined; amount returned to cash balance";
+      }
+      return item;
+    });
+    localStorage.setItem(pendingKey, JSON.stringify(pending));
+    localStorage.setItem(transactionKey, JSON.stringify(transactions));
+
+    if (localStorage.getItem(declineFlag) !== "1") {
+      var balance = Number(localStorage.getItem(balanceKey));
+      if (Number.isFinite(balance)) {
+        localStorage.setItem(balanceKey, String(Number((balance + 10000).toFixed(2))));
+      }
+      localStorage.setItem(declineFlag, "1");
+    }
+  }
+
   function applyDemoWithdrawal() {
     var requestFlag = "groww_demo_withdrawal_10000_v2_applied";
     if (localStorage.getItem(requestFlag) === "1") return;
@@ -75,6 +111,7 @@
     }
     localStorage.setItem(versionKey, currentVersion);
     applyDemoWithdrawal();
+    applyDemoDecline();
     return;
   }
 
@@ -118,4 +155,5 @@
 
   localStorage.setItem(saleFlag, "1");
   applyDemoWithdrawal();
+  applyDemoDecline();
 })();
