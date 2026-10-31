@@ -148,7 +148,9 @@
       row.type="button";
       row.className="transaction-row transaction-row-clickable "+(item.status==="Pending"?"pending-row":"")+(item.status==="Failed"?" failed-row":"");
       var positive=item.type==="Deposit" || item.side==="Credit" || item.title==="Stocks sold";
-      row.innerHTML='<span class="transaction-status '+(item.status==="Pending"?"pending":item.status==="Failed"?"failed":"success")+'">'+(item.status==="Pending"?"⏳":item.status==="Failed"?"×":"✓")+'</span><div class="transaction-copy"><b>'+item.title+'</b><small>'+dateText(item.id==="stock-sale-20261012-demo" ? "2026-10-12T12:30:00+05:30" : item.date)+(item.status==="Pending"?" · Pending":"")+'</small></div><strong>'+(positive?"+":"−")+'₹'+fmt(item.amount)+'</strong>';
+      var failedStatus=item.status==="Failed";
+      var statusStyle=failedStatus ? ' style="color:#e53935!important;background:#ffebee!important;border:1px solid #ffcdd2;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:20px;font-weight:700;line-height:1"' : "";
+      row.innerHTML='<span class="transaction-status '+(item.status==="Pending"?"pending":failedStatus?"failed":"success")+'"'+statusStyle+'>'+(item.status==="Pending"?"⏳":failedStatus?"×":"✓")+'</span><div class="transaction-copy"><b>'+item.title+'</b><small>'+dateText(item.id==="stock-sale-20261012-demo" ? "2026-10-12T12:30:00+05:30" : item.date)+(item.status==="Pending"?" · Pending":"")+'</small></div><strong>'+(positive?"+":"−")+'₹'+fmt(item.amount)+'</strong>';
       row.addEventListener("click",function(){openModal(item);});
       listEl.appendChild(row);
     });
