@@ -86,3 +86,8 @@
   .transaction-modal-card h3{font-size:18px}
   .modal-amount{font-size:25px}
 }
+
+/* Failed transactions use a red error marker, while completed credits stay green. */
+.transaction-status.failed{color:#e5484d;background:#fdebed;font-size:19px;}
+.failed-row .transaction-copy b{color:#4a5265;}
+.transaction-modal-status.failed{color:#e5484d;background:#fdebed;}
