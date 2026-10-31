@@ -11,15 +11,36 @@
   var pendingKey = "groww_demo_pending_withdrawals";
 
   function applyDemoWithdrawal() {
-    if (localStorage.getItem(withdrawalFlag) === "1") return;
+    var requestFlag = "groww_demo_withdrawal_10000_v2_applied";
+    if (localStorage.getItem(requestFlag) === "1") return;
+
     var balance = Number(localStorage.getItem(balanceKey));
     if (!Number.isFinite(balance) || balance < 10000) return;
-    var requestDate = "2026-10-30T21:50:00+05:30";
+
+    var requestDate = "2026-10-31T21:18:00+05:30";
     var pending = parseArray(pendingKey);
-    pending.unshift({ amount: 10000, date: requestDate, status: "Pending" });
-    localStorage.setItem(pendingKey, JSON.stringify(pending));
+    if (!pending.some(function (item) { return item && item.id === "demo-withdrawal-10000-20261031"; })) {
+      pending.unshift({ id: "demo-withdrawal-10000-20261031", amount: 10000, date: requestDate, status: "Pending" });
+      localStorage.setItem(pendingKey, JSON.stringify(pending));
+    }
+
+    var transactions = parseArray(transactionKey);
+    if (!transactions.some(function (item) { return item && item.id === "demo-withdrawal-10000-20261031"; })) {
+      transactions.unshift({
+        id: "demo-withdrawal-10000-20261031",
+        type: "Withdraw",
+        title: "Withdraw",
+        amount: 10000,
+        status: "Pending",
+        side: "Debit",
+        date: requestDate,
+        description: "Demo withdrawal request to SBI ••••4181"
+      });
+      localStorage.setItem(transactionKey, JSON.stringify(transactions));
+    }
+
     localStorage.setItem(balanceKey, String(Number((balance - 10000).toFixed(2))));
-    localStorage.setItem(withdrawalFlag, "1");
+    localStorage.setItem(requestFlag, "1");
   }
 
   if (localStorage.getItem("groww_demo_logged_in") !== "1") return;
