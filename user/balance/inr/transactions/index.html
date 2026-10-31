@@ -110,7 +110,9 @@
     var pending=[];
     try{pending=JSON.parse(localStorage.getItem(pendingKey)||"[]");if(!Array.isArray(pending))pending=[];}catch(e){pending=[];}
     pending.forEach(function(p,i){
-      data.push({id:"pending-"+i+"-"+p.date,type:"Withdraw",title:"Withdraw",amount:Number(p.amount)||0,status:p.status||"Pending",date:p.date});
+      var id=p.id || ("pending-"+i+"-"+p.date);
+      if(data.some(function(item){return item && item.id===id;})) return;
+      data.push({id:id,type:"Withdraw",title:"Withdraw",amount:Number(p.amount)||0,status:p.status||"Pending",date:p.date});
     });
     var combined=seeds.concat(data);
     var seen={};
