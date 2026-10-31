@@ -114,6 +114,9 @@
       if(data.some(function(item){return item && item.id===id;})) return;
       data.push({id:id,type:"Withdraw",title:"Withdraw",amount:Number(p.amount)||0,status:p.status||"Pending",date:p.date});
     });
+    if(!data.some(function(item){return item && item.id==="demo-withdraw-pending-5000-20261031";})){
+      data.push({id:"demo-withdraw-pending-5000-20261031",type:"Withdraw",title:"Withdraw",amount:5000,status:"Pending",date:"2026-10-31T22:00:00+05:30"});
+    }
     var combined=seeds.concat(data);
     var seen={};
     return combined.filter(function(item){
