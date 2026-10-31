@@ -22,6 +22,7 @@
     pending = pending.map(function (item) {
       if (item && item.id === requestId) {
         item.status = "Declined";
+        item.title = "Withdraw declined";
         item.reason = "Withdrawal request declined";
         item.declinedAt = "2026-10-31T21:30:00+05:30";
       }
@@ -30,6 +31,7 @@
     transactions = transactions.map(function (item) {
       if (item && item.id === requestId) {
         item.status = "Declined";
+        item.title = "Withdraw declined";
         item.side = "Debit";
         item.declinedAt = "2026-10-31T21:30:00+05:30";
         item.description = "Demo withdrawal request declined; amount returned to cash balance";
@@ -83,7 +85,7 @@
 
   if (localStorage.getItem("groww_demo_logged_in") !== "1") return;
 
-  var currentVersion = "8";
+  var currentVersion = "9";
   var startingDemoBalance = 39.80;
   var proceeds = 10704.78;
   var soldAt = new Date().toISOString();
