@@ -23,6 +23,7 @@
       if (item && item.id === requestId) {
         item.status = "Declined";
         item.reason = "Withdrawal request declined";
+        item.declinedAt = "2026-10-31T21:30:00+05:30";
       }
       return item;
     });
@@ -30,6 +31,7 @@
       if (item && item.id === requestId) {
         item.status = "Declined";
         item.side = "Debit";
+        item.declinedAt = "2026-10-31T21:30:00+05:30";
         item.description = "Demo withdrawal request declined; amount returned to cash balance";
       }
       return item;
@@ -81,7 +83,7 @@
 
   if (localStorage.getItem("groww_demo_logged_in") !== "1") return;
 
-  var currentVersion = "7";
+  var currentVersion = "8";
   var startingDemoBalance = 39.80;
   var proceeds = 10704.78;
   var soldAt = new Date().toISOString();
