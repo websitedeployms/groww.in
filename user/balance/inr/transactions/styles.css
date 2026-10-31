@@ -91,3 +91,5 @@
 .transaction-status.failed{color:#e5484d;background:#fdebed;font-size:19px;}
 .failed-row .transaction-copy b{color:#4a5265;}
 .transaction-modal-status.failed{color:#e5484d;background:#fdebed;}
+
+#transactionList .transaction-status.failed{color:#e53935!important;background:#ffebee!important;border:1px solid #ffcdd2!important;width:26px!important;height:26px!important;border-radius:50%!important;display:grid!important;place-items:center!important;font-size:20px!important;font-weight:700!important;line-height:1!important;}
