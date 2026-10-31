@@ -146,9 +146,9 @@
     filtered.forEach(function(item){
       var row=document.createElement("button");
       row.type="button";
-      row.className="transaction-row transaction-row-clickable "+(item.status==="Pending"?"pending-row":"");
+      row.className="transaction-row transaction-row-clickable "+(item.status==="Pending"?"pending-row":"")+(item.status==="Failed"?" failed-row":"");
       var positive=item.type==="Deposit" || item.side==="Credit" || item.title==="Stocks sold";
-      row.innerHTML='<span class="transaction-status '+(item.status==="Pending"?"pending":"success")+'">'+(item.status==="Pending"?"⏳":"✓")+'</span><div class="transaction-copy"><b>'+item.title+'</b><small>'+dateText(item.id==="stock-sale-20261012-demo" ? "2026-10-12T12:30:00+05:30" : item.date)+(item.status==="Pending"?" · Pending":"")+'</small></div><strong>'+(positive?"+":"−")+'₹'+fmt(item.amount)+'</strong>';
+      row.innerHTML='<span class="transaction-status '+(item.status==="Pending"?"pending":item.status==="Failed"?"failed":"success")+'">'+(item.status==="Pending"?"⏳":item.status==="Failed"?"×":"✓")+'</span><div class="transaction-copy"><b>'+item.title+'</b><small>'+dateText(item.id==="stock-sale-20261012-demo" ? "2026-10-12T12:30:00+05:30" : item.date)+(item.status==="Pending"?" · Pending":"")+'</small></div><strong>'+(positive?"+":"−")+'₹'+fmt(item.amount)+'</strong>';
       row.addEventListener("click",function(){openModal(item);});
       listEl.appendChild(row);
     });
@@ -162,7 +162,7 @@
     document.getElementById("modalAmount").textContent=((item.type==="Deposit" || item.side==="Credit" || item.title==="Stocks sold")?"+":"−")+"₹"+fmt(item.amount);
     document.getElementById("modalState").textContent=item.status;
     document.getElementById("modalType").textContent=item.type;
-    document.getElementById("modalStatus").textContent=item.status==="Pending"?"⏳":"✓";
+    document.getElementById("modalStatus").textContent=item.status==="Pending"?"⏳":item.status==="Failed"?"×":"✓";\n    document.getElementById("modalStatus").classList.toggle("failed",item.status==="Failed");
     modal.classList.add("show");modal.setAttribute("aria-hidden","false");
   }
   function closeModal(){modal.classList.remove("show");modal.setAttribute("aria-hidden","true");}
