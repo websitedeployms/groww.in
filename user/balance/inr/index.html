@@ -31,11 +31,11 @@
       <div class="summary-card">
         <div class="summary-head">
           <span>Stocks, F&amp;O balance</span>
-          <strong>₹<b>39</b><sup>.80</sup></strong>
+          <strong>₹<b>5,744</b><sup>.58</sup></strong>
         </div>
         <div class="summary-body">
           <div class="cash-row">
-            <span>Cash</span><button id="cashBtn">₹39.80 <i></i></button>
+            <span>Cash</span><button id="cashBtn">₹5,744.58 <i></i></button>
           </div>
           <div class="pledge-row">
             <span>Pledge</span><button id="pledgeBtn">Add <i></i></button>
@@ -77,7 +77,7 @@
         <span>₹</span>
         <input id="withdrawInput" type="text" inputmode="decimal" autocomplete="off" placeholder="0" aria-label="Amount to withdraw">
       </div>
-      <div class="withdraw-available">Available balance <strong id="availableBalance">₹39.80</strong></div>
+      <div class="withdraw-available">Available balance <strong id="availableBalance">₹5,744.58</strong></div>
       <div class="amount-chips">
         <button type="button" class="withdraw-preset" data-amount="100" onclick="window.balanceSetWithdrawAmount(100)">+₹100</button>
         <button type="button" class="withdraw-preset" data-amount="5000" onclick="window.balanceSetWithdrawAmount(5000)">+₹5,000</button>
@@ -104,8 +104,8 @@
   var balanceVersionKey="groww_demo_balance_version";
   var transactionKey="groww_demo_transactions";
   var withdrawalKey="groww_demo_pending_withdrawals";
-  var initialBalance=39.80;
-  var currentVersion="10";
+  var initialBalance=5744.58;
+  var currentVersion="11";
 
   function $id(id){return document.getElementById(id);}
   function fmt(n){return Number(n).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});}
