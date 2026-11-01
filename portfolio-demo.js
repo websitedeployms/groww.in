@@ -145,7 +145,7 @@
 
   if (localStorage.getItem("groww_demo_logged_in") !== "1") return;
 
-  var currentVersion = "11";
+  var currentVersion = "12";
   var startingDemoBalance = 5744.58;
   var proceeds = 10704.78;
   var soldAt = new Date().toISOString();
@@ -171,11 +171,13 @@
     // Keep the balance schema current without applying the sale twice.
     var existing = Number(localStorage.getItem(balanceKey));
     var storedVersion = localStorage.getItem(versionKey);
-    // Repair the stale ₹39.80 value left by the previous demo balance version.
-    if (!Number.isFinite(existing) || existing < 0 ||
-        (storedVersion !== currentVersion && Math.abs(existing - 39.80) < 0.01)) {
+    // Version 12 sets the correct final demo balance once. The failed 10000 withdrawal was refunded, and the 5000 withdrawal is pending.
+    // Mark both adjustments as reflected to prevent duplicate credits or deductions.
+    if (!Number.isFinite(existing) || existing < 0 || storedVersion !== currentVersion) {
       existing = startingDemoBalance;
       localStorage.setItem(balanceKey, String(startingDemoBalance));
+      localStorage.setItem("groww_demo_withdrawal_10000_declined_refund_applied", "1");
+      localStorage.setItem("groww_demo_pending_withdraw_5000_balance_deducted", "1");
     }
     localStorage.setItem(versionKey, currentVersion);
     applyDemoWithdrawal();
