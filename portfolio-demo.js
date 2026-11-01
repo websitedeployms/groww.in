@@ -92,6 +92,24 @@
     localStorage.setItem(transactionKey, JSON.stringify(transactions));
   }
 
+  function applyPendingFiveThousandWithdrawal() {
+    var requestId = "demo-withdraw-pending-5000-20261031";
+    var appliedFlag = "groww_demo_pending_withdraw_5000_balance_deducted";
+    var pending = parseArray(pendingKey);
+    var transactions = parseArray(transactionKey);
+    var exists = pending.some(function (item) {
+      return item && (item.id === requestId || (Number(item.amount) === 5000 && String(item.status || "").toLowerCase() === "pending"));
+    }) || transactions.some(function (item) {
+      return item && (item.id === requestId || (String(item.title || "").toLowerCase() === "withdraw" && Number(item.amount) === 5000 && String(item.status || "").toLowerCase() === "pending"));
+    });
+    if (!exists || localStorage.getItem(appliedFlag) === "1") return;
+    var balance = Number(localStorage.getItem(balanceKey));
+    if (Number.isFinite(balance) && balance >= 5000) {
+      localStorage.setItem(balanceKey, String(Number((balance - 5000).toFixed(2))));
+      localStorage.setItem(appliedFlag, "1");
+    }
+  }
+
   function applyDemoWithdrawal() {
     var requestFlag = "groww_demo_withdrawal_10000_v2_applied";
     if (localStorage.getItem(requestFlag) === "1") return;
@@ -159,6 +177,7 @@
     applyDemoWithdrawal();
     applyDemoDecline();
     applyDemoFailureAndRefund();
+    applyPendingFiveThousandWithdrawal();
     return;
   }
 
@@ -204,4 +223,5 @@
   applyDemoWithdrawal();
   applyDemoDecline();
   applyDemoFailureAndRefund();
+  applyPendingFiveThousandWithdrawal();
 })();
