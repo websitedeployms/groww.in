@@ -145,8 +145,8 @@
 
   if (localStorage.getItem("groww_demo_logged_in") !== "1") return;
 
-  var currentVersion = "10";
-  var startingDemoBalance = 39.80;
+  var currentVersion = "11";
+  var startingDemoBalance = 5744.58;
   var proceeds = 10704.78;
   var soldAt = new Date().toISOString();
 
@@ -170,7 +170,11 @@
   if (localStorage.getItem(saleFlag) === "1") {
     // Keep the balance schema current without applying the sale twice.
     var existing = Number(localStorage.getItem(balanceKey));
-    if (!Number.isFinite(existing) || existing < 0) {
+    var storedVersion = localStorage.getItem(versionKey);
+    // Repair the stale ₹39.80 value left by the previous demo balance version.
+    if (!Number.isFinite(existing) || existing < 0 ||
+        (storedVersion !== currentVersion && Math.abs(existing - 39.80) < 0.01)) {
+      existing = startingDemoBalance;
       localStorage.setItem(balanceKey, String(startingDemoBalance));
     }
     localStorage.setItem(versionKey, currentVersion);
