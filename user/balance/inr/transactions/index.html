@@ -63,6 +63,7 @@
 
     <section class="transactions-results">
       <h2>Transactions</h2>
+      <p class="demo-history-label">DEMO · Simulated transaction history</p>
       <div class="transaction-list" id="transactionList"></div>
     </section>
   </div>
@@ -117,6 +118,29 @@
     if(!data.some(function(item){return item && item.id==="demo-withdraw-pending-5000-20261031";})){
       data.push({id:"demo-withdraw-pending-5000-20261031",type:"Withdraw",title:"Withdraw",amount:5000,status:"Pending",date:"2026-10-31T22:00:00+05:30"});
     }
+    function setDemoDate(item){
+      if(!item)return item;
+      var title=String(item.title||item.type||"").toLowerCase();
+      var amount=Number(item.amount)||0;
+      var status=String(item.status||"").toLowerCase();
+      if(item.id==="demo-withdraw-pending-5000-20261031" || (title==="withdraw" && amount===5000 && status==="pending")){
+        item.date="2026-10-30T11:24:00+05:30";
+      }else if(item.id==="demo-withdrawal-refund-10000-20261031" || (title==="refund" && amount===10000)){
+        item.date="2026-10-29T12:08:00+05:30";
+      }else if(item.id==="demo-withdrawal-10000-20261031" || (title.indexOf("withdraw failed")!==-1 && amount===10000)){
+        item.date="2026-10-28T10:46:00+05:30";
+      }
+      return item;
+    }
+    data=data.map(setDemoDate);
+    localStorage.setItem(txKey,JSON.stringify(data));
+    pending=pending.map(function(item){
+      if(item && (item.id==="demo-withdraw-pending-5000-20261031" || (Number(item.amount)===5000 && String(item.status||"").toLowerCase()==="pending"))){
+        item.date="2026-10-30T11:24:00+05:30";
+      }
+      return item;
+    });
+    localStorage.setItem(pendingKey,JSON.stringify(pending));
     var combined=seeds.concat(data);
     var seen={};
     return combined.filter(function(item){
